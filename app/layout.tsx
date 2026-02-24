@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist } from 'next/font/google';
 import './globals.css';
 
 const geistSans = Geist({
@@ -8,14 +8,11 @@ const geistSans = Geist({
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: 'X Tweet Clone',
+  title: {
+    default: 'Next.js X Tweet',
+    template: '%s | Next.js X Tweet',
+  },
   description:
     'Frontend clone of Twitter (X) built with Next.js App Router and TypeScript.',
 };
@@ -27,11 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${geistSans.className} antialiased`}>{children}</body>
     </html>
   );
 }
