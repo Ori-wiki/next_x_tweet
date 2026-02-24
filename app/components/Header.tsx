@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Menu } from './Menu';
 
 export const Header = () => {
   return (
@@ -16,11 +17,7 @@ export const Header = () => {
           priority
         />
       </Link>
-      <nav className='flex gap-6 text-sm text-white/80'>
-        <Link href='/'>Home</Link>
-        <Link href='/'>Explore</Link>
-        <Link href='/'>Profile</Link>
-      </nav>
+      <Menu />
     </header>
   );
 };
