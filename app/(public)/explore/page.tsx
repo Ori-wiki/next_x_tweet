@@ -1,5 +1,15 @@
-import React from 'react';
+import { Metadata } from 'next';
+import { Explore } from './Explore';
+import { Suspense } from 'react';
 
-export default function explore() {
-  return <div>explore</div>;
+export const metadata: Metadata = {
+  title: 'Explore',
+};
+
+export default function ExplorePage() {
+  return (
+    <Suspense>
+      <Explore />
+    </Suspense>
+  );
 }
