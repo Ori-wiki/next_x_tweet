@@ -18,4 +18,8 @@ export const MENU_ITEMS = [
     href: PAGES.PROFILE_FAKE,
     name: 'Profile',
   },
+  {
+    href: PAGES.SHOP,
+    name: 'Shop',
+  },
 ];
