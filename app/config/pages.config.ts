@@ -3,7 +3,7 @@ export const PAGES = {
   EXPLORE: '/explore',
   PROFILE_FAKE: '/profile-fake',
   SHOP: '/shop',
-  SSG: 'shop/ssg',
+  SSG: '/shop/ssg',
   ISR: '/shop/isr',
   PROFILE: (username: string) => `/u/${username}`,
 };
