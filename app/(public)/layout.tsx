@@ -3,9 +3,9 @@ import { Header } from '../components/Header';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <div className='min-h-screen '>
+    <div className='min-h-screen'>
       <Header />
-      <div className='w-full max-w-xl flex justify-center px-4 py-8'>
+      <div className='mx-auto w-full max-w-3xl px-4 py-4 sm:px-6 sm:py-6'>
         {children}
       </div>
     </div>

@@ -21,7 +21,7 @@ export default async function TestPage({
 
 	return (
 		<div>
-			<h1 className="text-3xl font-bold mb-6">Profile @{username}</h1>
+			<h1 className="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl">Profile @{username}</h1>
 		</div>
 	)
 }

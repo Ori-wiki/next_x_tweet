@@ -4,19 +4,16 @@ export const TweetForm = () => {
   return (
     <form
       action={postTweet}
-      className='border border-white/10 rounded-xl p-4
-     text-white space-y-3 mb-5'
+      className='mb-5 space-y-3 rounded-xl border border-white/10 p-4 text-white'
     >
       <input
         name='content'
         placeholder='What`s happening?'
-        className='w-full bg-transparent outline-none
-         placeholder-gray-500'
+        className='w-full bg-transparent text-sm outline-none placeholder-gray-500 sm:text-base'
       />
       <div className='flex justify-end'>
         <button
-          className='bg-white text-black text-sm font-semibold
-           px-4 py-1.5 rounded-full hover:bg-gray-200 transition'
+          className='rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-black transition hover:bg-gray-200'
         >
           Tweet
         </button>

@@ -6,8 +6,10 @@ const DynamicProfileButton = dynamic(() =>
 
 export const ProfileFake = () => {
   return (
-    <div className='flex flex-col items-center'>
-      <h1 className='text-3xl font-bold mb-6'>Profile Fake</h1>
+    <div className='flex w-full flex-col items-center'>
+      <h1 className='mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl'>
+        Profile Fake
+      </h1>
       <DynamicProfileButton />
     </div>
   );

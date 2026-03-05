@@ -9,7 +9,7 @@ export const ShopMenu = () => {
   const pathname = usePathname();
 
   return (
-    <nav className='flex items-center gap-4 mb-5'>
+    <nav className='mb-5 flex flex-wrap items-center gap-4'>
       <MenuItem
         menuItem={{ href: PAGES.SHOP, name: 'SSR' }}
         IsActive={!!match(PAGES.SHOP)(pathname)}

@@ -11,19 +11,17 @@ export interface Product {
 export const ProductCard = ({ title, image, price }: Product) => {
   return (
     <div
-      className='w-64 border border-black/10 dark:border-white/10
-  rounded-xl p-4 hover:shadow transition'
+      className='w-full border border-black/10 rounded-xl p-4 transition hover:shadow dark:border-white/10'
     >
       <Image
-        width={100}
-        height={40}
+        width={240}
+        height={160}
         src={image}
         alt={title}
-        className='object-contain mb-3 rounded'
+        className='mb-3 h-40 w-full rounded object-contain'
       />
       <h2
-        className='text-sm text-black dark:text-white font-medium
-      line-clamp-2 mb-1'
+        className='mb-1 line-clamp-2 text-sm font-medium text-black dark:text-white'
       >
         {title}
       </h2>

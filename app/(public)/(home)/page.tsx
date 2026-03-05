@@ -5,8 +5,8 @@ import { TweetForm } from './TweetForm';
 
 export default function HomePage() {
   return (
-    <div>
-      <h1 className='text-3xl font-bold mb-6'>Home</h1>
+    <div className='w-full'>
+      <h1 className='mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl'>Home</h1>
       <TweetForm />
       <div className='space-y-5'>
         {TWEETS.map((tweet) => (

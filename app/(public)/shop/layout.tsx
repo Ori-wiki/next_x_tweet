@@ -11,7 +11,7 @@ const DynamicShopMenu = dynamic(
 export default function Layout({ children }: PropsWithChildren<unknown>) {
   return (
     <div className='w-full'>
-      <h1 className='text-3xl font-bold mb-6'>Shop</h1>
+      <h1 className='mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl'>Shop</h1>
       <DynamicShopMenu />
       {children}
     </div>

@@ -9,7 +9,9 @@ interface MenuItemProps {
 export const MenuItem = ({ menuItem, IsActive }: MenuItemProps) => {
   return (
     <Link
-      className={IsActive ? 'text-white' : 'text-white/80'}
+      className={`whitespace-nowrap transition-colors ${
+        IsActive ? 'text-white' : 'text-white/80 hover:text-white'
+      }`}
       href={menuItem.href}
     >
       {menuItem.name}

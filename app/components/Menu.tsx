@@ -9,7 +9,7 @@ export const Menu = () => {
   const pathname = usePathname();
 
   return (
-    <nav className='flex gap-6 text-sm '>
+    <nav className='flex flex-wrap justify-end gap-x-4 gap-y-1 text-sm sm:gap-x-6'>
       {MENU_ITEMS.map((item) => (
         <MenuItem
           key={item.href}
