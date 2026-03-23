@@ -1,27 +1,28 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-type Params = { username: string }
+type Params = { username: string };
 
 export async function generateMetadata({
-	params
+  params,
 }: {
-	params: Promise<Params>
+  params: Promise<Params>;
 }): Promise<Metadata> {
-	return {
-		title: '@' + (await params).username
-	}
+  return {
+    title: `@${(await params).username} test page`,
+  };
 }
 
 export default async function TestPage({
-	params
+  params,
 }: {
-	params: Promise<Params>
+  params: Promise<Params>;
 }) {
-	const { username } = await params
+  const { username } = await params;
 
-	return (
-		<div>
-			<h1 className="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl">Profile @{username}</h1>
-		</div>
-	)
+  return (
+    <div className='rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-white'>
+      <h1 className='mb-2 text-2xl font-bold'>Profile test route</h1>
+      <p className='text-white/65'>Dynamic route check for @{username}</p>
+    </div>
+  );
 }

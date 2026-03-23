@@ -1,0 +1,44 @@
+import { loginAction, logoutAction } from '@/app/server-actions/post-tweet';
+import { getSessionUser } from '@/app/shared/lib/auth';
+import { readDemoDatabase } from '@/app/shared/lib/demo-db';
+
+export const AuthControls = async () => {
+  const currentUser = await getSessionUser();
+
+  if (currentUser) {
+    return (
+      <div className='flex flex-wrap items-center justify-end gap-3 text-sm'>
+        <div className='rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-white/75'>
+          <span className='font-semibold text-white'>{currentUser.name}</span>
+          <span className='ml-2 text-white/45'>@{currentUser.username}</span>
+        </div>
+        <form action={logoutAction}>
+          <button
+            type='submit'
+            className='rounded-full border border-white/10 bg-white/10 px-4 py-2 text-white transition hover:bg-white/15'
+          >
+            Выйти
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  const database = await readDemoDatabase();
+
+  return (
+    <div className='flex flex-wrap items-center justify-end gap-2'>
+      {database.users.map((user) => (
+        <form key={user.id} action={loginAction}>
+          <input type='hidden' name='userId' value={user.id} />
+          <button
+            type='submit'
+            className='rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-sm text-sky-100 transition hover:border-sky-300/40 hover:bg-sky-400/15'
+          >
+            Войти как {user.name}
+          </button>
+        </form>
+      ))}
+    </div>
+  );
+};

@@ -1,21 +1,18 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --background: #000000;
+  --background: #050816;
+  --foreground: #f8fafc;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-border: rgba(255, 255, 255, 0.1);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(14, 165, 233, 0.18), transparent 30%),
+    linear-gradient(180deg, #06111f 0%, #050816 55%, #02040a 100%);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
@@ -24,4 +21,12 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.35);
 }

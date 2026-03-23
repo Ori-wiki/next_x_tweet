@@ -10,11 +10,11 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Next.js X Tweet',
-    template: '%s | Next.js X Tweet',
+    default: 'Next X Tweet Demo',
+    template: '%s | Next X Tweet Demo',
   },
   description:
-    'Frontend clone of Twitter (X) built with Next.js App Router and TypeScript.',
+    'Учебный мини-клон X на Next.js App Router с твитами, профилями, демо-авторизацией и примерами SSR, SSG и ISR.',
 };
 
 export default function RootLayout({
@@ -23,8 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body className={`${geistSans.className} antialiased`}>{children}</body>
+    <html lang='ru' suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className={`${geistSans.className} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

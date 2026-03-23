@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next X Tweet Demo
 
-## Getting Started
+Учебный проект на `Next.js App Router`, который теперь работает как маленькое цельное приложение, а не только как набор демо-страниц.
 
-First, run the development server:
+## Что есть в проекте
+
+- Домашняя лента с публикацией твитов через server actions
+- Локальное JSON-хранилище вместо статических моков
+- Валидация формы через `zod`
+- Демо-авторизация через cookie и защищенный маршрут `/profile-fake`
+- Публичные профили пользователей с биографией и статистикой
+- Explore с поиском, фильтром по тегам и трендами
+- Лайки и закладки для твитов
+- Shop-раздел для сравнения `SSR`, `SSG` и `ISR`
+- Базовые тесты для валидации и формы
+
+## Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+Открой `http://localhost:3000`.
+
+## Основные команды
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run test
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+По умолчанию `dev` и `build` запускаются через Webpack.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Это сделано как временный стабильный режим, потому что в `Next.js 16.1.6` у Turbopack на Windows иногда встречаются внутренние panic-ошибки во время `dev/build`.
+- Если захочешь снова проверить Turbopack, используй `npm run dev:turbo` и `npm run build:turbo`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Где хранятся данные
 
-## Learn More
+Локальная демо-база лежит в `data/demo-db.json`.
 
-To learn more about Next.js, take a look at the following resources:
+- При запуске приложение использует этот файл как источник твитов и пользователей.
+- Для тестов можно подменить путь через переменную `DEMO_DB_PATH`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Что полезно посмотреть в коде
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/server-actions/post-tweet.ts` - server actions для твитов и демо-сессии
+- `app/shared/lib/demo-db.ts` - чтение и запись локальной JSON-базы
+- `app/shared/lib/tweets.ts` - селекторы ленты, профиля, explore и dashboard
+- `app/(public)/shop/*` - примеры `SSR`, `SSG`, `ISR`, `loading.tsx`, `error.tsx`

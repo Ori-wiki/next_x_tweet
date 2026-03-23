@@ -1,0 +1,92 @@
+{
+  "users": [
+    {
+      "id": "user-jane",
+      "username": "jane_dev",
+      "name": "Jane Dev",
+      "bio": "Frontend engineer. Building calm interfaces and shipping every week.",
+      "avatar": "JD",
+      "followers": 1240,
+      "following": 312
+    },
+    {
+      "id": "user-max",
+      "username": "max_router",
+      "name": "Max Router",
+      "bio": "App Router enthusiast. I compare SSR, SSG and ISR for fun.",
+      "avatar": "MR",
+      "followers": 842,
+      "following": 188
+    },
+    {
+      "id": "user-olga",
+      "username": "olga_ui",
+      "name": "Olga UI",
+      "bio": "Product designer focused on clear writing, states and polish.",
+      "avatar": "OU",
+      "followers": 1634,
+      "following": 251
+    }
+  ],
+  "tweets": [
+    {
+      "id": "tweet-1",
+      "authorId": "user-jane",
+      "content": "Launched a cleaner compose flow today. Small UX wins compound fast. #nextjs #ux",
+      "createdAt": "2026-03-21T09:15:00.000Z",
+      "hashtags": [
+        "nextjs",
+        "ux"
+      ],
+      "likedBy": [
+        "user-max",
+        "user-olga"
+      ],
+      "bookmarkedBy": []
+    },
+    {
+      "id": "tweet-2",
+      "authorId": "user-max",
+      "content": "SSR for freshness, ISR for scale, SSG for speed. The best option depends on the page. #appRouter #webperf",
+      "createdAt": "2026-03-21T12:40:00.000Z",
+      "hashtags": [
+        "appRouter",
+        "webperf"
+      ],
+      "likedBy": [
+        "user-jane"
+      ],
+      "bookmarkedBy": [
+        "user-jane",
+        "user-olga"
+      ]
+    },
+    {
+      "id": "tweet-3",
+      "authorId": "user-olga",
+      "content": "Empty states should help people move forward, not just announce that nothing happened. #design #product",
+      "createdAt": "2026-03-22T08:30:00.000Z",
+      "hashtags": [
+        "design",
+        "product"
+      ],
+      "likedBy": [
+        "user-jane",
+        "user-max"
+      ],
+      "bookmarkedBy": []
+    },
+    {
+      "id": "tweet-4",
+      "authorId": "user-jane",
+      "content": "Added server-side validation with Zod and the whole form instantly felt more trustworthy. #typescript #zod",
+      "createdAt": "2026-03-22T18:10:00.000Z",
+      "hashtags": [
+        "typescript",
+        "zod"
+      ],
+      "likedBy": [],
+      "bookmarkedBy": []
+    }
+  ]
+}

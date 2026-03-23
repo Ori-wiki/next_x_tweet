@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { ProfileFake } from './ProfileFake';
 
 export const metadata: Metadata = {
-  title: 'Profile Fake',
+  title: 'Private Dashboard',
 };
 
 export default function ProfileFakePage() {

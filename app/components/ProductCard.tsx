@@ -10,22 +10,20 @@ export interface Product {
 
 export const ProductCard = ({ title, image, price }: Product) => {
   return (
-    <div
-      className='w-full border border-black/10 rounded-xl p-4 transition hover:shadow dark:border-white/10'
-    >
+    <article className='w-full rounded-3xl border border-white/10 bg-white/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-sky-300/30 hover:shadow-[0_24px_80px_rgba(0,0,0,0.2)]'>
       <Image
         width={240}
         height={160}
         src={image}
         alt={title}
-        className='mb-3 h-40 w-full rounded object-contain'
+        className='mb-3 h-40 w-full rounded-2xl bg-white object-contain p-4'
       />
       <h2
-        className='mb-1 line-clamp-2 text-sm font-medium text-black dark:text-white'
+        className='mb-1 line-clamp-2 text-sm font-medium text-white'
       >
         {title}
       </h2>
-      <p className='text-sm text-gray-500 dark:text-gray-400'>${price}</p>
-    </div>
+      <p className='text-sm text-white/60'>${price}</p>
+    </article>
   );
 };

@@ -1,15 +1,21 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Explore } from './Explore';
-import { Suspense } from 'react';
+import { getSessionUser } from '@/app/shared/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Explore',
 };
 
-export default function ExplorePage() {
-  return (
-    <Suspense>
-      <Explore />
-    </Suspense>
-  );
+interface ExplorePageProps {
+  searchParams: Promise<{
+    q?: string;
+    tag?: string;
+  }>;
+}
+
+export default async function ExplorePage({ searchParams }: ExplorePageProps) {
+  const params = await searchParams;
+  const currentUser = await getSessionUser();
+
+  return <Explore currentUser={currentUser} q={params.q} tag={params.tag} />;
 }
