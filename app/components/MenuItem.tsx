@@ -11,10 +11,13 @@ export const MenuItem = ({ item, isActive }: MenuItemProps) => {
   return (
     <Link
       className={cn(
-        'whitespace-nowrap transition-colors',
-        isActive ? 'text-white' : 'text-white/80 hover:text-white',
+        'inline-flex items-center px-1 py-1 whitespace-nowrap transition-colors',
+        isActive
+          ? 'font-semibold text-sky-300!'
+          : 'text-white/45 hover:text-white/75',
       )}
       href={item.href}
+      aria-current={isActive ? 'page' : undefined}
     >
       {item.name}
     </Link>

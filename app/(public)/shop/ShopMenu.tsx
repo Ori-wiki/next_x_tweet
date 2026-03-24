@@ -3,7 +3,6 @@
 import { MenuItem } from '@/app/components/MenuItem';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { PAGES } from '@/app/config/pages.config';
-import { isRouteActive } from '@/app/shared/lib/routing';
 import { usePathname } from 'next/navigation';
 
 const pageNotes = [
@@ -24,6 +23,14 @@ const pageNotes = [
   },
 ];
 
+function isShopPageActive(pathname: string, href: string) {
+  if (href === PAGES.SHOP) {
+    return pathname === href;
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export const ShopMenu = () => {
   const pathname = usePathname();
 
@@ -33,7 +40,7 @@ export const ShopMenu = () => {
         <SurfaceCard key={item.href} className='p-4'>
           <MenuItem
             item={{ href: item.href, name: item.name }}
-            isActive={isRouteActive(pathname, item.href)}
+            isActive={isShopPageActive(pathname, item.href)}
           />
           <p className='mt-2 text-sm text-white/60'>{item.note}</p>
         </SurfaceCard>

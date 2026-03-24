@@ -39,7 +39,7 @@ export const Explore = async ({ q, tag, currentUser }: ExploreProps) => {
             />
             <button
               type='submit'
-              className='rounded-2xl bg-sky-400 px-5 py-3 text-sm font-semibold text-black transition hover:bg-sky-300'
+              className='rounded-2xl bg-sky-400 px-5 py-3 text-sm font-semibold text-black transition hover:bg-sky-300 hover:cursor-pointer'
             >
               Search
             </button>
