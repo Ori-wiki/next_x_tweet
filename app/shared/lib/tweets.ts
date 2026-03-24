@@ -54,6 +54,7 @@ function toTweetView(
     isBookmarked: currentUserId
       ? tweet.bookmarkedBy.includes(currentUserId)
       : false,
+    isOwn: currentUserId === author.id,
     author: toTweetAuthor(author),
   };
 }

@@ -139,6 +139,30 @@ export async function toggleBookmarkAction(formData: FormData) {
   await toggleTweetRelation(formData, 'bookmarkedBy');
 }
 
+export async function deleteTweetAction(formData: FormData) {
+  const currentUserId = await getSessionUserId();
+  const tweetId = String(formData.get('tweetId') ?? '');
+
+  if (!currentUserId || !tweetId) {
+    return;
+  }
+
+  const database = await readDemoDatabase();
+  const currentUser = getCurrentUser(database, currentUserId);
+  const targetTweet = database.tweets.find((tweet) => tweet.id === tweetId);
+
+  if (!currentUser || !targetTweet || targetTweet.authorId !== currentUserId) {
+    return;
+  }
+
+  await updateDemoDatabase((draft) => ({
+    ...draft,
+    tweets: draft.tweets.filter((tweet) => tweet.id !== tweetId),
+  }));
+
+  revalidateTweetSurfaces(currentUser.username);
+}
+
 export async function loginAction(formData: FormData) {
   const userId = String(formData.get('userId') ?? '');
   const database = await readDemoDatabase();

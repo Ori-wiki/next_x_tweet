@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s | Next X Tweet Demo',
   },
   description:
-    'Учебный мини-клон X на Next.js App Router с твитами, профилями, демо-авторизацией и примерами SSR, SSG и ISR.',
+    'A small X clone built with Next.js App Router, demo auth, public profiles, tweets, and SSR, SSG, ISR examples.',
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ru' suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${geistSans.className} antialiased`}

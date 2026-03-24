@@ -38,7 +38,8 @@
         "zigo"
       ],
       "likedBy": [
-        "user-max"
+        "user-max",
+        "user-jane"
       ],
       "bookmarkedBy": [
         "user-max"
@@ -52,25 +53,12 @@
       "hashtags": [
         "reactjs"
       ],
-      "likedBy": [],
+      "likedBy": [
+        "user-jane"
+      ],
       "bookmarkedBy": [
         "user-max"
       ]
-    },
-    {
-      "id": "tweet-1",
-      "authorId": "user-jane",
-      "content": "Launched a cleaner compose flow today. Small UX wins compound fast. #nextjs #ux",
-      "createdAt": "2026-03-21T09:15:00.000Z",
-      "hashtags": [
-        "nextjs",
-        "ux"
-      ],
-      "likedBy": [
-        "user-max",
-        "user-olga"
-      ],
-      "bookmarkedBy": []
     },
     {
       "id": "tweet-2",
@@ -85,8 +73,8 @@
         "user-jane"
       ],
       "bookmarkedBy": [
-        "user-jane",
-        "user-olga"
+        "user-olga",
+        "user-jane"
       ]
     },
     {
@@ -99,26 +87,10 @@
         "product"
       ],
       "likedBy": [
-        "user-jane",
-        "user-max"
+        "user-max",
+        "user-jane"
       ],
       "bookmarkedBy": []
-    },
-    {
-      "id": "tweet-4",
-      "authorId": "user-jane",
-      "content": "Added server-side validation with Zod and the whole form instantly felt more trustworthy. #typescript #zod",
-      "createdAt": "2026-03-22T18:10:00.000Z",
-      "hashtags": [
-        "typescript",
-        "zod"
-      ],
-      "likedBy": [
-        "user-max"
-      ],
-      "bookmarkedBy": [
-        "user-max"
-      ]
     }
   ]
 }

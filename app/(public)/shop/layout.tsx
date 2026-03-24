@@ -24,8 +24,8 @@ export default function Layout({ children }: PropsWithChildren<unknown>) {
         </p>
         <h1 className='mt-2 text-2xl font-bold text-white sm:text-3xl'>Shop</h1>
         <p className='mt-3 max-w-2xl text-white/70'>
-          Один и тот же список товаров показан в режимах SSR, SSG и ISR, чтобы
-          можно было сравнить свежесть данных и стратегию рендера прямо в интерфейсе.
+          The same product list is shown with SSR, SSG and ISR so you can compare
+          data freshness and rendering strategy directly in the interface.
         </p>
       </div>
       <DynamicShopMenu />

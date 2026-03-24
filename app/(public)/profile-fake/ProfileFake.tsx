@@ -1,4 +1,5 @@
-import Link from 'next/link';
+import { EmptyState } from '@/app/components/EmptyState';
+import { LinkButton } from '@/app/components/LinkButton';
 import { PageHero } from '@/app/components/PageHero';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { TweetList } from '@/app/components/TweetList';
@@ -10,7 +11,27 @@ export const ProfileFake = async () => {
   const currentUser = await getSessionUser();
 
   if (!currentUser) {
-    return null;
+    return (
+      <div className='space-y-6'>
+        <PageHero
+          eyebrow='Dashboard'
+          title='Sign in to open your demo dashboard'
+          description='After sign-in you will see your profile summary, likes and saved tweets here.'
+          className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
+        >
+          <div className='flex flex-wrap gap-3'>
+            <LinkButton href={PAGES.HOME} variant='solid'>
+              Go to home
+            </LinkButton>
+            <LinkButton href={PAGES.EXPLORE}>
+              Open explore
+            </LinkButton>
+          </div>
+        </PageHero>
+
+        <EmptyState message='You are signed out. Use one of the demo accounts in the header to open the dashboard.' />
+      </div>
+    );
   }
 
   const dashboard = await getDashboardData(currentUser);
@@ -18,24 +39,18 @@ export const ProfileFake = async () => {
   return (
     <div className='space-y-6'>
       <PageHero
-        eyebrow='Private route'
-        title='Your demo dashboard is protected by middleware'
-        description='This page summarizes your account, bookmarks and quick actions. Signing out makes the route private again.'
+        eyebrow='Dashboard'
+        title='Your demo dashboard'
+        description='This page summarizes your account, bookmarks and quick actions for the current demo session.'
         className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
       >
         <div className='flex flex-wrap gap-3'>
-          <Link
-            href={PAGES.PROFILE(currentUser.username)}
-            className='rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-slate-100'
-          >
+          <LinkButton href={PAGES.PROFILE(currentUser.username)} variant='solid'>
             Open public profile
-          </Link>
-          <Link
-            href={PAGES.EXPLORE}
-            className='rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/15'
-          >
+          </LinkButton>
+          <LinkButton href={PAGES.EXPLORE}>
             Open explore
-          </Link>
+          </LinkButton>
         </div>
       </PageHero>
 

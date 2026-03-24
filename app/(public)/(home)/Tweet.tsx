@@ -4,6 +4,7 @@ import { SubmitButton } from '@/app/components/SubmitButton';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { PAGES } from '@/app/config/pages.config';
 import {
+  deleteTweetAction,
   toggleBookmarkAction,
   toggleLikeAction,
 } from '@/app/server-actions/post-tweet';
@@ -14,6 +15,18 @@ interface TweetProps {
   tweet: TweetView;
   canInteract: boolean;
 }
+
+const tweetActionClassName =
+  'min-w-[108px] rounded-full border border-white/10 bg-transparent px-4 py-2 text-sm font-medium text-white/78 backdrop-blur-sm hover:border-white/18 hover:bg-white/[0.04] hover:text-white';
+
+const likedActionClassName =
+  '!border-slate-300/35 !bg-slate-200/18 !text-slate-100 hover:!border-slate-300/45 hover:!bg-slate-200/24';
+
+const bookmarkedActionClassName =
+  '!border-teal-300/35 !bg-teal-300/16 !text-teal-50 hover:!border-teal-300/45 hover:!bg-teal-300/22';
+
+const deleteActionClassName =
+  'border-white/10 bg-transparent text-white/68 hover:border-rose-300/24 hover:bg-rose-400/[0.06] hover:text-rose-100';
 
 export const Tweet = ({ tweet, canInteract }: TweetProps) => {
   return (
@@ -64,10 +77,8 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
           <SubmitButton
             idleLabel={`${tweet.isLiked ? 'Unlike' : 'Like'} · ${tweet.likes}`}
             pendingLabel='...'
-            className={`${
-              tweet.isLiked
-                ? 'bg-rose-400 text-white hover:bg-rose-300'
-                : 'bg-white/10 text-white hover:bg-white/15'
+            className={`${tweetActionClassName} ${
+              tweet.isLiked ? likedActionClassName : ''
             } ${!canInteract ? 'pointer-events-none opacity-60' : ''}`}
           />
         </form>
@@ -76,13 +87,21 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
           <SubmitButton
             idleLabel={`${tweet.isBookmarked ? 'Bookmarked' : 'Bookmark'} · ${tweet.bookmarks}`}
             pendingLabel='...'
-            className={`${
-              tweet.isBookmarked
-                ? 'bg-amber-300 text-black hover:bg-amber-200'
-                : 'bg-white/10 text-white hover:bg-white/15'
+            className={`${tweetActionClassName} ${
+              tweet.isBookmarked ? bookmarkedActionClassName : ''
             } ${!canInteract ? 'pointer-events-none opacity-60' : ''}`}
           />
         </form>
+        {tweet.isOwn ? (
+          <form action={deleteTweetAction}>
+            <input type='hidden' name='tweetId' value={tweet.id} />
+            <SubmitButton
+              idleLabel='Delete'
+              pendingLabel='Deleting...'
+              className={`${tweetActionClassName} ${deleteActionClassName}`}
+            />
+          </form>
+        ) : null}
         {!canInteract ? (
           <p className='text-sm text-white/45'>
             Sign in to like tweets and save bookmarks.

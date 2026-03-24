@@ -27,5 +27,6 @@ export interface TweetView {
   bookmarks: number;
   isLiked: boolean;
   isBookmarked: boolean;
+  isOwn: boolean;
   author: TweetAuthor;
 }
