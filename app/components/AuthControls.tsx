@@ -9,7 +9,7 @@ export const AuthControls = async () => {
   if (currentUser) {
     return (
       <div className='flex flex-wrap items-center justify-end gap-3 text-sm'>
-        <SurfaceCard className='rounded-full bg-white/[0.04] px-4 py-2 text-white/75'>
+        <SurfaceCard className='rounded-full bg-white/4 px-4 py-2 text-white/75'>
           <span className='font-semibold text-white'>{currentUser.name}</span>
           <span className='ml-2 text-white/45'>@{currentUser.username}</span>
         </SurfaceCard>

@@ -8,10 +8,7 @@ interface SurfaceCardProps extends PropsWithChildren {
 export const SurfaceCard = ({ className, children }: SurfaceCardProps) => {
   return (
     <div
-      className={cn(
-        'rounded-3xl border border-white/10 bg-white/[0.03]',
-        className,
-      )}
+      className={cn('rounded-3xl border border-white/10 bg-white/3', className)}
     >
       {children}
     </div>

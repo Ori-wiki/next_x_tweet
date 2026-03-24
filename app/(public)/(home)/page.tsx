@@ -15,6 +15,7 @@ export default async function HomePage() {
         eyebrow='Home timeline'
         title='A small X clone with live actions and demo accounts'
         description='The feed is backed by local JSON storage, supports posting, likes, bookmarks, profile pages and protected routes.'
+        className='mb-5'
       />
 
       {currentUser ? (
@@ -32,4 +33,4 @@ export default async function HomePage() {
       />
     </div>
   );
-};
+}
