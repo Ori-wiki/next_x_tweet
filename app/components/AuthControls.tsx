@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { PAGES } from '@/app/config/pages.config';
 import { loginAction, logoutAction } from '@/app/server-actions/post-tweet';
 import { getSessionUser } from '@/app/shared/lib/auth';
 import { readDemoDatabase } from '@/app/shared/lib/demo-db';
@@ -9,10 +11,12 @@ export const AuthControls = async () => {
   if (currentUser) {
     return (
       <div className='flex flex-wrap items-center justify-end gap-3 text-sm'>
-        <SurfaceCard className='rounded-full bg-white/4 px-4 py-2 text-white/75'>
-          <span className='font-semibold text-white'>{currentUser.name}</span>
-          <span className='ml-2 text-white/45'>@{currentUser.username}</span>
-        </SurfaceCard>
+        <Link href={PAGES.PROFILE(currentUser.username)}>
+          <SurfaceCard className='rounded-full bg-white/4 px-4 py-2 text-white/75 transition hover:bg-white/8'>
+            <span className='font-semibold text-white'>{currentUser.name}</span>
+            <span className='ml-2 text-white/45'>@{currentUser.username}</span>
+          </SurfaceCard>
+        </Link>
         <form action={logoutAction}>
           <button
             type='submit'
