@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TweetForm } from './TweetForm';
 import type { TweetActionState } from '@/app/server-actions/post-tweet.state';
+import { TweetForm } from './TweetForm';
 
 describe('TweetForm', () => {
   it('renders compose UI and updates character counter', () => {
@@ -14,13 +14,13 @@ describe('TweetForm', () => {
 
     render(<TweetForm action={fakeAction} />);
 
-    const textarea = screen.getByLabelText('Новый твит');
+    const textarea = screen.getByLabelText('New tweet');
     fireEvent.change(textarea, { target: { value: 'Hello world' } });
 
     expect(screen.getByText('11/280')).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(
-        'Что нового? Можно добавить и хэштеги, например #nextjs',
+        'What is happening? Add hashtags like #nextjs if you want.',
       ),
     ).toBeInTheDocument();
   });

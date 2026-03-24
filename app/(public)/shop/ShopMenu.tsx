@@ -1,9 +1,10 @@
 'use client';
 
 import { MenuItem } from '@/app/components/MenuItem';
+import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { PAGES } from '@/app/config/pages.config';
+import { isRouteActive } from '@/app/shared/lib/routing';
 import { usePathname } from 'next/navigation';
-import { match } from 'path-to-regexp';
 
 const pageNotes = [
   {
@@ -29,16 +30,13 @@ export const ShopMenu = () => {
   return (
     <div className='grid gap-3 md:grid-cols-3'>
       {pageNotes.map((item) => (
-        <div
-          key={item.href}
-          className='rounded-3xl border border-white/10 bg-white/[0.03] p-4'
-        >
+        <SurfaceCard key={item.href} className='p-4'>
           <MenuItem
-            menuItem={{ href: item.href, name: item.name }}
-            IsActive={!!match(item.href)(pathname)}
+            item={{ href: item.href, name: item.name }}
+            isActive={isRouteActive(pathname, item.href)}
           />
           <p className='mt-2 text-sm text-white/60'>{item.note}</p>
-        </div>
+        </SurfaceCard>
       ))}
     </div>
   );

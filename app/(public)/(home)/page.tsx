@@ -1,7 +1,9 @@
-import { Tweet } from './Tweet';
-import { TweetForm } from './TweetForm';
+import { EmptyState } from '@/app/components/EmptyState';
+import { PageHero } from '@/app/components/PageHero';
+import { TweetList } from '@/app/components/TweetList';
 import { getSessionUser } from '@/app/shared/lib/auth';
 import { getTimeline } from '@/app/shared/lib/tweets';
+import { TweetForm } from './TweetForm';
 
 export default async function HomePage() {
   const currentUser = await getSessionUser();
@@ -9,33 +11,25 @@ export default async function HomePage() {
 
   return (
     <div className='w-full'>
-      <div className='mb-6 flex flex-col gap-3 rounded-3xl border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.22),transparent_45%),rgba(255,255,255,0.03)] p-5'>
-        <p className='text-sm uppercase tracking-[0.2em] text-sky-200/80'>
-          Домашняя лента
-        </p>
-        <h1 className='text-2xl font-bold text-white sm:text-3xl'>
-          Мини-клон X с живыми действиями, профилями и демо-сессией
-        </h1>
-        <p className='max-w-2xl text-white/70'>
-          Лента теперь хранится в локальном JSON, умеет публиковать твиты, ставить
-          лайки, сохранять записи и отражать изменения между страницами.
-        </p>
-      </div>
+      <PageHero
+        eyebrow='Home timeline'
+        title='A small X clone with live actions and demo accounts'
+        description='The feed is backed by local JSON storage, supports posting, likes, bookmarks, profile pages and protected routes.'
+      />
 
       {currentUser ? (
         <TweetForm />
       ) : (
-        <div className='mb-6 rounded-3xl border border-amber-300/20 bg-amber-300/10 p-4 text-sm text-amber-100'>
-          Для публикации твитов и действий с лентой войди в один из демо-аккаунтов в
-          шапке сайта.
+        <div className='my-6'>
+          <EmptyState message='Sign in with one of the demo accounts in the header to post, like and bookmark tweets.' />
         </div>
       )}
 
-      <div className='space-y-5'>
-        {tweets.map((tweet) => (
-          <Tweet key={tweet.id} tweet={tweet} canInteract={Boolean(currentUser)} />
-        ))}
-      </div>
+      <TweetList
+        tweets={tweets}
+        canInteract={Boolean(currentUser)}
+        emptyMessage='No tweets are available yet.'
+      />
     </div>
   );
-}
+};

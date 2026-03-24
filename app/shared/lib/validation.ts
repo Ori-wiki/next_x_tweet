@@ -4,8 +4,8 @@ export const tweetSchema = z.object({
   content: z
     .string()
     .trim()
-    .min(1, 'Твит не может быть пустым.')
-    .max(280, 'Максимум 280 символов.'),
+    .min(1, 'Tweet content cannot be empty.')
+    .max(280, 'Tweet content must be 280 characters or fewer.'),
 });
 
 export function extractHashtags(content: string) {

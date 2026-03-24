@@ -1,20 +1,22 @@
 import Link from 'next/link';
-import { IMenuItem } from './menu.data';
+import { cn } from '@/app/shared/lib/cn';
+import type { MenuItemData } from './menu.data';
 
 interface MenuItemProps {
-  menuItem: IMenuItem;
-  IsActive: boolean;
+  item: MenuItemData;
+  isActive: boolean;
 }
 
-export const MenuItem = ({ menuItem, IsActive }: MenuItemProps) => {
+export const MenuItem = ({ item, isActive }: MenuItemProps) => {
   return (
     <Link
-      className={`whitespace-nowrap transition-colors ${
-        IsActive ? 'text-white' : 'text-white/80 hover:text-white'
-      }`}
-      href={menuItem.href}
+      className={cn(
+        'whitespace-nowrap transition-colors',
+        isActive ? 'text-white' : 'text-white/80 hover:text-white',
+      )}
+      href={item.href}
     >
-      {menuItem.name}
+      {item.name}
     </Link>
   );
 };

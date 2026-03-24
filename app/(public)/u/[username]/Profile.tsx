@@ -1,4 +1,5 @@
-import { Tweet } from '../../(home)/Tweet';
+import { SurfaceCard } from '@/app/components/SurfaceCard';
+import { TweetList } from '@/app/components/TweetList';
 import { getUserProfile } from '@/app/shared/lib/tweets';
 import type { SessionUser } from '@/app/shared/types/user.interface';
 
@@ -25,38 +26,28 @@ export const Profile = async ({ username, currentUser }: ProfileProps) => {
             </div>
           </div>
           <div className='flex gap-3 text-sm text-white/75'>
-            <div className='rounded-2xl border border-white/10 bg-black/20 px-4 py-3'>
+            <SurfaceCard className='rounded-2xl bg-black/20 px-4 py-3'>
               <p className='font-semibold text-white'>{tweets.length}</p>
               <p>posts</p>
-            </div>
-            <div className='rounded-2xl border border-white/10 bg-black/20 px-4 py-3'>
+            </SurfaceCard>
+            <SurfaceCard className='rounded-2xl bg-black/20 px-4 py-3'>
               <p className='font-semibold text-white'>{profile.followers}</p>
               <p>followers</p>
-            </div>
-            <div className='rounded-2xl border border-white/10 bg-black/20 px-4 py-3'>
+            </SurfaceCard>
+            <SurfaceCard className='rounded-2xl bg-black/20 px-4 py-3'>
               <p className='font-semibold text-white'>{profile.following}</p>
               <p>following</p>
-            </div>
+            </SurfaceCard>
           </div>
         </div>
       </section>
 
-      <section className='space-y-5'>
-        <h2 className='text-xl font-semibold text-white'>Tweets</h2>
-        {tweets.length > 0 ? (
-          tweets.map((tweet) => (
-            <Tweet
-              key={tweet.id}
-              tweet={tweet}
-              canInteract={Boolean(currentUser)}
-            />
-          ))
-        ) : (
-          <div className='rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-white/65'>
-            У этого пользователя пока нет твитов.
-          </div>
-        )}
-      </section>
+      <TweetList
+        title='Tweets'
+        tweets={tweets}
+        canInteract={Boolean(currentUser)}
+        emptyMessage='This profile has not posted any tweets yet.'
+      />
     </div>
   );
 };

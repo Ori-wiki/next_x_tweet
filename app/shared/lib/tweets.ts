@@ -1,7 +1,20 @@
 import { notFound } from 'next/navigation';
 import { readDemoDatabase } from '@/app/shared/lib/demo-db';
-import type { TweetAuthor, TweetRecord, TweetView } from '@/app/shared/types/tweet.interface';
+import type {
+  TweetAuthor,
+  TweetRecord,
+  TweetView,
+} from '@/app/shared/types/tweet.interface';
 import type { SessionUser, UserRecord } from '@/app/shared/types/user.interface';
+
+const compareTweetsByDate = (left: TweetRecord, right: TweetRecord) =>
+  new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
+
+type UsersById = Map<string, UserRecord>;
+
+function getUsersById(users: UserRecord[]): UsersById {
+  return new Map(users.map((user) => [user.id, user]));
+}
 
 function toTweetAuthor(user: UserRecord): TweetAuthor {
   return {
@@ -15,7 +28,21 @@ function toTweetAuthor(user: UserRecord): TweetAuthor {
   };
 }
 
-function toTweetView(tweet: TweetRecord, author: UserRecord, currentUserId?: string): TweetView {
+function getAuthorOrThrow(usersById: Map<string, UserRecord>, tweet: TweetRecord) {
+  const author = usersById.get(tweet.authorId);
+
+  if (!author) {
+    throw new Error(`Unknown author for tweet ${tweet.id}`);
+  }
+
+  return author;
+}
+
+function toTweetView(
+  tweet: TweetRecord,
+  author: UserRecord,
+  currentUserId?: string,
+): TweetView {
   return {
     id: tweet.id,
     content: tweet.content,
@@ -24,97 +51,117 @@ function toTweetView(tweet: TweetRecord, author: UserRecord, currentUserId?: str
     likes: tweet.likedBy.length,
     bookmarks: tweet.bookmarkedBy.length,
     isLiked: currentUserId ? tweet.likedBy.includes(currentUserId) : false,
-    isBookmarked: currentUserId ? tweet.bookmarkedBy.includes(currentUserId) : false,
+    isBookmarked: currentUserId
+      ? tweet.bookmarkedBy.includes(currentUserId)
+      : false,
     author: toTweetAuthor(author),
   };
 }
 
-export async function getTimeline(currentUser?: SessionUser | null) {
-  const database = await readDemoDatabase();
-  const usersById = new Map(database.users.map((user) => [user.id, user]));
-
-  return database.tweets
-    .slice()
-    .sort((left, right) => {
-      return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
-    })
-    .map((tweet) => {
-      const author = usersById.get(tweet.authorId);
-
-      if (!author) {
-        throw new Error(`Unknown author for tweet ${tweet.id}`);
-      }
-
-      return toTweetView(tweet, author, currentUser?.id);
-    });
+function sortTweets(tweets: TweetRecord[]) {
+  return tweets.slice().sort(compareTweetsByDate);
 }
 
-export async function getUserProfile(username: string, currentUser?: SessionUser | null) {
+function filterTweetsWithAuthors(
+  tweets: TweetRecord[],
+  usersById: UsersById,
+  predicate: (tweet: TweetRecord, author: UserRecord) => boolean,
+) {
+  return tweets.filter((tweet) => {
+    const author = usersById.get(tweet.authorId);
+
+    return author ? predicate(tweet, author) : false;
+  });
+}
+
+function toTweetViews(
+  tweets: TweetRecord[],
+  usersById: UsersById,
+  currentUserId?: string,
+) {
+  return sortTweets(tweets).map((tweet) =>
+    toTweetView(tweet, getAuthorOrThrow(usersById, tweet), currentUserId),
+  );
+}
+
+function getTopTrends(tweets: TweetRecord[]) {
+  const hashtagCounts = tweets.reduce<Map<string, number>>((accumulator, tweet) => {
+    tweet.hashtags.forEach((hashtag) => {
+      accumulator.set(hashtag, (accumulator.get(hashtag) ?? 0) + 1);
+    });
+
+    return accumulator;
+  }, new Map());
+
+  return [...hashtagCounts.entries()]
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 5);
+}
+
+export async function getTimeline(currentUser?: SessionUser | null) {
   const database = await readDemoDatabase();
+  const usersById = getUsersById(database.users);
+
+  return toTweetViews(database.tweets, usersById, currentUser?.id);
+}
+
+export async function getUserProfile(
+  username: string,
+  currentUser?: SessionUser | null,
+) {
+  const database = await readDemoDatabase();
+  const usersById = getUsersById(database.users);
   const profile = database.users.find((user) => user.username === username);
 
   if (!profile) {
     notFound();
   }
 
-  const tweets = database.tweets
-    .filter((tweet) => tweet.authorId === profile.id)
-    .sort((left, right) => {
-      return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
-    })
-    .map((tweet) => toTweetView(tweet, profile, currentUser?.id));
+  const tweets = toTweetViews(
+    database.tweets.filter((tweet) => tweet.authorId === profile.id),
+    usersById,
+    currentUser?.id,
+  );
 
   return { profile, tweets };
 }
 
-export async function getExploreData(params: { q?: string; tag?: string; currentUser?: SessionUser | null }) {
+function matchesExploreFilters(
+  tweet: TweetRecord,
+  author: UserRecord,
+  normalizedQuery: string,
+  normalizedTag: string,
+) {
+  const matchesQuery =
+    !normalizedQuery ||
+    tweet.content.toLowerCase().includes(normalizedQuery) ||
+    author.name.toLowerCase().includes(normalizedQuery) ||
+    author.username.toLowerCase().includes(normalizedQuery);
+  const matchesTag =
+    !normalizedTag || tweet.hashtags.includes(normalizedTag.replace(/^#/, ''));
+
+  return matchesQuery && matchesTag;
+}
+
+export async function getExploreData(params: {
+  q?: string;
+  tag?: string;
+  currentUser?: SessionUser | null;
+}) {
   const database = await readDemoDatabase();
-  const usersById = new Map(database.users.map((user) => [user.id, user]));
+  const usersById = getUsersById(database.users);
   const normalizedQuery = params.q?.trim().toLowerCase() ?? '';
   const normalizedTag = params.tag?.trim().toLowerCase() ?? '';
 
-  const tweets = database.tweets
-    .filter((tweet) => {
-      const author = usersById.get(tweet.authorId);
-      if (!author) {
-        return false;
-      }
+  const tweets = toTweetViews(
+    filterTweetsWithAuthors(database.tweets, usersById, (tweet, author) =>
+      matchesExploreFilters(tweet, author, normalizedQuery, normalizedTag),
+    ),
+    usersById,
+    params.currentUser?.id,
+  );
 
-      const matchesQuery =
-        !normalizedQuery ||
-        tweet.content.toLowerCase().includes(normalizedQuery) ||
-        author.name.toLowerCase().includes(normalizedQuery) ||
-        author.username.toLowerCase().includes(normalizedQuery);
-      const matchesTag =
-        !normalizedTag || tweet.hashtags.includes(normalizedTag.replace(/^#/, ''));
-
-      return matchesQuery && matchesTag;
-    })
-    .sort((left, right) => {
-      return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
-    })
-    .map((tweet) => {
-      const author = usersById.get(tweet.authorId);
-
-      if (!author) {
-        throw new Error(`Unknown author for tweet ${tweet.id}`);
-      }
-
-      return toTweetView(tweet, author, params.currentUser?.id);
-    });
-
-  const trends = [...database.tweets.flatMap((tweet) => tweet.hashtags)]
-    .reduce<Map<string, number>>((accumulator, hashtag) => {
-      accumulator.set(hashtag, (accumulator.get(hashtag) ?? 0) + 1);
-      return accumulator;
-    }, new Map())
-    .entries();
-
-  const sortedTrends = [...trends]
-    .sort((left, right) => right[1] - left[1])
-    .slice(0, 5);
-
-  return { tweets, trends: sortedTrends };
+  return { tweets, trends: getTopTrends(database.tweets) };
 }
 
 export async function getDashboardData(currentUser: SessionUser) {

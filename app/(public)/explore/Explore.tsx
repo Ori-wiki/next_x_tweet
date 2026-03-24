@@ -1,5 +1,8 @@
 import Link from 'next/link';
-import { Tweet } from '../(home)/Tweet';
+import { EmptyState } from '@/app/components/EmptyState';
+import { PageHero } from '@/app/components/PageHero';
+import { SurfaceCard } from '@/app/components/SurfaceCard';
+import { TweetList } from '@/app/components/TweetList';
 import { getExploreData } from '@/app/shared/lib/tweets';
 import type { SessionUser } from '@/app/shared/types/user.interface';
 
@@ -15,13 +18,12 @@ export const Explore = async ({ q, tag, currentUser }: ExploreProps) => {
   return (
     <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
       <section className='space-y-5'>
-        <div className='rounded-3xl border border-white/10 bg-white/[0.03] p-5'>
-          <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
-            Discover
-          </p>
-          <h1 className='mt-2 text-2xl font-bold text-white sm:text-3xl'>
-            Explore topics, hashtags and authors
-          </h1>
+        <PageHero
+          eyebrow='Discover'
+          title='Explore topics, hashtags and authors'
+          description='Search by tweet content, author name or hashtag and jump into the current trends.'
+          className='p-5'
+        >
           <form className='mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]'>
             <input
               name='q'
@@ -49,28 +51,21 @@ export const Explore = async ({ q, tag, currentUser }: ExploreProps) => {
               {tag ? `, tag #${tag.replace(/^#/, '')}` : ''}
             </p>
           )}
-        </div>
+        </PageHero>
 
         {tweets.length > 0 ? (
-          <div className='space-y-5'>
-            {tweets.map((tweet) => (
-              <Tweet
-                key={tweet.id}
-                tweet={tweet}
-                canInteract={Boolean(currentUser)}
-              />
-            ))}
-          </div>
+          <TweetList
+            tweets={tweets}
+            canInteract={Boolean(currentUser)}
+            emptyMessage=''
+          />
         ) : (
-          <div className='rounded-3xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-white/70'>
-            Ничего не найдено. Попробуй другой текст, убери фильтр или перейди по
-            одному из трендов справа.
-          </div>
+          <EmptyState message='No tweets matched your filters. Try a different query or jump into one of the trends.' />
         )}
       </section>
 
       <aside className='space-y-4'>
-        <div className='rounded-3xl border border-white/10 bg-white/[0.03] p-5'>
+        <SurfaceCard className='p-5'>
           <h2 className='text-lg font-semibold text-white'>Trending now</h2>
           <div className='mt-4 space-y-3'>
             {trends.map(([hashtag, count]) => (
@@ -84,7 +79,7 @@ export const Explore = async ({ q, tag, currentUser }: ExploreProps) => {
               </Link>
             ))}
           </div>
-        </div>
+        </SurfaceCard>
       </aside>
     </div>
   );

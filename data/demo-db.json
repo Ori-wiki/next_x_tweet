@@ -30,6 +30,34 @@
   ],
   "tweets": [
     {
+      "id": "147dc6e0-bdfc-4ca4-b9ce-bafbc134540d",
+      "authorId": "user-max",
+      "content": "#zigo пост по зиго",
+      "createdAt": "2026-03-23T17:59:07.363Z",
+      "hashtags": [
+        "zigo"
+      ],
+      "likedBy": [
+        "user-max"
+      ],
+      "bookmarkedBy": [
+        "user-max"
+      ]
+    },
+    {
+      "id": "aabffbf6-199e-4b30-8b7d-bded06d133fd",
+      "authorId": "user-max",
+      "content": "jgfkldjgkdflgj  fjsnf. #reactjs",
+      "createdAt": "2026-03-23T17:58:37.494Z",
+      "hashtags": [
+        "reactjs"
+      ],
+      "likedBy": [],
+      "bookmarkedBy": [
+        "user-max"
+      ]
+    },
+    {
       "id": "tweet-1",
       "authorId": "user-jane",
       "content": "Launched a cleaner compose flow today. Small UX wins compound fast. #nextjs #ux",
@@ -85,8 +113,12 @@
         "typescript",
         "zod"
       ],
-      "likedBy": [],
-      "bookmarkedBy": []
+      "likedBy": [
+        "user-max"
+      ],
+      "bookmarkedBy": [
+        "user-max"
+      ]
     }
   ]
 }

@@ -1,10 +1,14 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import { PAGES } from '@/app/config/pages.config';
-import { formatRelativeDate } from '@/app/shared/lib/utils';
-import { toggleBookmarkAction, toggleLikeAction } from '@/app/server-actions/post-tweet';
-import type { TweetView } from '@/app/shared/types/tweet.interface';
+import Link from 'next/link';
 import { SubmitButton } from '@/app/components/SubmitButton';
+import { SurfaceCard } from '@/app/components/SurfaceCard';
+import { PAGES } from '@/app/config/pages.config';
+import {
+  toggleBookmarkAction,
+  toggleLikeAction,
+} from '@/app/server-actions/post-tweet';
+import { formatRelativeDate } from '@/app/shared/lib/utils';
+import type { TweetView } from '@/app/shared/types/tweet.interface';
 
 interface TweetProps {
   tweet: TweetView;
@@ -13,7 +17,7 @@ interface TweetProps {
 
 export const Tweet = ({ tweet, canInteract }: TweetProps) => {
   return (
-    <article className='rounded-3xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.18)]'>
+    <SurfaceCard className='p-5 shadow-[0_24px_80px_rgba(0,0,0,0.18)]'>
       <div className='mb-3 flex items-start justify-between gap-4'>
         <div className='flex items-center gap-3'>
           <div className='flex h-11 w-11 items-center justify-center rounded-full bg-white text-sm font-semibold text-black'>
@@ -58,7 +62,7 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
         <form action={toggleLikeAction}>
           <input type='hidden' name='tweetId' value={tweet.id} />
           <SubmitButton
-            idleLabel={`${tweet.isLiked ? 'Убрать лайк' : 'Лайк'} · ${tweet.likes}`}
+            idleLabel={`${tweet.isLiked ? 'Unlike' : 'Like'} · ${tweet.likes}`}
             pendingLabel='...'
             className={`${
               tweet.isLiked
@@ -70,9 +74,7 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
         <form action={toggleBookmarkAction}>
           <input type='hidden' name='tweetId' value={tweet.id} />
           <SubmitButton
-            idleLabel={`${
-              tweet.isBookmarked ? 'В закладках' : 'Закладка'
-            } · ${tweet.bookmarks}`}
+            idleLabel={`${tweet.isBookmarked ? 'Bookmarked' : 'Bookmark'} · ${tweet.bookmarks}`}
             pendingLabel='...'
             className={`${
               tweet.isBookmarked
@@ -83,10 +85,10 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
         </form>
         {!canInteract ? (
           <p className='text-sm text-white/45'>
-            Войди в демо-аккаунт, чтобы ставить лайки и сохранять твиты.
+            Sign in to like tweets and save bookmarks.
           </p>
         ) : null}
       </div>
-    </article>
+    </SurfaceCard>
   );
 };

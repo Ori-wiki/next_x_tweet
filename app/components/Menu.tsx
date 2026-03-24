@@ -1,9 +1,9 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { isRouteActive } from '@/app/shared/lib/routing';
 import { MenuItem } from './MenuItem';
 import { MENU_ITEMS } from './menu.data';
-import { match } from 'path-to-regexp';
 
 export const Menu = () => {
   const pathname = usePathname();
@@ -13,8 +13,8 @@ export const Menu = () => {
       {MENU_ITEMS.map((item) => (
         <MenuItem
           key={item.href}
-          menuItem={item}
-          IsActive={!!match(item.href)(pathname)}
+          item={item}
+          isActive={isRouteActive(pathname, item.href)}
         />
       ))}
     </nav>

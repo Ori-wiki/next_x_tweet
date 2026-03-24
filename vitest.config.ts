@@ -11,6 +11,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
+    pool: 'threads',
+    fileParallelism: false,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
