@@ -5,6 +5,7 @@ import { getUserProfile } from '@/app/shared/lib/tweets';
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
+  searchParams: Promise<{ tab?: 'posts' | 'likes' | 'media' }>;
 }
 
 export async function generateMetadata({
@@ -19,9 +20,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProfilePage({ params }: ProfilePageProps) {
+export default async function ProfilePage({
+  params,
+  searchParams,
+}: ProfilePageProps) {
   const { username } = await params;
+  const { tab } = await searchParams;
   const currentUser = await getSessionUser();
 
-  return <Profile username={username} currentUser={currentUser} />;
+  return <Profile username={username} currentUser={currentUser} tab={tab} />;
 }

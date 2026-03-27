@@ -14,7 +14,7 @@ export default async function HomePage() {
       <PageHero
         eyebrow='Home timeline'
         title='A small X clone with live actions and demo accounts'
-        description='The feed is backed by local JSON storage, supports posting, likes, bookmarks, profile pages and protected routes.'
+        description='The feed is backed by local JSON storage and now supports media, replies, reposts, profile tabs, protected routes and direct thread links.'
         className='mb-5'
       />
 

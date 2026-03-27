@@ -7,7 +7,21 @@
       "bio": "Frontend engineer. Building calm interfaces and shipping every week.",
       "avatar": "JD",
       "followers": 1240,
-      "following": 312
+      "following": 312,
+      "followingIds": [
+        "user-max",
+        "user-olga"
+      ],
+      "topics": [
+        "nextjs",
+        "ux",
+        "frontend"
+      ],
+      "settings": {
+        "theme": "midnight",
+        "density": "comfortable",
+        "language": "en"
+      }
     },
     {
       "id": "user-max",
@@ -16,7 +30,20 @@
       "bio": "App Router enthusiast. I compare SSR, SSG and ISR for fun.",
       "avatar": "MR",
       "followers": 842,
-      "following": 188
+      "following": 188,
+      "followingIds": [
+        "user-jane"
+      ],
+      "topics": [
+        "approuter",
+        "webperf",
+        "react"
+      ],
+      "settings": {
+        "theme": "midnight",
+        "density": "compact",
+        "language": "en"
+      }
     },
     {
       "id": "user-olga",
@@ -25,41 +52,63 @@
       "bio": "Product designer focused on clear writing, states and polish.",
       "avatar": "OU",
       "followers": 1634,
-      "following": 251
+      "following": 251,
+      "followingIds": [
+        "user-jane"
+      ],
+      "topics": [
+        "design",
+        "product",
+        "content"
+      ],
+      "settings": {
+        "theme": "dawn",
+        "density": "comfortable",
+        "language": "en"
+      }
     }
   ],
   "tweets": [
     {
-      "id": "147dc6e0-bdfc-4ca4-b9ce-bafbc134540d",
-      "authorId": "user-max",
-      "content": "#zigo пост по зиго",
-      "createdAt": "2026-03-23T17:59:07.363Z",
-      "hashtags": [
-        "zigo"
-      ],
-      "likedBy": [
-        "user-max",
-        "user-jane"
-      ],
-      "bookmarkedBy": [
-        "user-max",
-        "user-jane"
-      ]
+      "id": "8adfe3c3-d7fb-4bc5-aa77-8cdc1da36d0d",
+      "authorId": "user-jane",
+      "content": "Very coll!))(",
+      "createdAt": "2026-03-27T23:00:46.736Z",
+      "hashtags": [],
+      "likedBy": [],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 214,
+      "replyToId": "tweet-2",
+      "media": null
     },
     {
-      "id": "aabffbf6-199e-4b30-8b7d-bded06d133fd",
-      "authorId": "user-max",
-      "content": "jgfkldjgkdflgj  fjsnf. #reactjs",
-      "createdAt": "2026-03-23T17:58:37.494Z",
+      "id": "tweet-1",
+      "authorId": "user-jane",
+      "content": "Launched a cleaner compose flow today. Small UX wins compound fast. #nextjs #ux",
+      "createdAt": "2026-03-21T09:15:00.000Z",
       "hashtags": [
-        "reactjs"
+        "nextjs",
+        "ux"
       ],
       "likedBy": [
-        "user-jane"
+        "user-max",
+        "user-olga"
       ],
       "bookmarkedBy": [
         "user-max"
-      ]
+      ],
+      "repostedBy": [
+        "user-max"
+      ],
+      "views": 4100,
+      "replyToId": null,
+      "media": {
+        "url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+        "type": "image",
+        "title": "Developer desk",
+        "description": "Launch day notes and a small UI refactor."
+      }
     },
     {
       "id": "tweet-2",
@@ -74,9 +123,21 @@
         "user-jane"
       ],
       "bookmarkedBy": [
-        "user-olga",
+        "user-jane",
+        "user-olga"
+      ],
+      "repostedBy": [
         "user-jane"
-      ]
+      ],
+      "views": 5300,
+      "replyToId": null,
+      "media": {
+        "url": "https://nextjs.org/docs/app/building-your-application/rendering",
+        "type": "link",
+        "title": "Next.js Rendering Strategies",
+        "description": "Compare SSR, SSG and ISR from the App Router docs.",
+        "attachmentLabel": "nextjs.org"
+      }
     },
     {
       "id": "tweet-3",
@@ -88,10 +149,70 @@
         "product"
       ],
       "likedBy": [
-        "user-max",
+        "user-jane",
+        "user-max"
+      ],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 2900,
+      "replyToId": null
+    },
+    {
+      "id": "tweet-4",
+      "authorId": "user-jane",
+      "content": "Added server-side validation with Zod and the whole form instantly felt more trustworthy. #typescript #zod",
+      "createdAt": "2026-03-22T18:10:00.000Z",
+      "hashtags": [
+        "typescript",
+        "zod"
+      ],
+      "likedBy": [
+        "user-olga"
+      ],
+      "bookmarkedBy": [
+        "user-max"
+      ],
+      "repostedBy": [
+        "user-olga"
+      ],
+      "views": 2500,
+      "replyToId": null
+    },
+    {
+      "id": "tweet-5",
+      "authorId": "user-olga",
+      "content": "Replying to Jane because the new composer feels calmer already. The character counter placement is much better. #ux #writing",
+      "createdAt": "2026-03-23T10:05:00.000Z",
+      "hashtags": [
+        "ux",
+        "writing"
+      ],
+      "likedBy": [
         "user-jane"
       ],
-      "bookmarkedBy": []
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 980,
+      "replyToId": "tweet-1"
+    },
+    {
+      "id": "tweet-6",
+      "authorId": "user-max",
+      "content": "A tiny onboarding hint can explain the whole demo in one glance. Worth it. #product",
+      "createdAt": "2026-03-23T16:50:00.000Z",
+      "hashtags": [
+        "product"
+      ],
+      "likedBy": [
+        "user-jane",
+        "user-olga"
+      ],
+      "bookmarkedBy": [
+        "user-jane"
+      ],
+      "repostedBy": [],
+      "views": 1750,
+      "replyToId": null
     }
   ]
 }

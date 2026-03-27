@@ -3,6 +3,7 @@ import { PAGES } from '@/app/config/pages.config';
 import { loginAction, logoutAction } from '@/app/server-actions/post-tweet';
 import { getSessionUser } from '@/app/shared/lib/auth';
 import { readDemoDatabase } from '@/app/shared/lib/demo-db';
+import { DemoRolePicker } from './DemoRolePicker';
 import { SurfaceCard } from './SurfaceCard';
 
 export const AuthControls = async () => {
@@ -20,7 +21,7 @@ export const AuthControls = async () => {
         <form action={logoutAction}>
           <button
             type='submit'
-            className='rounded-full border border-white/10 bg-white/10 px-4 py-2 text-white transition hover:bg-white/15'
+            className='rounded-full border border-white/10 bg-white/10 px-4 py-2 text-white transition hover:bg-white/15 hover:cursor-pointer'
           >
             Sign out
           </button>
@@ -33,12 +34,16 @@ export const AuthControls = async () => {
 
   return (
     <div className='flex flex-wrap items-center justify-end gap-2'>
+      <span className='rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-2 text-xs font-medium uppercase tracking-[0.16em] text-amber-100'>
+        Demo mode
+      </span>
+      <DemoRolePicker users={database.users} />
       {database.users.map((user) => (
         <form key={user.id} action={loginAction}>
           <input type='hidden' name='userId' value={user.id} />
           <button
             type='submit'
-            className='rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-sm text-sky-100 transition hover:border-sky-300/40 hover:bg-sky-400/15'
+            className='rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-sm text-sky-100 transition hover:border-sky-300/40 hover:bg-sky-400/15 hover:cursor-pointer'
           >
             Sign in as {user.name}
           </button>

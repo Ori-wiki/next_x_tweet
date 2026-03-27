@@ -3,6 +3,8 @@ export interface TweetActionState {
   message: string;
   errors?: {
     content?: string[];
+    mediaUrl?: string[];
+    attachmentLabel?: string[];
   };
 }
 

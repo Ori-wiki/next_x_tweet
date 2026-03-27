@@ -5,6 +5,7 @@
   --foreground: #f8fafc;
   --surface: rgba(255, 255, 255, 0.04);
   --surface-border: rgba(255, 255, 255, 0.1);
+  --accent: #38bdf8;
   --font-sans: var(--font-geist-sans);
 }
 
@@ -17,10 +18,31 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
   line-height: 1.6;
+  transition:
+    background 200ms ease,
+    color 200ms ease,
+    font-size 200ms ease;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+body[data-theme='dawn'] {
+  --background: #1b1020;
+  --foreground: #fff7ed;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-border: rgba(251, 191, 36, 0.18);
+  --accent: #fb923c;
+  background:
+    radial-gradient(circle at top, rgba(251, 146, 60, 0.2), transparent 32%),
+    linear-gradient(180deg, #1f1026 0%, #130915 52%, #09050a 100%);
+  color: var(--foreground);
+}
+
+body[data-density='compact'] {
+  font-size: 16px;
+  line-height: 1.45;
 }
 
 a {
@@ -29,4 +51,34 @@ a {
 
 ::selection {
   background: rgba(14, 165, 233, 0.35);
+}
+
+body[data-theme='dawn'] ::selection {
+  background: rgba(251, 146, 60, 0.28);
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }

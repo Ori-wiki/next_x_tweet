@@ -1,17 +1,44 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import {
+  ALLOWED_DENSITIES,
+  ALLOWED_LANGUAGES,
+  ALLOWED_THEMES,
+} from '@/app/config/preferences.config';
 import { SESSION_COOKIE } from '@/app/shared/lib/auth';
 import { readDemoDatabase, updateDemoDatabase } from '@/app/shared/lib/demo-db';
 import { extractHashtags, tweetSchema } from '@/app/shared/lib/validation';
 import type { DemoDatabase } from '@/app/shared/types/demo-db.interface';
-import type { TweetRecord } from '@/app/shared/types/tweet.interface';
+import type {
+  TweetMedia,
+  TweetRecord,
+  TweetRelationKey,
+} from '@/app/shared/types/tweet.interface';
+import type {
+  SessionUser,
+  UserDensity,
+  UserLanguage,
+  UserTheme,
+} from '@/app/shared/types/user.interface';
 import type { TweetActionState } from './post-tweet.state';
+
+const SESSION_COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: 'lax' as const,
+  secure: process.env.NODE_ENV === 'production',
+  path: '/',
+  maxAge: 60 * 60 * 24 * 7,
+};
 
 function getCurrentUser(database: DemoDatabase, currentUserId?: string) {
   return database.users.find((user) => user.id === currentUserId);
+}
+
+function getTweetById(database: DemoDatabase, tweetId: string) {
+  return database.tweets.find((tweet) => tweet.id === tweetId);
 }
 
 async function getSessionUserId() {
@@ -19,7 +46,57 @@ async function getSessionUserId() {
   return cookieStore.get(SESSION_COOKIE)?.value;
 }
 
-function buildTweet(authorId: string, content: string): TweetRecord {
+async function getDatabaseContext() {
+  const currentUserId = await getSessionUserId();
+
+  if (!currentUserId) {
+    return null;
+  }
+
+  const database = await readDemoDatabase();
+  const currentUser = getCurrentUser(database, currentUserId);
+
+  if (!currentUser) {
+    return null;
+  }
+
+  return {
+    currentUser,
+    currentUserId,
+    database,
+  };
+}
+
+function detectMediaType(url: string): TweetMedia['type'] {
+  return /\.(png|jpe?g|gif|webp|avif)(\?.*)?$/i.test(url) ? 'image' : 'link';
+}
+
+function buildMedia(mediaUrl: string, attachmentLabel: string): TweetMedia | null {
+  if (!mediaUrl) {
+    return null;
+  }
+
+  const type = detectMediaType(mediaUrl);
+
+  return {
+    url: mediaUrl,
+    type,
+    title: type === 'image' ? 'Attached image' : attachmentLabel || 'Shared link',
+    description:
+      type === 'image'
+        ? 'Attached from the composer.'
+        : 'Tap to open the shared resource in a new tab.',
+    attachmentLabel: attachmentLabel || undefined,
+  };
+}
+
+function buildTweet(
+  authorId: string,
+  content: string,
+  mediaUrl = '',
+  attachmentLabel = '',
+  replyToId: string | null = null,
+): TweetRecord {
   return {
     id: crypto.randomUUID(),
     authorId,
@@ -28,6 +105,10 @@ function buildTweet(authorId: string, content: string): TweetRecord {
     hashtags: extractHashtags(content),
     likedBy: [],
     bookmarkedBy: [],
+    repostedBy: [],
+    views: Math.floor(Math.random() * 800) + 120,
+    replyToId,
+    media: buildMedia(mediaUrl, attachmentLabel),
   };
 }
 
@@ -37,23 +118,89 @@ function toggleUserRelation(userId: string, relatedUserIds: string[]) {
     : [...relatedUserIds, userId];
 }
 
-function revalidateTweetSurfaces(username?: string) {
+function revalidateTweetSurfaces({
+  profileUsername,
+  tweetId,
+  replyToId,
+}: {
+  profileUsername?: string;
+  tweetId?: string;
+  replyToId?: string | null;
+}) {
   revalidatePath('/');
   revalidatePath('/explore');
   revalidatePath('/profile-fake');
 
-  if (username) {
-    revalidatePath(`/u/${username}`);
+  if (profileUsername) {
+    revalidatePath(`/u/${profileUsername}`);
   }
+
+  if (tweetId) {
+    revalidatePath(`/tweet/${tweetId}`);
+  }
+
+  if (replyToId) {
+    revalidatePath(`/tweet/${replyToId}`);
+  }
+}
+
+function updateTweetRelation(
+  tweets: TweetRecord[],
+  tweetId: string,
+  currentUserId: string,
+  relationKey: TweetRelationKey,
+) {
+  return tweets.map((tweet) => {
+    if (tweet.id !== tweetId) {
+      return tweet;
+    }
+
+    return {
+      ...tweet,
+      [relationKey]: toggleUserRelation(currentUserId, tweet[relationKey]),
+    };
+  });
+}
+
+function normalizeSettings(formData: FormData) {
+  const theme = String(formData.get('theme') ?? '') as UserTheme;
+  const density = String(formData.get('density') ?? '') as UserDensity;
+  const language = String(formData.get('language') ?? '') as UserLanguage;
+
+  if (
+    !ALLOWED_THEMES.has(theme) ||
+    !ALLOWED_DENSITIES.has(density) ||
+    !ALLOWED_LANGUAGES.has(language)
+  ) {
+    return null;
+  }
+
+  return { theme, density, language };
+}
+
+async function withCurrentUser(
+  callback: (context: {
+    currentUser: SessionUser;
+    currentUserId: string;
+    database: DemoDatabase;
+  }) => Promise<void>,
+) {
+  const context = await getDatabaseContext();
+
+  if (!context) {
+    return;
+  }
+
+  await callback(context);
 }
 
 export async function createTweetAction(
   _previousState: TweetActionState,
   formData: FormData,
 ): Promise<TweetActionState> {
-  const currentUserId = await getSessionUserId();
+  const context = await getDatabaseContext();
 
-  if (!currentUserId) {
+  if (!context) {
     return {
       status: 'error',
       message: 'Sign in with a demo account before posting.',
@@ -62,6 +209,8 @@ export async function createTweetAction(
 
   const parsed = tweetSchema.safeParse({
     content: formData.get('content'),
+    mediaUrl: formData.get('mediaUrl'),
+    attachmentLabel: formData.get('attachmentLabel'),
   });
 
   if (!parsed.success) {
@@ -72,22 +221,33 @@ export async function createTweetAction(
     };
   }
 
-  const database = await readDemoDatabase();
-  const currentUser = getCurrentUser(database, currentUserId);
+  const replyToId = String(formData.get('replyToId') ?? '').trim() || null;
 
-  if (!currentUser) {
+  if (replyToId && !getTweetById(context.database, replyToId)) {
     return {
       status: 'error',
-      message: 'Your session expired. Sign in again.',
+      message: 'The tweet you wanted to reply to no longer exists.',
     };
   }
 
   await updateDemoDatabase((draft) => ({
     ...draft,
-    tweets: [buildTweet(currentUser.id, parsed.data.content), ...draft.tweets],
+    tweets: [
+      buildTweet(
+        context.currentUser.id,
+        parsed.data.content,
+        parsed.data.mediaUrl,
+        parsed.data.attachmentLabel,
+        replyToId,
+      ),
+      ...draft.tweets,
+    ],
   }));
 
-  revalidateTweetSurfaces(currentUser.username);
+  revalidateTweetSurfaces({
+    profileUsername: context.currentUser.username,
+    replyToId,
+  });
 
   return {
     status: 'success',
@@ -97,38 +257,27 @@ export async function createTweetAction(
 
 async function toggleTweetRelation(
   formData: FormData,
-  relationKey: 'likedBy' | 'bookmarkedBy',
+  relationKey: TweetRelationKey,
 ) {
-  const currentUserId = await getSessionUserId();
-  const tweetId = String(formData.get('tweetId') ?? '');
+  await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
+    const tweetId = String(formData.get('tweetId') ?? '');
+    const targetTweet = getTweetById(database, tweetId);
 
-  if (!currentUserId || !tweetId) {
-    return;
-  }
+    if (!targetTweet) {
+      return;
+    }
 
-  const database = await readDemoDatabase();
-  const currentUser = getCurrentUser(database, currentUserId);
-  const targetTweet = database.tweets.find((tweet) => tweet.id === tweetId);
+    await updateDemoDatabase((draft) => ({
+      ...draft,
+      tweets: updateTweetRelation(draft.tweets, tweetId, currentUserId, relationKey),
+    }));
 
-  if (!currentUser || !targetTweet) {
-    return;
-  }
-
-  await updateDemoDatabase((draft) => ({
-    ...draft,
-    tweets: draft.tweets.map((tweet) => {
-      if (tweet.id !== tweetId) {
-        return tweet;
-      }
-
-      return {
-        ...tweet,
-        [relationKey]: toggleUserRelation(currentUserId, tweet[relationKey]),
-      };
-    }),
-  }));
-
-  revalidateTweetSurfaces(currentUser.username);
+    revalidateTweetSurfaces({
+      profileUsername: currentUser.username,
+      tweetId: targetTweet.id,
+      replyToId: targetTweet.replyToId,
+    });
+  });
 }
 
 export async function toggleLikeAction(formData: FormData) {
@@ -139,28 +288,30 @@ export async function toggleBookmarkAction(formData: FormData) {
   await toggleTweetRelation(formData, 'bookmarkedBy');
 }
 
+export async function toggleRepostAction(formData: FormData) {
+  await toggleTweetRelation(formData, 'repostedBy');
+}
+
 export async function deleteTweetAction(formData: FormData) {
-  const currentUserId = await getSessionUserId();
-  const tweetId = String(formData.get('tweetId') ?? '');
+  await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
+    const tweetId = String(formData.get('tweetId') ?? '');
+    const targetTweet = getTweetById(database, tweetId);
 
-  if (!currentUserId || !tweetId) {
-    return;
-  }
+    if (!targetTweet || targetTweet.authorId !== currentUserId) {
+      return;
+    }
 
-  const database = await readDemoDatabase();
-  const currentUser = getCurrentUser(database, currentUserId);
-  const targetTweet = database.tweets.find((tweet) => tweet.id === tweetId);
+    await updateDemoDatabase((draft) => ({
+      ...draft,
+      tweets: draft.tweets.filter((tweet) => tweet.id !== tweetId),
+    }));
 
-  if (!currentUser || !targetTweet || targetTweet.authorId !== currentUserId) {
-    return;
-  }
-
-  await updateDemoDatabase((draft) => ({
-    ...draft,
-    tweets: draft.tweets.filter((tweet) => tweet.id !== tweetId),
-  }));
-
-  revalidateTweetSurfaces(currentUser.username);
+    revalidateTweetSurfaces({
+      profileUsername: currentUser.username,
+      tweetId: targetTweet.id,
+      replyToId: targetTweet.replyToId,
+    });
+  });
 }
 
 export async function loginAction(formData: FormData) {
@@ -173,15 +324,82 @@ export async function loginAction(formData: FormData) {
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, user.id, {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  cookieStore.set(SESSION_COOKIE, user.id, SESSION_COOKIE_OPTIONS);
 
   redirect('/profile-fake');
+}
+
+export async function toggleFollowAction(formData: FormData) {
+  await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
+    const targetUserId = String(formData.get('targetUserId') ?? '');
+
+    if (!targetUserId || currentUserId === targetUserId) {
+      return;
+    }
+
+    const targetUser = database.users.find((user) => user.id === targetUserId);
+
+    if (!targetUser) {
+      return;
+    }
+
+    const isFollowing = currentUser.followingIds.includes(targetUserId);
+
+    await updateDemoDatabase((draft) => ({
+      ...draft,
+      users: draft.users.map((user) => {
+        if (user.id === currentUserId) {
+          return {
+            ...user,
+            followingIds: isFollowing
+              ? user.followingIds.filter((id) => id !== targetUserId)
+              : [...user.followingIds, targetUserId],
+            following: Math.max(0, user.following + (isFollowing ? -1 : 1)),
+          };
+        }
+
+        if (user.id === targetUserId) {
+          return {
+            ...user,
+            followers: Math.max(0, user.followers + (isFollowing ? -1 : 1)),
+          };
+        }
+
+        return user;
+      }),
+    }));
+
+    revalidateTweetSurfaces({
+      profileUsername: currentUser.username,
+    });
+    revalidatePath(`/u/${targetUser.username}`);
+  });
+}
+
+export async function updateSettingsAction(formData: FormData) {
+  await withCurrentUser(async ({ currentUser, currentUserId }) => {
+    const settings = normalizeSettings(formData);
+
+    if (!settings) {
+      return;
+    }
+
+    await updateDemoDatabase((draft) => ({
+      ...draft,
+      users: draft.users.map((user) =>
+        user.id === currentUserId
+          ? {
+              ...user,
+              settings,
+            }
+          : user,
+      ),
+    }));
+
+    revalidateTweetSurfaces({
+      profileUsername: currentUser.username,
+    });
+  });
 }
 
 export async function logoutAction() {
