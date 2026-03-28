@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 
 interface ExploreSearchFormProps {
   q?: string;
@@ -17,6 +17,55 @@ interface ExploreSearchFormProps {
 }
 
 const searchHistoryKey = 'next-x-tweet-search-history';
+const searchHistoryEvent = 'next-x-tweet-search-history-change';
+const EMPTY_HISTORY: string[] = [];
+
+let cachedRawHistory: string | null = null;
+let cachedParsedHistory: string[] = EMPTY_HISTORY;
+
+function readSearchHistory() {
+  if (typeof window === 'undefined') {
+    return EMPTY_HISTORY;
+  }
+
+  const raw = window.localStorage.getItem(searchHistoryKey);
+
+  if (!raw) {
+    cachedRawHistory = null;
+    cachedParsedHistory = EMPTY_HISTORY;
+    return cachedParsedHistory;
+  }
+
+  if (raw === cachedRawHistory) {
+    return cachedParsedHistory;
+  }
+
+  try {
+    cachedRawHistory = raw;
+    cachedParsedHistory = JSON.parse(raw) as string[];
+    return cachedParsedHistory;
+  } catch {
+    cachedRawHistory = raw;
+    cachedParsedHistory = EMPTY_HISTORY;
+    return cachedParsedHistory;
+  }
+}
+
+function subscribeToSearchHistory(callback: () => void) {
+  if (typeof window === 'undefined') {
+    return () => undefined;
+  }
+
+  const handleChange = () => callback();
+
+  window.addEventListener('storage', handleChange);
+  window.addEventListener(searchHistoryEvent, handleChange);
+
+  return () => {
+    window.removeEventListener('storage', handleChange);
+    window.removeEventListener(searchHistoryEvent, handleChange);
+  };
+}
 
 export const ExploreSearchForm = ({
   q,
@@ -26,23 +75,11 @@ export const ExploreSearchForm = ({
   texts,
 }: ExploreSearchFormProps) => {
   const [query, setQuery] = useState(q ?? '');
-  const [history, setHistory] = useState<string[]>(() => {
-    if (typeof window === 'undefined') {
-      return [];
-    }
-
-    const raw = window.localStorage.getItem(searchHistoryKey);
-
-    if (!raw) {
-      return [];
-    }
-
-    try {
-      return JSON.parse(raw) as string[];
-    } catch {
-      return [];
-    }
-  });
+  const history = useSyncExternalStore(
+    subscribeToSearchHistory,
+    readSearchHistory,
+    () => EMPTY_HISTORY,
+  );
 
   const mergedSuggestions = useMemo(() => {
     return [...new Set([query, ...history, ...suggestions])].filter(Boolean).slice(0, 8);
@@ -61,8 +98,8 @@ export const ExploreSearchForm = ({
       0,
       5,
     );
-    setHistory(nextHistory);
     window.localStorage.setItem(searchHistoryKey, JSON.stringify(nextHistory));
+    window.dispatchEvent(new Event(searchHistoryEvent));
   }
 
   return (

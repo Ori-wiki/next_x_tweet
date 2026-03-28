@@ -220,6 +220,101 @@
       "repostedBy": [],
       "views": 1750,
       "replyToId": null
+    },
+    {
+      "id": "tweet-7",
+      "authorId": "user-jane",
+      "content": "Spent the morning tightening loading states. The app feels much faster when transitions explain themselves. #frontend #ux",
+      "createdAt": "2026-03-24T09:20:00.000Z",
+      "hashtags": [
+        "frontend",
+        "ux"
+      ],
+      "likedBy": [
+        "user-max",
+        "user-olga"
+      ],
+      "bookmarkedBy": [
+        "user-olga"
+      ],
+      "repostedBy": [],
+      "views": 1980,
+      "replyToId": null
+    },
+    {
+      "id": "tweet-8",
+      "authorId": "user-max",
+      "content": "If a page can tolerate slightly older data, ISR is still a sweet spot. Fresh enough, cheap enough, simple enough. #appRouter #webperf",
+      "createdAt": "2026-03-24T13:45:00.000Z",
+      "hashtags": [
+        "appRouter",
+        "webperf"
+      ],
+      "likedBy": [
+        "user-jane"
+      ],
+      "bookmarkedBy": [
+        "user-jane"
+      ],
+      "repostedBy": [
+        "user-olga"
+      ],
+      "views": 3220,
+      "replyToId": null,
+      "media": {
+        "url": "https://vercel.com/docs/incremental-static-regeneration",
+        "type": "link",
+        "title": "Incremental Static Regeneration",
+        "description": "A practical guide to revalidation and background refresh.",
+        "attachmentLabel": "vercel.com"
+      }
+    },
+    {
+      "id": "tweet-9",
+      "authorId": "user-olga",
+      "content": "Good empty states answer three things fast: where am I, what can I do next, and why should I care. #design #content",
+      "createdAt": "2026-03-25T08:10:00.000Z",
+      "hashtags": [
+        "design",
+        "content"
+      ],
+      "likedBy": [
+        "user-jane",
+        "user-max"
+      ],
+      "bookmarkedBy": [
+        "user-jane"
+      ],
+      "repostedBy": [],
+      "views": 2875,
+      "replyToId": null
+    },
+    {
+      "id": "tweet-10",
+      "authorId": "user-jane",
+      "content": "Tried a brighter preview image treatment for tweet attachments today. It makes shared resources feel much more intentional. #nextjs #design",
+      "createdAt": "2026-03-25T17:35:00.000Z",
+      "hashtags": [
+        "nextjs",
+        "design"
+      ],
+      "likedBy": [
+        "user-olga"
+      ],
+      "bookmarkedBy": [
+        "user-max"
+      ],
+      "repostedBy": [
+        "user-max"
+      ],
+      "views": 2640,
+      "replyToId": null,
+      "media": {
+        "url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+        "type": "image",
+        "title": "Workspace moodboard",
+        "description": "Exploring stronger media previews for shared links and image posts."
+      }
     }
   ]
 }

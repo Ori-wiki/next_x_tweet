@@ -60,7 +60,7 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
           )}
         </PageHero>
 
-        <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
+        <div className='grid gap-4 md:grid-cols-2'>
           <SurfaceCard className='p-5'>
             <h2 className='text-lg font-semibold text-white'>{explore.authors}</h2>
             <div className='mt-4 space-y-3'>
@@ -95,13 +95,6 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
                 </Link>
               ))}
             </div>
-          </SurfaceCard>
-
-          <SurfaceCard className='p-5 md:col-span-2 xl:col-span-1'>
-            <h2 className='text-lg font-semibold text-white'>{explore.tweets}</h2>
-            <p className='mt-3 text-sm text-white/55'>
-              {tweets.length > 0 ? explore.openBestMatches : explore.tryAnotherQuery}
-            </p>
           </SurfaceCard>
         </div>
 
