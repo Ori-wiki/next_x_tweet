@@ -84,11 +84,13 @@ export const ProfileFake = async () => {
 
       <section className='grid gap-4 md:grid-cols-3'>
         {stats.map((stat) => (
-          <div key={stat.label}>
-            <StatCard label={stat.label} value={stat.value} accent={stat.accent} />
-            {'helper' in stat ? (
-              <p className='mt-2 px-2 text-sm text-sky-200'>{stat.helper}</p>
-            ) : null}
+          <div key={stat.label} className='h-full'>
+            <StatCard
+              label={stat.label}
+              value={stat.value}
+              accent={stat.accent}
+              helper={'helper' in stat ? stat.helper : undefined}
+            />
           </div>
         ))}
       </section>

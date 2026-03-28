@@ -13,8 +13,6 @@ export const seedDatabase: DemoDatabase = {
       followingIds: ['user-max', 'user-olga'],
       topics: ['nextjs', 'ux', 'frontend'],
       settings: {
-        theme: 'midnight',
-        density: 'comfortable',
         language: 'en',
       },
     },
@@ -29,8 +27,6 @@ export const seedDatabase: DemoDatabase = {
       followingIds: ['user-jane'],
       topics: ['approuter', 'webperf', 'react'],
       settings: {
-        theme: 'midnight',
-        density: 'compact',
         language: 'en',
       },
     },
@@ -45,8 +41,6 @@ export const seedDatabase: DemoDatabase = {
       followingIds: ['user-jane'],
       topics: ['design', 'product', 'content'],
       settings: {
-        theme: 'dawn',
-        density: 'comfortable',
         language: 'en',
       },
     },

@@ -29,12 +29,7 @@ export default async function RootLayout({
 
   return (
     <html lang={settings.language} suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        data-theme={settings.theme}
-        data-density={settings.density}
-        className={`${geistSans.className} antialiased`}
-      >
+      <body suppressHydrationWarning className={`${geistSans.className} antialiased`}>
         {children}
       </body>
     </html>

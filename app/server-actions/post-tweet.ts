@@ -3,11 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import {
-  ALLOWED_DENSITIES,
-  ALLOWED_LANGUAGES,
-  ALLOWED_THEMES,
-} from '@/app/config/preferences.config';
+import { ALLOWED_LANGUAGES } from '@/app/config/preferences.config';
 import { SESSION_COOKIE } from '@/app/shared/lib/auth';
 import { readDemoDatabase, updateDemoDatabase } from '@/app/shared/lib/demo-db';
 import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
@@ -20,9 +16,7 @@ import type {
 } from '@/app/shared/types/tweet.interface';
 import type {
   SessionUser,
-  UserDensity,
   UserLanguage,
-  UserTheme,
 } from '@/app/shared/types/user.interface';
 import type { TweetActionState } from './post-tweet.state';
 
@@ -164,19 +158,13 @@ function updateTweetRelation(
 }
 
 function normalizeSettings(formData: FormData) {
-  const theme = String(formData.get('theme') ?? '') as UserTheme;
-  const density = String(formData.get('density') ?? '') as UserDensity;
   const language = String(formData.get('language') ?? '') as UserLanguage;
 
-  if (
-    !ALLOWED_THEMES.has(theme) ||
-    !ALLOWED_DENSITIES.has(density) ||
-    !ALLOWED_LANGUAGES.has(language)
-  ) {
+  if (!ALLOWED_LANGUAGES.has(language)) {
     return null;
   }
 
-  return { theme, density, language };
+  return { language };
 }
 
 async function withCurrentUser(

@@ -137,15 +137,8 @@ const en = {
     settings: {
       preferences: 'Preferences',
       userSettings: 'User settings',
-      description:
-        'Switch theme, density and interface language for the current demo account.',
-      theme: 'Theme',
-      density: 'Density',
+      description: 'Switch the interface language for the current demo account.',
       language: 'Language',
-      midnight: 'Midnight',
-      dawn: 'Dawn',
-      comfortable: 'Comfortable',
-      compact: 'Compact',
       english: 'English',
       russian: 'Russian',
     },
@@ -153,7 +146,7 @@ const en = {
       title: 'Pick a role and start exploring',
       description: 'Each demo account has its own follows, bookmarks and settings.',
       tour:
-        'Tour: publish a tweet on Home, explore authors and hashtags on Explore, then open Dashboard to adjust theme, density and language.',
+        'Tour: publish a tweet on Home, explore authors and hashtags on Explore, then open Dashboard to change the interface language.',
     },
     thread: {
       title: 'Conversation view',
@@ -343,13 +336,7 @@ const ru: Dictionary = {
       preferences: 'Настройки',
       userSettings: 'Параметры пользователя',
       description: 'Переключай тему, плотность интерфейса и язык для текущего демо-аккаунта.',
-      theme: 'Тема',
-      density: 'Плотность',
       language: 'Язык',
-      midnight: 'Ночная',
-      dawn: 'Тёплая',
-      comfortable: 'Комфортная',
-      compact: 'Компактная',
       english: 'Английский',
       russian: 'Русский',
     },
@@ -425,3 +412,4 @@ export function formatMessage(template: string, values: Record<string, string>) 
     template,
   );
 }
+
