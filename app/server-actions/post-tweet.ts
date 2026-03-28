@@ -28,11 +28,11 @@ const SESSION_COOKIE_OPTIONS = {
   maxAge: 60 * 60 * 24 * 7,
 };
 
-function getCurrentUser(database: DemoDatabase, currentUserId?: string) {
+function findUserById(database: DemoDatabase, currentUserId?: string) {
   return database.users.find((user) => user.id === currentUserId);
 }
 
-function getTweetById(database: DemoDatabase, tweetId: string) {
+function findTweetById(database: DemoDatabase, tweetId: string) {
   return database.tweets.find((tweet) => tweet.id === tweetId);
 }
 
@@ -49,7 +49,7 @@ async function getDatabaseContext() {
   }
 
   const database = await readDemoDatabase();
-  const currentUser = getCurrentUser(database, currentUserId);
+  const currentUser = findUserById(database, currentUserId);
 
   if (!currentUser) {
     return null;
@@ -183,6 +183,26 @@ async function withCurrentUser(
   await callback(context);
 }
 
+async function updateTweets(
+  updater: (tweets: TweetRecord[]) => TweetRecord[],
+) {
+  await updateDemoDatabase((draft) => ({
+    ...draft,
+    tweets: updater(draft.tweets),
+  }));
+}
+
+async function updateUsers(updater: DemoDatabase['users'] extends infer T
+  ? T extends Array<infer U>
+    ? (users: U[]) => U[]
+    : never
+  : never) {
+  await updateDemoDatabase((draft) => ({
+    ...draft,
+    users: updater(draft.users),
+  }));
+}
+
 export async function createTweetAction(
   _previousState: TweetActionState,
   formData: FormData,
@@ -214,26 +234,23 @@ export async function createTweetAction(
 
   const replyToId = String(formData.get('replyToId') ?? '').trim() || null;
 
-  if (replyToId && !getTweetById(context.database, replyToId)) {
+  if (replyToId && !findTweetById(context.database, replyToId)) {
     return {
       status: 'error',
       message: actions.replyMissing,
     };
   }
 
-  await updateDemoDatabase((draft) => ({
-    ...draft,
-    tweets: [
-      buildTweet(
-        context.currentUser.id,
-        parsed.data.content,
-        parsed.data.mediaUrl,
-        parsed.data.attachmentLabel,
-        replyToId,
-      ),
-      ...draft.tweets,
-    ],
-  }));
+  await updateTweets((tweets) => [
+    buildTweet(
+      context.currentUser.id,
+      parsed.data.content,
+      parsed.data.mediaUrl,
+      parsed.data.attachmentLabel,
+      replyToId,
+    ),
+    ...tweets,
+  ]);
 
   revalidateTweetSurfaces({
     profileUsername: context.currentUser.username,
@@ -252,16 +269,15 @@ async function toggleTweetRelation(
 ) {
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
     const tweetId = String(formData.get('tweetId') ?? '');
-    const targetTweet = getTweetById(database, tweetId);
+    const targetTweet = findTweetById(database, tweetId);
 
     if (!targetTweet) {
       return;
     }
 
-    await updateDemoDatabase((draft) => ({
-      ...draft,
-      tweets: updateTweetRelation(draft.tweets, tweetId, currentUserId, relationKey),
-    }));
+    await updateTweets((tweets) =>
+      updateTweetRelation(tweets, tweetId, currentUserId, relationKey),
+    );
 
     revalidateTweetSurfaces({
       profileUsername: currentUser.username,
@@ -286,16 +302,13 @@ export async function toggleRepostAction(formData: FormData) {
 export async function deleteTweetAction(formData: FormData) {
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
     const tweetId = String(formData.get('tweetId') ?? '');
-    const targetTweet = getTweetById(database, tweetId);
+    const targetTweet = findTweetById(database, tweetId);
 
     if (!targetTweet || targetTweet.authorId !== currentUserId) {
       return;
     }
 
-    await updateDemoDatabase((draft) => ({
-      ...draft,
-      tweets: draft.tweets.filter((tweet) => tweet.id !== tweetId),
-    }));
+    await updateTweets((tweets) => tweets.filter((tweet) => tweet.id !== tweetId));
 
     revalidateTweetSurfaces({
       profileUsername: currentUser.username,
@@ -308,7 +321,7 @@ export async function deleteTweetAction(formData: FormData) {
 export async function loginAction(formData: FormData) {
   const userId = String(formData.get('userId') ?? '');
   const database = await readDemoDatabase();
-  const user = database.users.find((candidate) => candidate.id === userId);
+  const user = findUserById(database, userId);
 
   if (!user) {
     redirect('/');
@@ -336,9 +349,8 @@ export async function toggleFollowAction(formData: FormData) {
 
     const isFollowing = currentUser.followingIds.includes(targetUserId);
 
-    await updateDemoDatabase((draft) => ({
-      ...draft,
-      users: draft.users.map((user) => {
+    await updateUsers((users) =>
+      users.map((user) => {
         if (user.id === currentUserId) {
           return {
             ...user,
@@ -358,7 +370,7 @@ export async function toggleFollowAction(formData: FormData) {
 
         return user;
       }),
-    }));
+    );
 
     revalidateTweetSurfaces({
       profileUsername: currentUser.username,
@@ -375,9 +387,8 @@ export async function updateSettingsAction(formData: FormData) {
       return;
     }
 
-    await updateDemoDatabase((draft) => ({
-      ...draft,
-      users: draft.users.map((user) =>
+    await updateUsers((users) =>
+      users.map((user) =>
         user.id === currentUserId
           ? {
               ...user,
@@ -385,7 +396,7 @@ export async function updateSettingsAction(formData: FormData) {
             }
           : user,
       ),
-    }));
+    );
 
     revalidateTweetSurfaces({
       profileUsername: currentUser.username,

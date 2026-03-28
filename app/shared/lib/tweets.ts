@@ -154,6 +154,14 @@ function getProfileTabs(
   };
 }
 
+function findUserByUsername(users: UserRecord[], username: string) {
+  return users.find((user) => user.username === username) ?? null;
+}
+
+function normalizeSearchValue(value?: string) {
+  return value?.trim().toLowerCase() ?? '';
+}
+
 function getRelatedUsers(profile: UserRecord, users: UserRecord[]) {
   return users
     .filter((candidate) => candidate.id !== profile.id)
@@ -258,7 +266,7 @@ export async function getUserProfile(
   currentUser?: SessionUser | null,
 ) {
   const { context } = await loadTweetsContext();
-  const profile = context.users.find((user) => user.username === username);
+  const profile = findUserByUsername(context.users, username);
 
   if (!profile) {
     notFound();
@@ -279,8 +287,8 @@ export async function getExploreData(params: {
   currentUser?: SessionUser | null;
 }) {
   const { context } = await loadTweetsContext();
-  const normalizedQuery = params.q?.trim().toLowerCase() ?? '';
-  const normalizedTag = params.tag?.trim().toLowerCase() ?? '';
+  const normalizedQuery = normalizeSearchValue(params.q);
+  const normalizedTag = normalizeSearchValue(params.tag);
   const filteredTweets = context.tweets.filter((tweet) => {
     const author = context.usersById.get(tweet.authorId);
 

@@ -2,18 +2,20 @@
 
 import { useMemo, useState, useSyncExternalStore } from 'react';
 
+type ExploreSearchFormTexts = {
+  searchPlaceholder: string;
+  tagPlaceholder: string;
+  latestFirst: string;
+  topTweets: string;
+  search: string;
+};
+
 interface ExploreSearchFormProps {
   q?: string;
   tag?: string;
   sort: 'latest' | 'top';
   suggestions: string[];
-  texts: {
-    searchPlaceholder: string;
-    tagPlaceholder: string;
-    latestFirst: string;
-    topTweets: string;
-    search: string;
-  };
+  texts: ExploreSearchFormTexts;
 }
 
 const searchHistoryKey = 'next-x-tweet-search-history';
@@ -67,6 +69,23 @@ function subscribeToSearchHistory(callback: () => void) {
   };
 }
 
+function createMergedSuggestions(
+  query: string,
+  history: string[],
+  suggestions: string[],
+) {
+  return [...new Set([query, ...history, ...suggestions])].filter(Boolean).slice(0, 8);
+}
+
+function buildNextHistory(query: string, history: string[]) {
+  return [query, ...history.filter((item) => item !== query)].slice(0, 5);
+}
+
+function persistSearchHistory(nextHistory: string[]) {
+  window.localStorage.setItem(searchHistoryKey, JSON.stringify(nextHistory));
+  window.dispatchEvent(new Event(searchHistoryEvent));
+}
+
 export const ExploreSearchForm = ({
   q,
   tag,
@@ -82,7 +101,7 @@ export const ExploreSearchForm = ({
   );
 
   const mergedSuggestions = useMemo(() => {
-    return [...new Set([query, ...history, ...suggestions])].filter(Boolean).slice(0, 8);
+    return createMergedSuggestions(query, history, suggestions);
   }, [history, query, suggestions]);
   const fieldClassName =
     'h-12 w-full rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400';
@@ -94,12 +113,7 @@ export const ExploreSearchForm = ({
       return;
     }
 
-    const nextHistory = [normalized, ...history.filter((item) => item !== normalized)].slice(
-      0,
-      5,
-    );
-    window.localStorage.setItem(searchHistoryKey, JSON.stringify(nextHistory));
-    window.dispatchEvent(new Event(searchHistoryEvent));
+    persistSearchHistory(buildNextHistory(normalized, history));
   }
 
   return (
@@ -143,7 +157,6 @@ export const ExploreSearchForm = ({
           <option key={suggestion} value={suggestion} />
         ))}
       </datalist>
-
     </div>
   );
 };
