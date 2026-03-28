@@ -14,6 +14,10 @@ interface TweetFormProps {
   submitLabel?: string;
   replyToId?: string;
   compact?: boolean;
+  placeholder?: string;
+  mediaUrlPlaceholder?: string;
+  attachmentLabelPlaceholder?: string;
+  pendingLabel?: string;
   action?: (
     previousState: TweetActionState,
     formData: FormData,
@@ -27,6 +31,10 @@ export const TweetForm = ({
   submitLabel = 'Post tweet',
   replyToId,
   compact = false,
+  placeholder = 'What is happening? Add hashtags like #nextjs if you want.',
+  mediaUrlPlaceholder = 'Image or link URL',
+  attachmentLabelPlaceholder = 'Attachment label, for example figma.com',
+  pendingLabel = 'Posting...',
   action = createTweetAction,
 }: TweetFormProps) => {
   const [state, formAction] = useActionState(action, initialTweetActionState);
@@ -56,19 +64,19 @@ export const TweetForm = ({
           name='content'
           rows={4}
           maxLength={maxLength}
-          placeholder='What is happening? Add hashtags like #nextjs if you want.'
+          placeholder={placeholder}
           onChange={(event) => setContentLength(event.target.value.length)}
           className='w-full resize-none rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400 sm:text-base'
         />
         <div className='grid gap-3 sm:grid-cols-2'>
           <input
             name='mediaUrl'
-            placeholder='Image or link URL'
+            placeholder={mediaUrlPlaceholder}
             className='rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400'
           />
           <input
             name='attachmentLabel'
-            placeholder='Attachment label, for example figma.com'
+            placeholder={attachmentLabelPlaceholder}
             className='rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400'
           />
         </div>
@@ -101,7 +109,7 @@ export const TweetForm = ({
               </p>
             ))}
           </div>
-          <SubmitButton idleLabel={submitLabel} pendingLabel='Posting...' />
+          <SubmitButton idleLabel={submitLabel} pendingLabel={pendingLabel} />
         </div>
       </SurfaceCard>
     </form>

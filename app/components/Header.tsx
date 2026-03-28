@@ -1,9 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getSessionUser } from '@/app/shared/lib/auth';
+import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
 import { AuthControls } from './AuthControls';
 import { Menu } from './Menu';
 
-export const Header = () => {
+export const Header = async () => {
+  const currentUser = await getSessionUser();
+  const language = resolveLanguage(currentUser?.settings);
+  const { header } = getDictionary(language);
+
   return (
     <header className='sticky top-0 z-20 border-b border-white/10 bg-[#020617]/90 backdrop-blur'>
       <div className='mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-3 sm:px-6 sm:py-4'>
@@ -18,14 +24,14 @@ export const Header = () => {
             />
             <div>
               <p className='text-sm uppercase tracking-[0.25em] text-white/45'>
-                Demo App
+                {header.demoApp}
               </p>
               <p className='font-semibold text-white'>Next X Tweet</p>
             </div>
           </Link>
           <AuthControls />
         </div>
-        <Menu />
+        <Menu language={language} />
       </div>
     </header>
   );

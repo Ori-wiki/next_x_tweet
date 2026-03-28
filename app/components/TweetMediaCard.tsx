@@ -1,19 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getDictionary } from '@/app/shared/lib/i18n';
 import type { TweetMedia } from '@/app/shared/types/tweet.interface';
+import type { UserLanguage } from '@/app/shared/types/user.interface';
 
 interface TweetMediaCardProps {
   media: TweetMedia;
+  language?: UserLanguage;
 }
 
-export const TweetMediaCard = ({ media }: TweetMediaCardProps) => {
+export const TweetMediaCard = ({ media, language }: TweetMediaCardProps) => {
+  const { tweet } = getDictionary(language);
+
   if (media.type === 'image') {
     return (
       <div className='overflow-hidden rounded-3xl border border-white/10 bg-black/30'>
         <div className='relative aspect-[16/9] w-full'>
           <Image
             src={media.url}
-            alt={media.title ?? 'Tweet media'}
+            alt={media.title ?? tweet.tweetMedia}
             fill
             unoptimized
             className='object-cover'
@@ -39,7 +44,7 @@ export const TweetMediaCard = ({ media }: TweetMediaCardProps) => {
       className='block rounded-3xl border border-white/10 bg-black/25 p-4 transition hover:border-sky-300/35 hover:bg-sky-400/8'
     >
       <p className='text-xs uppercase tracking-[0.18em] text-white/40'>
-        {media.attachmentLabel ?? 'Link preview'}
+        {media.attachmentLabel ?? tweet.linkPreview}
       </p>
       <p className='mt-2 text-lg font-semibold text-white'>
         {media.title ?? media.url}

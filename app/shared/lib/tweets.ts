@@ -180,6 +180,7 @@ function matchesExploreFilters(
   normalizedQuery: string,
   normalizedTag: string,
 ) {
+  const tagQuery = normalizedTag.replace(/^#/, '');
   const matchesQuery =
     !normalizedQuery ||
     tweet.content.toLowerCase().includes(normalizedQuery) ||
@@ -187,7 +188,8 @@ function matchesExploreFilters(
     author.username.toLowerCase().includes(normalizedQuery) ||
     author.topics.some((topic) => topic.includes(normalizedQuery));
   const matchesTag =
-    !normalizedTag || tweet.hashtags.includes(normalizedTag.replace(/^#/, ''));
+    !normalizedTag ||
+    tweet.hashtags.some((hashtag) => hashtag.toLowerCase() === tagQuery);
 
   return matchesQuery && matchesTag;
 }

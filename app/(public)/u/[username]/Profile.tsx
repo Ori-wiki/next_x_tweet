@@ -4,6 +4,7 @@ import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { StatCard } from '@/app/components/StatCard';
 import { TweetList } from '@/app/components/TweetList';
 import { toggleFollowAction } from '@/app/server-actions/post-tweet';
+import { formatMessage, getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
 import { getUserProfile } from '@/app/shared/lib/tweets';
 import type { SessionUser } from '@/app/shared/types/user.interface';
 
@@ -14,16 +15,23 @@ interface ProfileProps {
 }
 
 export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
+  const language = resolveLanguage(currentUser?.settings);
+  const { profile: profileText } = getDictionary(language);
   const { profile, tabs: profileTabs, relatedUsers, isFollowing } =
     await getUserProfile(username, currentUser);
   const activeTab: ProfileTabKey =
     tab && PROFILE_TABS.some((item) => item.key === tab) ? tab : 'posts';
   const activeTweets = profileTabs[activeTab];
   const stats = [
-    { label: 'posts', value: profileTabs.posts.length },
-    { label: 'followers', value: profile.followers },
-    { label: 'following', value: profile.following },
+    { label: profileText.posts.toLowerCase(), value: profileTabs.posts.length },
+    { label: profileText.followers, value: profile.followers },
+    { label: profileText.following, value: profile.following },
   ];
+  const tabLabels: Record<ProfileTabKey, string> = {
+    posts: profileText.posts,
+    likes: profileText.likes,
+    media: profileText.media,
+  };
 
   return (
     <div className='space-y-6'>
@@ -63,7 +71,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                   type='submit'
                   className='rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:cursor-pointer hover:bg-slate-200'
                 >
-                  {isFollowing ? 'Following' : 'Follow'}
+                  {isFollowing ? profileText.followingState : profileText.follow}
                 </button>
               </form>
             ) : null}
@@ -86,7 +94,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                     : 'text-white/65 hover:bg-white/6 hover:text-white'
                 }`}
               >
-                {item.label}
+                {tabLabels[item.key]}
               </Link>
             );
           })}
@@ -95,17 +103,20 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
 
       <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
         <TweetList
-          title={
-            PROFILE_TABS.find((item) => item.key === activeTab)?.label ?? 'Posts'
-          }
+          title={tabLabels[activeTab]}
           tweets={activeTweets}
           canInteract={Boolean(currentUser)}
-          emptyMessage={`No ${activeTab} yet on this profile.`}
+          emptyMessage={formatMessage(profileText.noItemsYet, {
+            tab: tabLabels[activeTab].toLowerCase(),
+          })}
+          language={language}
         />
 
         <aside className='space-y-4'>
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>Similar profiles</h2>
+            <h2 className='text-lg font-semibold text-white'>
+              {profileText.similarProfiles}
+            </h2>
             <div className='mt-4 space-y-3'>
               {relatedUsers.map((user) => (
                 <Link

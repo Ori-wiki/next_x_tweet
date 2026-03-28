@@ -3,25 +3,13 @@
 import { MenuItem } from '@/app/components/MenuItem';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { PAGES } from '@/app/config/pages.config';
+import { getDictionary } from '@/app/shared/lib/i18n';
+import type { UserLanguage } from '@/app/shared/types/user.interface';
 import { usePathname } from 'next/navigation';
 
-const pageNotes = [
-  {
-    href: PAGES.SHOP,
-    name: 'SSR',
-    note: 'Always fresh data using no-store.',
-  },
-  {
-    href: PAGES.SSG,
-    name: 'SSG',
-    note: 'Static response created ahead of time.',
-  },
-  {
-    href: PAGES.ISR,
-    name: 'ISR',
-    note: 'Cached page with timed background refresh.',
-  },
-];
+interface ShopMenuProps {
+  language?: UserLanguage;
+}
 
 function isShopPageActive(pathname: string, href: string) {
   if (href === PAGES.SHOP) {
@@ -31,8 +19,26 @@ function isShopPageActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export const ShopMenu = () => {
+export const ShopMenu = ({ language }: ShopMenuProps) => {
   const pathname = usePathname();
+  const { shop } = getDictionary(language);
+  const pageNotes = [
+    {
+      href: PAGES.SHOP,
+      name: 'SSR',
+      note: shop.ssrNote,
+    },
+    {
+      href: PAGES.SSG,
+      name: 'SSG',
+      note: shop.ssgNote,
+    },
+    {
+      href: PAGES.ISR,
+      name: 'ISR',
+      note: shop.isrNote,
+    },
+  ];
 
   return (
     <div className='grid gap-3 md:grid-cols-3'>

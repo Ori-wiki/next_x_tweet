@@ -2,15 +2,19 @@
 
 import { useState } from 'react';
 import { loginAction } from '@/app/server-actions/post-tweet';
+import { getDictionary } from '@/app/shared/lib/i18n';
 import type { UserRecord } from '@/app/shared/types/user.interface';
+import type { UserLanguage } from '@/app/shared/types/user.interface';
 import { SurfaceCard } from './SurfaceCard';
 
 interface DemoRolePickerProps {
   users: UserRecord[];
+  language?: UserLanguage;
 }
 
-export const DemoRolePicker = ({ users }: DemoRolePickerProps) => {
+export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { auth, common, demoRolePicker } = getDictionary(language);
 
   return (
     <>
@@ -19,7 +23,7 @@ export const DemoRolePicker = ({ users }: DemoRolePickerProps) => {
         onClick={() => setIsOpen(true)}
         className='rounded-full border border-sky-300/20 bg-sky-400/10 px-4 py-2 text-sm text-sky-100 transition hover:cursor-pointer hover:border-sky-300/40 hover:bg-sky-400/15'
       >
-        Choose demo role
+        {auth.chooseDemoRole}
       </button>
 
       {isOpen ? (
@@ -28,13 +32,13 @@ export const DemoRolePicker = ({ users }: DemoRolePickerProps) => {
             <div className='flex items-start justify-between gap-4'>
               <div>
                 <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
-                  Demo mode
+                  {common.demoMode}
                 </p>
                 <h2 className='mt-2 text-2xl font-semibold text-white'>
-                  Pick a role and start exploring
+                  {demoRolePicker.title}
                 </h2>
                 <p className='mt-2 text-white/65'>
-                  Each demo account has its own follows, bookmarks and settings.
+                  {demoRolePicker.description}
                 </p>
               </div>
               <button
@@ -42,7 +46,7 @@ export const DemoRolePicker = ({ users }: DemoRolePickerProps) => {
                 onClick={() => setIsOpen(false)}
                 className='rounded-full border border-white/10 px-3 py-1 text-sm text-white/70 transition hover:border-white/20 hover:text-white'
               >
-                Close
+                {common.close}
               </button>
             </div>
 
@@ -68,8 +72,7 @@ export const DemoRolePicker = ({ users }: DemoRolePickerProps) => {
             </div>
 
             <div className='rounded-3xl border border-dashed border-white/10 bg-black/20 p-4 text-sm text-white/60'>
-              Tour: publish a tweet on Home, explore authors and hashtags on Explore,
-              then open Dashboard to adjust theme, density and language.
+              {demoRolePicker.tour}
             </div>
           </SurfaceCard>
         </div>

@@ -5,6 +5,7 @@ import { PageHero } from '@/app/components/PageHero';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { TweetList } from '@/app/components/TweetList';
 import { PAGES } from '@/app/config/pages.config';
+import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
 import { getExploreData } from '@/app/shared/lib/tweets';
 import type { SessionUser } from '@/app/shared/types/user.interface';
 
@@ -16,6 +17,8 @@ interface ExploreProps {
 }
 
 export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
+  const language = resolveLanguage(currentUser?.settings);
+  const { common, explore } = getDictionary(language);
   const activeSort = sort === 'top' ? 'top' : 'latest';
   const { tweets, trends, matchedAuthors, matchedTags, suggestions } =
     await getExploreData({
@@ -29,9 +32,9 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
     <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]'>
       <section className='space-y-5'>
         <PageHero
-          eyebrow='Discover'
-          title='Explore topics, hashtags and authors'
-          description='Search by tweet content, author name or hashtag, then switch between latest and top results.'
+          eyebrow={explore.eyebrow}
+          title={explore.title}
+          description={explore.description}
           className='p-5'
         >
           <ExploreSearchForm
@@ -39,20 +42,27 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
             tag={tag}
             sort={activeSort}
             suggestions={suggestions}
+            texts={{
+              searchPlaceholder: explore.searchPlaceholder,
+              tagPlaceholder: explore.tagPlaceholder,
+              latestFirst: explore.latestFirst,
+              topTweets: explore.topTweets,
+              search: common.search,
+            }}
           />
           {(q || tag) && (
             <p className='mt-3 text-sm text-white/55'>
-              Results: {tweets.length}
-              {q ? `, query "${q}"` : ''}
-              {tag ? `, tag #${tag.replace(/^#/, '')}` : ''}
-              {`, sorted by ${activeSort}`}
+              {explore.results}: {tweets.length}
+              {q ? `, ${explore.query} "${q}"` : ''}
+              {tag ? `, ${explore.tag} #${tag.replace(/^#/, '')}` : ''}
+              {`, ${explore.sortedBy} ${activeSort === 'top' ? explore.top : explore.latest}`}
             </p>
           )}
         </PageHero>
 
         <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>Authors</h2>
+            <h2 className='text-lg font-semibold text-white'>{explore.authors}</h2>
             <div className='mt-4 space-y-3'>
               {matchedAuthors.map((author) => (
                 <Link
@@ -71,7 +81,9 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
           </SurfaceCard>
 
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>Matching tags</h2>
+            <h2 className='text-lg font-semibold text-white'>
+              {explore.matchingTags}
+            </h2>
             <div className='mt-4 flex flex-wrap gap-2'>
               {matchedTags.map(([hashtag, count]) => (
                 <Link
@@ -86,11 +98,9 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
           </SurfaceCard>
 
           <SurfaceCard className='p-5 md:col-span-2 xl:col-span-1'>
-            <h2 className='text-lg font-semibold text-white'>Tweets</h2>
+            <h2 className='text-lg font-semibold text-white'>{explore.tweets}</h2>
             <p className='mt-3 text-sm text-white/55'>
-              {tweets.length > 0
-                ? 'Open the best matching conversations below.'
-                : 'Try another query or jump into a trend from the sidebar.'}
+              {tweets.length > 0 ? explore.openBestMatches : explore.tryAnotherQuery}
             </p>
           </SurfaceCard>
         </div>
@@ -100,15 +110,16 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
             tweets={tweets}
             canInteract={Boolean(currentUser)}
             emptyMessage=''
+            language={language}
           />
         ) : (
-          <EmptyState message='No tweets matched your filters. Try a different query or jump into one of the trends.' />
+          <EmptyState message={explore.noMatches} />
         )}
       </section>
 
       <aside className='space-y-4'>
         <SurfaceCard className='p-5'>
-          <h2 className='text-lg font-semibold text-white'>Trending now</h2>
+          <h2 className='text-lg font-semibold text-white'>{explore.trendingNow}</h2>
           <div className='mt-4 space-y-3'>
             {trends.map(([hashtag, count]) => (
               <Link
@@ -117,18 +128,11 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
                 className='block rounded-2xl border border-white/10 bg-black/20 px-4 py-3 transition hover:border-sky-300/40 hover:bg-sky-400/10'
               >
                 <p className='font-medium text-sky-200'>#{hashtag}</p>
-                <p className='text-sm text-white/50'>{count} tweets</p>
+                <p className='text-sm text-white/50'>
+                  {count} {explore.tweetsCount}
+                </p>
               </Link>
             ))}
-          </div>
-        </SurfaceCard>
-
-        <SurfaceCard className='p-5'>
-          <h2 className='text-lg font-semibold text-white'>Search modes</h2>
-          <div className='mt-4 space-y-3 text-sm text-white/60'>
-            <p>`Latest` keeps the feed chronological.</p>
-            <p>`Top` boosts tweets with likes, bookmarks, reposts and views.</p>
-            <p>Suggestions and search history appear right in the form.</p>
           </div>
         </SurfaceCard>
       </aside>

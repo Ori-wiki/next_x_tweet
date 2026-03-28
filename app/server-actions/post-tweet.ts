@@ -10,7 +10,8 @@ import {
 } from '@/app/config/preferences.config';
 import { SESSION_COOKIE } from '@/app/shared/lib/auth';
 import { readDemoDatabase, updateDemoDatabase } from '@/app/shared/lib/demo-db';
-import { extractHashtags, tweetSchema } from '@/app/shared/lib/validation';
+import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
+import { createTweetSchema, extractHashtags } from '@/app/shared/lib/validation';
 import type { DemoDatabase } from '@/app/shared/types/demo-db.interface';
 import type {
   TweetMedia,
@@ -199,15 +200,17 @@ export async function createTweetAction(
   formData: FormData,
 ): Promise<TweetActionState> {
   const context = await getDatabaseContext();
+  const language = resolveLanguage(context?.currentUser?.settings);
+  const { actions } = getDictionary(language);
 
   if (!context) {
     return {
       status: 'error',
-      message: 'Sign in with a demo account before posting.',
+      message: actions.signInBeforePosting,
     };
   }
 
-  const parsed = tweetSchema.safeParse({
+  const parsed = createTweetSchema(language).safeParse({
     content: formData.get('content'),
     mediaUrl: formData.get('mediaUrl'),
     attachmentLabel: formData.get('attachmentLabel'),
@@ -216,7 +219,7 @@ export async function createTweetAction(
   if (!parsed.success) {
     return {
       status: 'error',
-      message: 'Review the tweet text and try again.',
+      message: actions.reviewTweet,
       errors: parsed.error.flatten().fieldErrors,
     };
   }
@@ -226,7 +229,7 @@ export async function createTweetAction(
   if (replyToId && !getTweetById(context.database, replyToId)) {
     return {
       status: 'error',
-      message: 'The tweet you wanted to reply to no longer exists.',
+      message: actions.replyMissing,
     };
   }
 
@@ -251,7 +254,7 @@ export async function createTweetAction(
 
   return {
     status: 'success',
-    message: 'Tweet published.',
+    message: actions.tweetPublished,
   };
 }
 

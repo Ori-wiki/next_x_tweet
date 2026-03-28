@@ -7,61 +7,77 @@ import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { TweetList } from '@/app/components/TweetList';
 import { PAGES } from '@/app/config/pages.config';
 import { getSessionUser } from '@/app/shared/lib/auth';
+import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
 import { getDashboardData } from '@/app/shared/lib/tweets';
 
 export const ProfileFake = async () => {
   const currentUser = await getSessionUser();
-  const onboardingSteps = [
-    'Post a tweet with an image or link from the home timeline.',
-    'Open Explore to search authors, hashtags and top tweets.',
-    'Visit any tweet thread to reply or copy a direct link.',
-  ];
+  const language = resolveLanguage(currentUser?.settings);
+  const { dashboard: dashboardText, profile: profileText } = getDictionary(language);
 
   if (!currentUser) {
     return (
       <div className='space-y-6'>
         <PageHero
-          eyebrow='Dashboard'
-          title='Sign in to open your demo dashboard'
-          description='After sign-in you will see your profile summary, likes and saved tweets here.'
+          eyebrow={dashboardText.title}
+          title={dashboardText.signedOutTitle}
+          description={dashboardText.signedOutDescription}
           className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
         >
           <div className='flex flex-wrap gap-3'>
             <LinkButton href={PAGES.HOME} variant='solid'>
-              Go to home
+              {dashboardText.goHome}
             </LinkButton>
             <LinkButton href={PAGES.EXPLORE}>
-              Open explore
+              {dashboardText.openExplore}
             </LinkButton>
           </div>
         </PageHero>
 
-        <EmptyState message='You are signed out. Use one of the demo accounts in the header to open the dashboard.' />
+        <EmptyState message={dashboardText.signedOutMessage} />
       </div>
     );
   }
 
-  const dashboard = await getDashboardData(currentUser);
+  const currentLanguage = resolveLanguage(currentUser.settings);
+  const currentDict = getDictionary(currentLanguage);
+  const dashboardData = await getDashboardData(currentUser);
   const stats = [
-    { label: 'User', value: currentUser.name, accent: 'text-xl', helper: `@${currentUser.username}` },
-    { label: 'Liked tweets', value: dashboard.likedTweets.length },
-    { label: 'Bookmarks', value: dashboard.bookmarkedTweets.length },
+    {
+      label: profileText.user,
+      value: currentUser.name,
+      accent: 'text-xl',
+      helper: `@${currentUser.username}`,
+    },
+    {
+      label: currentDict.dashboard.likedTweets,
+      value: dashboardData.likedTweets.length,
+    },
+    {
+      label: currentDict.dashboard.bookmarks,
+      value: dashboardData.bookmarkedTweets.length,
+    },
+  ];
+  const guideSteps = [
+    currentDict.dashboard.stepOne,
+    currentDict.dashboard.stepTwo,
+    currentDict.dashboard.stepThree,
   ];
 
   return (
     <div className='space-y-6'>
       <PageHero
-        eyebrow='Dashboard'
-        title='Your demo dashboard'
-        description='This page summarizes your account, bookmarks and quick actions for the current demo session.'
+        eyebrow={currentDict.common.dashboard}
+        title={currentDict.dashboard.title}
+        description={currentDict.dashboard.description}
         className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
       >
         <div className='flex flex-wrap gap-3'>
           <LinkButton href={PAGES.PROFILE(currentUser.username)} variant='solid'>
-            Open public profile
+            {currentDict.dashboard.openPublicProfile}
           </LinkButton>
           <LinkButton href={PAGES.EXPLORE}>
-            Open explore
+            {currentDict.dashboard.openExplore}
           </LinkButton>
         </div>
       </PageHero>
@@ -80,11 +96,13 @@ export const ProfileFake = async () => {
       <section className='grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(320px,360px)]'>
         <SurfaceCard className='p-5'>
           <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
-            Onboarding
+            {currentDict.dashboard.onboarding}
           </p>
-          <h2 className='mt-2 text-xl font-semibold text-white'>Quick tour</h2>
+          <h2 className='mt-2 text-xl font-semibold text-white'>
+            {currentDict.dashboard.quickTour}
+          </h2>
           <div className='mt-4 space-y-3 text-sm text-white/65'>
-            {onboardingSteps.map((step, index) => (
+            {guideSteps.map((step, index) => (
               <p key={step}>
                 {index + 1}. {step}
               </p>
@@ -95,17 +113,19 @@ export const ProfileFake = async () => {
       </section>
 
       <TweetList
-        title='Saved tweets'
-        tweets={dashboard.bookmarkedTweets}
+        title={currentDict.dashboard.savedTweets}
+        tweets={dashboardData.bookmarkedTweets}
         canInteract
-        emptyMessage='No bookmarks yet. Save a few tweets from the timeline to see them here.'
+        emptyMessage={currentDict.dashboard.noBookmarks}
+        language={currentLanguage}
       />
 
       <TweetList
-        title='Reposted tweets'
-        tweets={dashboard.repostedTweets}
+        title={currentDict.dashboard.repostedTweets}
+        tweets={dashboardData.repostedTweets}
         canInteract
-        emptyMessage='No reposts yet. Repost a few tweets to keep them here.'
+        emptyMessage={currentDict.dashboard.noReposts}
+        language={currentLanguage}
       />
     </div>
   );

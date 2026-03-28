@@ -7,6 +7,13 @@ interface ExploreSearchFormProps {
   tag?: string;
   sort: 'latest' | 'top';
   suggestions: string[];
+  texts: {
+    searchPlaceholder: string;
+    tagPlaceholder: string;
+    latestFirst: string;
+    topTweets: string;
+    search: string;
+  };
 }
 
 const searchHistoryKey = 'next-x-tweet-search-history';
@@ -16,6 +23,7 @@ export const ExploreSearchForm = ({
   tag,
   sort,
   suggestions,
+  texts,
 }: ExploreSearchFormProps) => {
   const [query, setQuery] = useState(q ?? '');
   const [history, setHistory] = useState<string[]>(() => {
@@ -66,7 +74,7 @@ export const ExploreSearchForm = ({
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           list='explore-suggestions'
-          placeholder='Search by text, author or topic'
+          placeholder={texts.searchPlaceholder}
           className='w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400'
         />
         <datalist id='explore-suggestions'>
@@ -92,7 +100,7 @@ export const ExploreSearchForm = ({
       <input
         name='tag'
         defaultValue={tag}
-        placeholder='Tag, for example nextjs'
+        placeholder={texts.tagPlaceholder}
         className='rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400'
       />
       <select
@@ -100,14 +108,14 @@ export const ExploreSearchForm = ({
         defaultValue={sort}
         className='rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none transition focus:border-sky-400'
       >
-        <option value='latest'>Latest first</option>
-        <option value='top'>Top tweets</option>
+        <option value='latest'>{texts.latestFirst}</option>
+        <option value='top'>{texts.topTweets}</option>
       </select>
       <button
         type='submit'
         className='rounded-2xl bg-sky-400 px-5 py-3 text-sm font-semibold text-black transition hover:cursor-pointer hover:bg-sky-300'
       >
-        Search
+        {texts.search}
       </button>
     </form>
   );

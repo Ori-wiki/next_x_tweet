@@ -1,3 +1,5 @@
+import { getDictionary } from '@/app/shared/lib/i18n';
+import type { UserLanguage } from '@/app/shared/types/user.interface';
 import { PAGES } from '../config/pages.config';
 
 export interface MenuItemData {
@@ -5,9 +7,13 @@ export interface MenuItemData {
   name: string;
 }
 
-export const MENU_ITEMS: MenuItemData[] = [
-  { href: PAGES.HOME, name: 'Home' },
-  { href: PAGES.EXPLORE, name: 'Explore' },
-  { href: PAGES.PROFILE_FAKE, name: 'Dashboard' },
-  { href: PAGES.SHOP, name: 'Shop' },
-];
+export function getMenuItems(language?: UserLanguage): MenuItemData[] {
+  const { common } = getDictionary(language);
+
+  return [
+    { href: PAGES.HOME, name: common.home },
+    { href: PAGES.EXPLORE, name: common.explore },
+    { href: PAGES.PROFILE_FAKE, name: common.dashboard },
+    { href: PAGES.SHOP, name: common.shop },
+  ];
+}

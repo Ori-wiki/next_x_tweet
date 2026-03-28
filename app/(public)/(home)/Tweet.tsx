@@ -11,12 +11,15 @@ import {
   toggleLikeAction,
   toggleRepostAction,
 } from '@/app/server-actions/post-tweet';
+import { getDictionary } from '@/app/shared/lib/i18n';
 import { formatRelativeDate } from '@/app/shared/lib/utils';
 import type { TweetView } from '@/app/shared/types/tweet.interface';
+import type { UserLanguage } from '@/app/shared/types/user.interface';
 
 interface TweetProps {
   tweet: TweetView;
   canInteract: boolean;
+  language?: UserLanguage;
 }
 
 const tweetActionClassName =
@@ -34,36 +37,36 @@ const repostedActionClassName =
 const deleteActionClassName =
   'border-white/10 bg-transparent text-white/68 hover:border-rose-300/24 hover:bg-rose-400/[0.06] hover:text-rose-100';
 
-export const Tweet = ({ tweet, canInteract }: TweetProps) => {
+export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
+  const { tweet: tweetText } = getDictionary(language);
   const actions = [
     {
       action: toggleLikeAction,
       className: tweet.isLiked ? likedActionClassName : '',
-      label: `${tweet.isLiked ? 'Unlike' : 'Like'} · ${tweet.likes}`,
+      label: `${tweet.isLiked ? tweetText.unlike : tweetText.like} · ${tweet.likes}`,
     },
     {
       action: toggleBookmarkAction,
       className: tweet.isBookmarked ? bookmarkedActionClassName : '',
-      label: `${tweet.isBookmarked ? 'Bookmarked' : 'Bookmark'} · ${tweet.bookmarks}`,
+      label: `${tweet.isBookmarked ? tweetText.bookmarked : tweetText.bookmark} · ${tweet.bookmarks}`,
     },
     {
       action: toggleRepostAction,
       className: tweet.isReposted ? repostedActionClassName : '',
-      label: `${tweet.isReposted ? 'Reposted' : 'Repost'} · ${tweet.reposts}`,
+      label: `${tweet.isReposted ? tweetText.reposted : tweetText.repost} · ${tweet.reposts}`,
     },
   ];
-
   const metrics = [
-    `${tweet.views.toLocaleString('en-US')} views`,
-    `${tweet.repliesCount} replies`,
-    `${tweet.reposts} reposts`,
+    `${tweet.views.toLocaleString('en-US')} ${tweetText.views}`,
+    `${tweet.repliesCount} ${tweetText.replies}`,
+    `${tweet.reposts} ${tweetText.reposts}`,
   ];
 
   return (
     <SurfaceCard className='p-5 shadow-[0_24px_80px_rgba(0,0,0,0.18)]'>
       {tweet.replyTo ? (
         <p className='mb-3 text-sm text-white/45'>
-          Replying to{' '}
+          {tweetText.replyingTo}{' '}
           <Link
             href={PAGES.PROFILE(tweet.replyTo.username)}
             className='text-sky-300 transition hover:text-sky-200'
@@ -101,7 +104,7 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
 
       {tweet.media ? (
         <div className='mb-4'>
-          <TweetMediaCard media={tweet.media} />
+          <TweetMediaCard media={tweet.media} language={language} />
         </div>
       ) : null}
 
@@ -143,26 +146,28 @@ export const Tweet = ({ tweet, canInteract }: TweetProps) => {
           href={PAGES.TWEET(tweet.id)}
           className='min-w-[108px] rounded-full border border-white/10 bg-transparent px-4 py-2 text-center text-sm font-medium text-white/78 backdrop-blur-sm transition hover:border-white/18 hover:bg-white/[0.04] hover:text-white'
         >
-          Thread
+          {tweetText.thread}
         </Link>
 
-        <CopyLinkButton url={PAGES.TWEET(tweet.id)} />
+        <CopyLinkButton
+          url={PAGES.TWEET(tweet.id)}
+          label={tweetText.copyLink}
+          copiedLabel={tweetText.copied}
+        />
 
         {tweet.isOwn ? (
           <form action={deleteTweetAction}>
             <input type='hidden' name='tweetId' value={tweet.id} />
             <SubmitButton
-              idleLabel='Delete'
-              pendingLabel='Deleting...'
+              idleLabel={tweetText.delete}
+              pendingLabel={tweetText.deleting}
               className={`${tweetActionClassName} ${deleteActionClassName}`}
             />
           </form>
         ) : null}
 
         {!canInteract ? (
-          <p className='text-sm text-white/45'>
-            Sign in to like tweets, repost them and save bookmarks.
-          </p>
+          <p className='text-sm text-white/45'>{tweetText.signInHint}</p>
         ) : null}
       </div>
     </SurfaceCard>

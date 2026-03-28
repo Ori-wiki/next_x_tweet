@@ -1,7 +1,11 @@
 import { ShopProductsSection } from '@/app/components/ShopProductsSection';
+import { getSessionUser } from '@/app/shared/lib/auth';
+import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
 import { getProducts } from '@/app/shared/lib/products';
 
 export default async function ShopPage() {
+  const currentUser = await getSessionUser();
+  const { shop } = getDictionary(resolveLanguage(currentUser?.settings));
   const products = await getProducts({ cache: 'no-store' });
 
   return (
@@ -10,7 +14,7 @@ export default async function ShopPage() {
       tone='sky'
       message={
         <>
-        SSR route: every request fetches fresh data from the API with
+        {shop.ssrMessage}
         <code> cache: &quot;no-store&quot;</code>.
         </>
       }
