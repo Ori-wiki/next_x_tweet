@@ -12,12 +12,7 @@ export default async function ShopPage() {
     <ShopProductsSection
       products={products}
       tone='sky'
-      message={
-        <>
-        {shop.ssrMessage}
-        <code> cache: &quot;no-store&quot;</code>.
-        </>
-      }
+      message={shop.ssrMessage}
     />
   );
 }

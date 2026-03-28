@@ -144,20 +144,6 @@ export const ExploreSearchForm = ({
         ))}
       </datalist>
 
-      {history.length > 0 ? (
-        <div className='flex flex-wrap gap-2'>
-          {history.map((item) => (
-            <button
-              key={item}
-              type='button'
-              onClick={() => setQuery(item)}
-              className='rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs text-white/65 transition hover:border-sky-300/35 hover:text-white'
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 };

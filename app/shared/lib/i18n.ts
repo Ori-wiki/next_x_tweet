@@ -168,12 +168,12 @@ const en = {
       description:
         'The same product list is shown with SSR, SSG and ISR so you can compare data freshness and rendering strategy directly in the interface.',
       loadingNavigation: 'Loading shop navigation...',
-      ssrNote: 'Always fresh data using no-store.',
-      ssgNote: 'Static response created ahead of time.',
-      isrNote: 'Cached page with timed background refresh.',
-      ssrMessage: 'SSR route: every request fetches fresh data from the API with',
-      ssgMessage: 'SSG route: the page is cached ahead of time for fast repeated reads.',
-      isrMessage: 'ISR route: the page is revalidated in the background every 5 minutes.',
+      ssrNote: 'Fresh data on every page visit.',
+      ssgNote: 'Prebuilt page for fast repeated visits.',
+      isrNote: 'Cached page with scheduled refreshes.',
+      ssrMessage: 'SSR route: this page requests fresh API data every time it opens.',
+      ssgMessage: 'SSG route: this page is generated ahead of time for fast repeated visits.',
+      isrMessage: 'ISR route: this page refreshes in the background every 5 minutes.',
       loadingTitle: 'Loading shop',
     },
     notFound: {

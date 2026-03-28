@@ -24,20 +24,14 @@ export const AuthControls = async () => {
               <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs font-semibold text-black'>
                 {currentUser.avatar}
               </div>
-              <div className='min-w-0 leading-tight'>
-                <p className='truncate font-semibold text-white'>{currentUser.name}</p>
-                <p className='truncate text-xs text-white/45'>@{currentUser.username}</p>
-              </div>
-              <span className='text-base text-white/35' aria-hidden='true'>
-                &gt;
-              </span>
+              <p className='truncate font-semibold text-white'>{currentUser.name}</p>
             </div>
           </SurfaceCard>
         </Link>
         <form action={logoutAction}>
           <button
             type='submit'
-            className='rounded-full border border-white/10 bg-white/10 px-4 py-2 text-white transition hover:bg-white/15 hover:cursor-pointer'
+            className='rounded-full border border-white/10 bg-white/10 px-4 py-[0.8125rem] text-white transition hover:bg-white/15 hover:cursor-pointer'
           >
             {auth.signOut}
           </button>

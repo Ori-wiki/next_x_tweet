@@ -64,6 +64,19 @@
   ],
   "tweets": [
     {
+      "id": "e6b80e87-9b0f-431a-990b-a414c5fbc2ee",
+      "authorId": "user-jane",
+      "content": "ISR for scale, SSG for speed. The best option depends on the page. yes yess",
+      "createdAt": "2026-03-28T03:39:49.404Z",
+      "hashtags": [],
+      "likedBy": [],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 680,
+      "replyToId": "8adfe3c3-d7fb-4bc5-aa77-8cdc1da36d0d",
+      "media": null
+    },
+    {
       "id": "21b666d2-8597-4b06-b2fa-5d5f7dc83f68",
       "authorId": "user-olga",
       "content": "Wow!)",
