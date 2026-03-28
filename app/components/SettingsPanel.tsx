@@ -7,9 +7,13 @@ import { SurfaceCard } from './SurfaceCard';
 
 interface SettingsPanelProps {
   settings: UserSettings;
+  hideEyebrow?: boolean;
 }
 
-export const SettingsPanel = ({ settings }: SettingsPanelProps) => {
+export const SettingsPanel = ({
+  settings,
+  hideEyebrow = false,
+}: SettingsPanelProps) => {
   const { common, settings: settingsText } = getDictionary(settings.language);
   const optionLabels = {
     en: settingsText.english,
@@ -19,9 +23,11 @@ export const SettingsPanel = ({ settings }: SettingsPanelProps) => {
   return (
     <SurfaceCard className='space-y-4 p-5'>
       <div>
-        <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
-          {settingsText.preferences}
-        </p>
+        {!hideEyebrow ? (
+          <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
+            {settingsText.preferences}
+          </p>
+        ) : null}
         <h2 className='mt-2 text-xl font-semibold text-white'>
           {settingsText.userSettings}
         </h2>

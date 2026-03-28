@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { PROFILE_TABS, type ProfileTabKey } from '@/app/config/profile.config';
+import { SettingsPanel } from '@/app/components/SettingsPanel';
 import { SurfaceCard } from '@/app/components/SurfaceCard';
 import { StatCard } from '@/app/components/StatCard';
 import { TweetList } from '@/app/components/TweetList';
@@ -32,6 +33,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
     likes: profileText.likes,
     media: profileText.media,
   };
+  const canManageSettings = currentUser?.id === profile.id;
 
   return (
     <div className='space-y-6'>
@@ -103,7 +105,6 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
 
       <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
         <TweetList
-          title={tabLabels[activeTab]}
           tweets={activeTweets}
           canInteract={Boolean(currentUser)}
           emptyMessage={formatMessage(profileText.noItemsYet, {
@@ -113,6 +114,10 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
         />
 
         <aside className='space-y-4'>
+          {canManageSettings ? (
+            <SettingsPanel settings={currentUser.settings} />
+          ) : null}
+
           <SurfaceCard className='p-5'>
             <h2 className='text-lg font-semibold text-white'>
               {profileText.similarProfiles}
