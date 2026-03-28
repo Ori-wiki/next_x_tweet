@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { PAGES } from '@/app/config/pages.config';
-import { loginAction, logoutAction } from '@/app/server-actions/post-tweet';
+import { logoutAction } from '@/app/server-actions/post-tweet';
 import { getSessionUser } from '@/app/shared/lib/auth';
 import { readDemoDatabase } from '@/app/shared/lib/demo-db';
 import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
@@ -41,17 +41,6 @@ export const AuthControls = async () => {
         {common.demoMode}
       </span>
       <DemoRolePicker users={database.users} language={language} />
-      {database.users.map((user) => (
-        <form key={user.id} action={loginAction}>
-          <input type='hidden' name='userId' value={user.id} />
-          <button
-            type='submit'
-            className='rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-sm text-sky-100 transition hover:border-sky-300/40 hover:bg-sky-400/15 hover:cursor-pointer'
-          >
-            {auth.signInAs} {user.name}
-          </button>
-        </form>
-      ))}
     </div>
   );
 };
