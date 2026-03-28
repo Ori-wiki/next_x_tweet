@@ -48,7 +48,7 @@ export const ExploreSearchForm = ({
     return [...new Set([query, ...history, ...suggestions])].filter(Boolean).slice(0, 8);
   }, [history, query, suggestions]);
   const fieldClassName =
-    'h-14 w-full rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400';
+    'h-12 w-full rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition placeholder:text-white/35 focus:border-sky-400';
 
   function handleSubmit() {
     const normalized = query.trim();
@@ -95,7 +95,7 @@ export const ExploreSearchForm = ({
         </select>
         <button
           type='submit'
-          className='h-14 rounded-2xl bg-sky-400 px-5 text-sm font-semibold text-black transition hover:cursor-pointer hover:bg-sky-300'
+          className='h-12 rounded-2xl bg-sky-400 px-5 text-sm font-semibold text-black transition hover:cursor-pointer hover:bg-sky-300'
         >
           {texts.search}
         </button>
