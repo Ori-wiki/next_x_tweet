@@ -1,16 +1,21 @@
 # Next X Tweet Demo
 
-Учебный проект на `Next.js App Router`, который теперь работает как маленькое цельное приложение, а не только как набор демо-страниц.
+Учебный проект на `Next.js App Router`, который теперь работает как небольшое цельное приложение, а не только как набор демо-страниц.
+
+## Deploy
+
+Live demo: https://next-x-tweet.vercel.app/
 
 ## Что есть в проекте
 
 - Домашняя лента с публикацией твитов через server actions
 - Локальное JSON-хранилище вместо статических моков
 - Валидация формы через `zod`
-- Демо-авторизация через cookie и защищенный маршрут `/profile-fake`
+- Демо-авторизация через cookie и защищённый маршрут `/profile-fake`
 - Публичные профили пользователей с биографией и статистикой
 - Explore с поиском, фильтром по тегам и трендами
-- Лайки и закладки для твитов
+- Лайки, закладки и репосты для твитов
+- Треды с цепочкой ответов и вложенными replies
 - Shop-раздел для сравнения `SSR`, `SSG` и `ISR`
 - Базовые тесты для валидации и формы
 
@@ -46,7 +51,7 @@ npm run build
 
 ## Что полезно посмотреть в коде
 
-- `app/server-actions/post-tweet.ts` - server actions для твитов и демо-сессии
-- `app/shared/lib/demo-db.ts` - чтение и запись локальной JSON-базы
-- `app/shared/lib/tweets.ts` - селекторы ленты, профиля, explore и dashboard
-- `app/(public)/shop/*` - примеры `SSR`, `SSG`, `ISR`, `loading.tsx`, `error.tsx`
+- `app/server-actions/post-tweet.ts` — server actions для твитов и демо-сессии
+- `app/shared/lib/demo-db.ts` — чтение и запись локальной JSON-базы
+- `app/shared/lib/tweets.ts` — селекторы ленты, профиля, explore, dashboard и тредов
+- `app/(public)/shop/*` — примеры `SSR`, `SSG`, `ISR`, `loading.tsx`, `error.tsx`
