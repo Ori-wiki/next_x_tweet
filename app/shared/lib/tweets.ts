@@ -3,6 +3,7 @@ import { readDemoDatabase } from '@/app/shared/lib/demo-db';
 import type {
   TweetAuthor,
   TweetRecord,
+  TweetThreadNode,
   TweetView,
 } from '@/app/shared/types/tweet.interface';
 import type { SessionUser, UserRecord } from '@/app/shared/types/user.interface';
@@ -21,6 +22,9 @@ interface TweetsContext {
 
 const compareTweetsByDate = (left: TweetRecord, right: TweetRecord) =>
   new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
+
+const compareTweetsByDateAscending = (left: TweetRecord, right: TweetRecord) =>
+  new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
 
 function indexById<T extends { id: string }>(items: T[]) {
   return new Map(items.map((item) => [item.id, item]));
@@ -118,10 +122,7 @@ function toTweetViews(
   tweets: TweetRecord[],
   currentUserId?: string,
 ) {
-  return tweets
-    .slice()
-    .sort(compareTweetsByDate)
-    .map((tweet) => toTweetView(context, tweet, currentUserId));
+  return tweets.map((tweet) => toTweetView(context, tweet, currentUserId));
 }
 
 function getTopTrends(tweets: TweetRecord[]) {
@@ -247,6 +248,41 @@ function getExploreSuggestions(context: TweetsContext) {
   ].slice(0, 12);
 }
 
+function getAncestorTweets(context: TweetsContext, tweet: TweetRecord) {
+  const ancestors: TweetRecord[] = [];
+  let currentReplyToId = tweet.replyToId;
+
+  while (currentReplyToId) {
+    const parentTweet = context.tweetsById.get(currentReplyToId);
+
+    if (!parentTweet) {
+      break;
+    }
+
+    ancestors.unshift(parentTweet);
+    currentReplyToId = parentTweet.replyToId;
+  }
+
+  return ancestors;
+}
+
+function buildReplyTree(
+  context: TweetsContext,
+  parentTweetId: string,
+  currentUserId?: string,
+  depth = 0,
+): TweetThreadNode[] {
+  const directReplies = (context.replyMap.get(parentTweetId) ?? [])
+    .slice()
+    .sort(compareTweetsByDateAscending);
+
+  return directReplies.map((reply) => ({
+    tweet: toTweetView(context, reply, currentUserId),
+    depth,
+    replies: buildReplyTree(context, reply.id, currentUserId, depth + 1),
+  }));
+}
+
 async function loadTweetsContext() {
   const database = await readDemoDatabase();
 
@@ -330,14 +366,13 @@ export async function getTweetThread(
     notFound();
   }
 
-  const parentTweet = targetTweet.replyToId
-    ? context.tweetsById.get(targetTweet.replyToId) ?? null
-    : null;
-  const replies = context.replyMap.get(targetTweet.id) ?? [];
+  const ancestors = getAncestorTweets(context, targetTweet);
 
   return {
     tweet: toTweetView(context, targetTweet, currentUser?.id),
-    parentTweet: parentTweet ? toTweetView(context, parentTweet, currentUser?.id) : null,
-    replies: toTweetViews(context, replies, currentUser?.id),
+    ancestors: ancestors.map((ancestor) =>
+      toTweetView(context, ancestor, currentUser?.id),
+    ),
+    replies: buildReplyTree(context, targetTweet.id, currentUser?.id),
   };
 }

@@ -52,3 +52,9 @@ export interface TweetView {
   replyTo?: Pick<TweetAuthor, 'username' | 'name'> | null;
   author: TweetAuthor;
 }
+
+export interface TweetThreadNode {
+  tweet: TweetView;
+  replies: TweetThreadNode[];
+  depth: number;
+}

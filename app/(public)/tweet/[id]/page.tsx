@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { EmptyState } from '@/app/components/EmptyState';
 import { PageHero } from '@/app/components/PageHero';
+import { ThreadReplyTree } from '@/app/components/ThreadReplyTree';
 import { Tweet } from '@/app/(public)/(home)/Tweet';
 import { TweetForm } from '@/app/(public)/(home)/TweetForm';
 import { getSessionUser } from '@/app/shared/lib/auth';
@@ -30,7 +31,7 @@ export default async function TweetPage({ params }: TweetPageProps) {
   const currentUser = await getSessionUser();
   const language = resolveLanguage(currentUser?.settings);
   const { thread, tweetForm } = getDictionary(language);
-  const { tweet, parentTweet, replies } = await getTweetThread(id, currentUser);
+  const { tweet, ancestors, replies } = await getTweetThread(id, currentUser);
 
   return (
     <div className='space-y-6'>
@@ -40,16 +41,21 @@ export default async function TweetPage({ params }: TweetPageProps) {
         description={thread.description}
       />
 
-      {parentTweet ? (
+      {ancestors.length > 0 ? (
         <div className='space-y-3'>
           <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
             {thread.parentTweet}
           </p>
-          <Tweet
-            tweet={parentTweet}
-            canInteract={Boolean(currentUser)}
-            language={language}
-          />
+          <div className='space-y-4 border-l border-white/10 pl-4 sm:pl-6'>
+            {ancestors.map((ancestor) => (
+              <Tweet
+                key={ancestor.id}
+                tweet={ancestor}
+                canInteract={Boolean(currentUser)}
+                language={language}
+              />
+            ))}
+          </div>
         </div>
       ) : null}
 
@@ -80,14 +86,11 @@ export default async function TweetPage({ params }: TweetPageProps) {
           {thread.replies}
         </p>
         {replies.length > 0 ? (
-          replies.map((reply) => (
-            <Tweet
-              key={reply.id}
-              tweet={reply}
-              canInteract={Boolean(currentUser)}
-              language={language}
-            />
-          ))
+          <ThreadReplyTree
+            replies={replies}
+            canInteract={Boolean(currentUser)}
+            language={language}
+          />
         ) : (
           <EmptyState message={thread.noReplies} />
         )}

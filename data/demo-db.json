@@ -64,6 +64,37 @@
   ],
   "tweets": [
     {
+      "id": "35836cd2-8338-47ae-9789-98ca97454169",
+      "authorId": "user-olga",
+      "content": "nice words",
+      "createdAt": "2026-03-28T04:05:11.403Z",
+      "hashtags": [],
+      "likedBy": [
+        "user-olga"
+      ],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 628,
+      "replyToId": "tweet-5",
+      "media": null
+    },
+    {
+      "id": "968f4615-efd5-48c3-9818-d66a1c5b86dc",
+      "authorId": "user-olga",
+      "content": "The character counter placement is much better. #ux #writing",
+      "createdAt": "2026-03-28T04:04:43.557Z",
+      "hashtags": [
+        "ux",
+        "writing"
+      ],
+      "likedBy": [],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 903,
+      "replyToId": "tweet-1",
+      "media": null
+    },
+    {
       "id": "e6b80e87-9b0f-431a-990b-a414c5fbc2ee",
       "authorId": "user-jane",
       "content": "ISR for scale, SSG for speed. The best option depends on the page. yes yess",
