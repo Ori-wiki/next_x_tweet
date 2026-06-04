@@ -14,7 +14,7 @@ export default async function DashboardLoading() {
         <div className='skeleton h-32 rounded-3xl' />
         <div className='skeleton h-32 rounded-3xl' />
       </div>
-      <p className='text-sm text-white/50'>{dashboard.loadingTitle}</p>
+      <p className='text-sm text-[var(--color-text-soft)]'>{dashboard.loadingTitle}</p>
       <TweetSkeleton />
     </div>
   );

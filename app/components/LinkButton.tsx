@@ -10,9 +10,9 @@ interface LinkButtonProps {
 
 const variantClassNames = {
   solid:
-    'bg-white !text-black hover:bg-slate-100 font-semibold',
+    'bg-[var(--color-surface-solid)] !text-[var(--color-text-inverse)] hover:bg-[var(--color-foreground)] font-semibold',
   ghost:
-    'border border-white/10 bg-white/10 text-white hover:bg-white/15',
+    'border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]',
 };
 
 export const LinkButton = ({

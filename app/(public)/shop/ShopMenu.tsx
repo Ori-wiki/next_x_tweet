@@ -48,7 +48,7 @@ export const ShopMenu = ({ language }: ShopMenuProps) => {
             item={{ href: item.href, name: item.name }}
             isActive={isShopPageActive(pathname, item.href)}
           />
-          <p className='mt-2 text-sm text-white/60'>{item.note}</p>
+          <p className='mt-2 text-sm text-[var(--color-text-soft)]'>{item.note}</p>
         </SurfaceCard>
       ))}
     </div>

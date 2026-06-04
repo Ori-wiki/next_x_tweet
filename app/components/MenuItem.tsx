@@ -11,8 +11,10 @@ export const MenuItem = ({ item, isActive }: MenuItemProps) => {
   return (
     <Link
       className={cn(
-        'font-semibold inline-flex items-center px-1 py-1 whitespace-nowrap transition-colors hover:text-sky-400!',
-        isActive ? 'text-sky-400!' : 'text-white/45 hover:text-white/75',
+        'inline-flex whitespace-nowrap rounded-full border px-3 py-1.5 font-semibold transition-colors hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]',
+        isActive
+          ? 'border-[var(--color-accent-border)] bg-[var(--color-accent-surface)] text-[var(--color-accent)]'
+          : 'border-transparent text-[var(--color-text-secondary)]',
       )}
       href={item.href}
       aria-current={isActive ? 'page' : undefined}

@@ -1,10 +1,11 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useFormStatus } from 'react-dom';
 
 interface SubmitButtonProps {
-  idleLabel: string;
-  pendingLabel: string;
+  idleLabel: ReactNode;
+  pendingLabel: ReactNode;
   className?: string;
 }
 
@@ -19,7 +20,7 @@ export const SubmitButton = ({
     <button
       type='submit'
       disabled={pending}
-      className={`cursor-pointer rounded-full bg-sky-400 px-4 py-2 text-sm font-semibold text-black transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60 ${className ?? ''}`}
+      className={`cursor-pointer rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-60 ${className ?? ''}`}
     >
       {pending ? pendingLabel : idleLabel}
     </button>

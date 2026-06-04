@@ -2,7 +2,7 @@ import { SurfaceCard } from './SurfaceCard';
 
 export const TweetSkeleton = () => {
   return (
-    <SurfaceCard className='space-y-4 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.18)]'>
+    <SurfaceCard className='space-y-4 p-5 shadow-[var(--shadow-card)]'>
       <div className='flex items-center gap-3'>
         <div className='skeleton h-11 w-11 rounded-full' />
         <div className='space-y-2'>

@@ -15,7 +15,7 @@ export const Menu = ({ language }: MenuProps) => {
   const items = getMenuItems(language);
 
   return (
-    <nav className='flex flex-wrap justify-end gap-x-4 gap-y-1 text-sm sm:gap-x-6'>
+    <nav className='-mx-4 flex gap-2 overflow-x-auto px-4 text-sm sm:mx-0 sm:flex-wrap sm:justify-end sm:overflow-visible sm:px-0'>
       {items.map((item) => (
         <MenuItem
           key={item.href}

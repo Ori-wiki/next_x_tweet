@@ -4,7 +4,7 @@ export default function ShopLoading() {
       {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className='h-72 animate-pulse rounded-3xl border border-white/10 bg-white/[0.04]'
+          className='h-72 animate-pulse rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)]'
         />
       ))}
     </div>

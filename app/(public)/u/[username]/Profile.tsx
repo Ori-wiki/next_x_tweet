@@ -45,22 +45,22 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
 
   return (
     <div className='space-y-6'>
-      <section className='rounded-4xl border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.25),transparent_45%),rgba(255,255,255,0.03)] p-6'>
+      <section className='rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6'>
         <div className='flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between'>
           <div className='flex items-start gap-4'>
-            <div className='flex h-18 w-18 items-center justify-center rounded-full bg-white text-xl font-semibold text-black'>
+            <div className='flex h-18 w-18 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-xl font-semibold text-[var(--color-text-inverse)]'>
               {profile.avatar}
             </div>
             <div>
-              <h1 className='text-3xl font-bold text-white'>{profile.name}</h1>
-              <p className='text-sky-200'>@{profile.username}</p>
-              <p className='mt-3 max-w-2xl text-white/75'>{profile.bio}</p>
+              <h1 className='text-3xl font-bold text-[var(--color-text-primary)]'>{profile.name}</h1>
+              <p className='text-[var(--color-accent-text)]'>@{profile.username}</p>
+              <p className='mt-3 max-w-2xl text-[var(--color-text-secondary)]'>{profile.bio}</p>
               <div className='mt-3 flex flex-wrap gap-2'>
                 {profile.topics.map((topic) => (
                   <Link
                     key={topic}
                     href={`/explore?q=${topic}`}
-                    className='rounded-full border border-white/10 bg-black/20 px-3 py-1 text-sm text-white/70 transition hover:border-sky-300/35 hover:text-white'
+                    className='rounded-full border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-3 py-1 text-sm text-[var(--color-text-secondary)] transition hover:border-[var(--color-accent-border-soft)] hover:text-[var(--color-text-primary)]'
                   >
                     {topic}
                   </Link>
@@ -69,7 +69,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
             </div>
           </div>
           <div className='space-y-3'>
-            <div className='flex gap-3 text-sm text-white/75'>
+            <div className='flex gap-3 text-sm text-[var(--color-text-secondary)]'>
               {stats.map((stat) => (
                 <StatCard
                   key={stat.label}
@@ -83,7 +83,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                 <input type='hidden' name='targetUserId' value={profile.id} />
                 <button
                   type='submit'
-                  className='rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition hover:cursor-pointer hover:bg-slate-200'
+                  className='rounded-full bg-[var(--color-surface-solid)] px-5 py-2 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:cursor-pointer hover:bg-[var(--color-foreground)]'
                 >
                   {isFollowing
                     ? profileText.followingState
@@ -95,7 +95,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
         </div>
       </section>
 
-      <div className='sticky top-31 z-10 rounded-3xl border border-white/10 bg-slate-950/75 p-2 backdrop-blur'>
+      <div className='sticky top-31 z-10 rounded-3xl border border-[var(--color-border)] bg-[var(--color-overlay)] p-2 backdrop-blur'>
         <div className='flex flex-wrap gap-2'>
           {PROFILE_TABS.map((item) => {
             const isActive = item.key === activeTab;
@@ -106,8 +106,8 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                 href={`/u/${profile.username}?tab=${item.key}`}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                   isActive
-                    ? 'bg-sky-400 text-black'
-                    : 'text-white/65 hover:bg-white/6 hover:text-white'
+                    ? 'bg-[var(--color-accent)] text-[var(--color-text-inverse)]'
+                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)]'
                 }`}
               >
                 {tabLabels[item.key]}
@@ -133,7 +133,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
           ) : null}
 
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>
+            <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>
               {profileText.similarProfiles}
             </h2>
             <div className='mt-4 space-y-3'>
@@ -141,11 +141,11 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                 <Link
                   key={user.id}
                   href={`/u/${user.username}`}
-                  className='block rounded-2xl border border-white/10 bg-black/20 px-4 py-3 transition hover:border-sky-300/35 hover:bg-sky-400/8'
+                  className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-4 py-3 transition hover:border-[var(--color-accent-border-soft)] hover:bg-[var(--color-accent-surface)]'
                 >
-                  <p className='font-medium text-white'>{user.name}</p>
-                  <p className='text-sm text-sky-200'>@{user.username}</p>
-                  <p className='mt-2 text-sm text-white/55'>
+                  <p className='font-medium text-[var(--color-text-primary)]'>{user.name}</p>
+                  <p className='text-sm text-[var(--color-accent-text)]'>@{user.username}</p>
+                  <p className='mt-2 text-sm text-[var(--color-text-soft)]'>
                     {user.sharedTopics.join(' · ') ||
                       user.topics.slice(0, 2).join(' · ')}
                   </p>

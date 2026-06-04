@@ -8,11 +8,11 @@ import { DemoRolePicker } from './DemoRolePicker';
 import { SurfaceCard } from './SurfaceCard';
 
 const headerButtonBaseClassName =
-  'rounded-full border border-white/10 text-white transition hover:cursor-pointer';
+  'rounded-full border border-[var(--color-border)] text-[var(--color-text-primary)] transition hover:cursor-pointer';
 const profileButtonClassName =
-  'bg-white/4 px-3 py-2 text-white/75 hover:bg-white/8 hover:border-sky-300/25';
+  'bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-border)]';
 const signOutButtonClassName =
-  `${headerButtonBaseClassName} bg-white/10 px-4 py-[0.8125rem] hover:bg-white/15`;
+  `${headerButtonBaseClassName} bg-[var(--color-surface-raised)] px-4 py-[0.8125rem] hover:bg-[var(--color-surface-hover)]`;
 
 export const AuthControls = async () => {
   const currentUser = await getSessionUser();
@@ -28,10 +28,10 @@ export const AuthControls = async () => {
         >
           <SurfaceCard className={`${headerButtonBaseClassName} ${profileButtonClassName}`}>
             <div className='flex items-center gap-2.5'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs font-semibold text-black'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-xs font-semibold text-[var(--color-text-inverse)]'>
                 {currentUser.avatar}
               </div>
-              <p className='truncate font-semibold text-white'>{currentUser.name}</p>
+              <p className='truncate font-semibold text-[var(--color-text-primary)]'>{currentUser.name}</p>
             </div>
           </SurfaceCard>
         </Link>
@@ -51,7 +51,7 @@ export const AuthControls = async () => {
 
   return (
     <div className='flex flex-wrap items-center justify-end gap-2'>
-      <span className='rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-2 text-xs font-medium uppercase tracking-[0.16em] text-amber-100'>
+      <span className='rounded-full border border-[var(--color-warning-border)] bg-[var(--color-warning-surface)] px-3 py-2 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-warning-text)]'>
         {common.demoMode}
       </span>
       <DemoRolePicker users={database.users} language={language} />

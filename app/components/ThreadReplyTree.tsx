@@ -43,7 +43,7 @@ const ThreadReplyBranch = ({
       <div className='flex gap-4'>
         <div className='flex w-5 justify-center'>
           {node.depth > 0 ? (
-            <span className='mt-3 h-full min-h-12 w-px rounded-full bg-white/10' />
+            <span className='mt-3 h-full min-h-12 w-px rounded-full bg-[var(--color-surface-raised)]' />
           ) : null}
         </div>
         <div className='min-w-0 flex-1'>
@@ -52,7 +52,7 @@ const ThreadReplyBranch = ({
       </div>
 
       {node.replies.length > 0 ? (
-        <div className='ml-3 border-l border-white/10 pl-4 sm:ml-6 sm:pl-5'>
+        <div className='ml-3 border-l border-[var(--color-border)] pl-4 sm:ml-6 sm:pl-5'>
           <ThreadReplyTree
             replies={node.replies}
             canInteract={canInteract}

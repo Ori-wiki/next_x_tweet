@@ -20,7 +20,6 @@ export const ProfileFake = async () => {
           eyebrow={dashboardText.title}
           title={dashboardText.signedOutTitle}
           description={dashboardText.signedOutDescription}
-          className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
         >
           <div className='flex flex-wrap gap-3'>
             <LinkButton href={PAGES.HOME} variant='solid'>
@@ -63,7 +62,6 @@ export const ProfileFake = async () => {
         eyebrow={currentDict.common.dashboard}
         title={currentDict.dashboard.title}
         description={currentDict.dashboard.description}
-        className='bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_45%),rgba(255,255,255,0.03)]'
       >
         <div className='flex flex-wrap gap-3'>
           <LinkButton href={PAGES.PROFILE(currentUser.username)} variant='solid'>

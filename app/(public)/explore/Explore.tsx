@@ -51,7 +51,7 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
             }}
           />
           {(q || tag) && (
-            <p className='mt-3 text-sm text-white/55'>
+            <p className='mt-3 text-sm text-[var(--color-text-soft)]'>
               {explore.results}: {tweets.length}
               {q ? `, ${explore.query} "${q}"` : ''}
               {tag ? `, ${explore.tag} #${tag.replace(/^#/, '')}` : ''}
@@ -62,17 +62,17 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
 
         <div className='grid gap-4 md:grid-cols-2'>
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>{explore.authors}</h2>
+            <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>{explore.authors}</h2>
             <div className='mt-4 space-y-3'>
               {matchedAuthors.map((author) => (
                 <Link
                   key={author.id}
                   href={PAGES.PROFILE(author.username)}
-                  className='block rounded-2xl border border-white/10 bg-black/20 px-4 py-3 transition hover:border-sky-300/35 hover:bg-sky-400/8'
+                  className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-4 py-3 transition hover:border-[var(--color-accent-border-soft)] hover:bg-[var(--color-accent-surface)]'
                 >
-                  <p className='font-medium text-white'>{author.name}</p>
-                  <p className='text-sm text-sky-200'>@{author.username}</p>
-                  <p className='mt-2 text-sm text-white/55'>
+                  <p className='font-medium text-[var(--color-text-primary)]'>{author.name}</p>
+                  <p className='text-sm text-[var(--color-accent-text)]'>@{author.username}</p>
+                  <p className='mt-2 text-sm text-[var(--color-text-soft)]'>
                     {author.topics.slice(0, 3).join(' · ')}
                   </p>
                 </Link>
@@ -81,7 +81,7 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
           </SurfaceCard>
 
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-white'>
+            <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>
               {explore.matchingTags}
             </h2>
             <div className='mt-4 flex flex-wrap gap-2'>
@@ -89,7 +89,7 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
                 <Link
                   key={hashtag}
                   href={`/explore?tag=${hashtag}&sort=${activeSort}`}
-                  className='rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-2 text-sm text-sky-200 transition hover:border-sky-400/40 hover:bg-sky-400/15'
+                  className='rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-surface)] px-3 py-2 text-sm text-[var(--color-accent-text)] transition hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface-hover)]'
                 >
                   #{hashtag} · {count}
                 </Link>
@@ -112,16 +112,16 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
 
       <aside className='space-y-4'>
         <SurfaceCard className='p-5'>
-          <h2 className='text-lg font-semibold text-white'>{explore.trendingNow}</h2>
+          <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>{explore.trendingNow}</h2>
           <div className='mt-4 space-y-3'>
             {trends.map(([hashtag, count]) => (
               <Link
                 key={hashtag}
                 href={`/explore?tag=${hashtag}`}
-                className='block rounded-2xl border border-white/10 bg-black/20 px-4 py-3 transition hover:border-sky-300/40 hover:bg-sky-400/10'
+                className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-4 py-3 transition hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)]'
               >
-                <p className='font-medium text-sky-200'>#{hashtag}</p>
-                <p className='text-sm text-white/50'>
+                <p className='font-medium text-[var(--color-accent-text)]'>#{hashtag}</p>
+                <p className='text-sm text-[var(--color-text-soft)]'>
                   {count} {explore.tweetsCount}
                 </p>
               </Link>

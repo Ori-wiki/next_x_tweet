@@ -20,9 +20,9 @@ export default async function TestPage({
   const { username } = await params;
 
   return (
-    <div className='rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-white'>
+    <div className='rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface-subtle)] p-6 text-[var(--color-text-primary)]'>
       <h1 className='mb-2 text-2xl font-bold'>Profile test route</h1>
-      <p className='text-white/65'>Dynamic route check for @{username}</p>
+      <p className='text-[var(--color-text-muted)]'>Dynamic route check for @{username}</p>
     </div>
   );
 }

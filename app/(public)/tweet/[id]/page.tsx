@@ -43,10 +43,10 @@ export default async function TweetPage({ params }: TweetPageProps) {
 
       {ancestors.length > 0 ? (
         <div className='space-y-3'>
-          <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
+          <p className='text-sm uppercase tracking-[0.2em] text-[var(--color-text-subtle)]'>
             {thread.parentTweet}
           </p>
-          <div className='space-y-4 border-l border-white/10 pl-4 sm:pl-6'>
+          <div className='space-y-4 border-l border-[var(--color-border)] pl-4 sm:pl-6'>
             {ancestors.map((ancestor) => (
               <Tweet
                 key={ancestor.id}
@@ -60,7 +60,7 @@ export default async function TweetPage({ params }: TweetPageProps) {
       ) : null}
 
       <div className='space-y-3'>
-        <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
+        <p className='text-sm uppercase tracking-[0.2em] text-[var(--color-text-subtle)]'>
           {thread.focusTweet}
         </p>
         <Tweet tweet={tweet} canInteract={Boolean(currentUser)} language={language} />
@@ -82,7 +82,7 @@ export default async function TweetPage({ params }: TweetPageProps) {
       )}
 
       <div className='space-y-3'>
-        <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
+        <p className='text-sm uppercase tracking-[0.2em] text-[var(--color-text-subtle)]'>
           {thread.replies}
         </p>
         {replies.length > 0 ? (

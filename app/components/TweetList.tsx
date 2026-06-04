@@ -1,4 +1,5 @@
 import { Tweet } from '@/app/(public)/(home)/Tweet';
+import { PAGES } from '@/app/config/pages.config';
 import type { TweetView } from '@/app/shared/types/tweet.interface';
 import type { UserLanguage } from '@/app/shared/types/user.interface';
 import { EmptyState } from './EmptyState';
@@ -20,7 +21,7 @@ export const TweetList = ({
 }: TweetListProps) => {
   return (
     <section className='space-y-5'>
-      {title ? <h2 className='text-xl font-semibold text-white'>{title}</h2> : null}
+      {title ? <h2 className='text-xl font-semibold text-[var(--color-text-primary)]'>{title}</h2> : null}
       {tweets.length > 0 ? (
         tweets.map((tweet) => (
           <Tweet
@@ -31,7 +32,11 @@ export const TweetList = ({
           />
         ))
       ) : (
-        <EmptyState message={emptyMessage} />
+        <EmptyState
+          message={emptyMessage}
+          actionHref={PAGES.EXPLORE}
+          actionLabel='Explore tweets'
+        />
       )}
     </section>
   );

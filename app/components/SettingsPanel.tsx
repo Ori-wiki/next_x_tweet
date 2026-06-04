@@ -24,23 +24,23 @@ export const SettingsPanel = ({
     <SurfaceCard className='space-y-4 p-5'>
       <div>
         {!hideEyebrow ? (
-          <p className='text-sm uppercase tracking-[0.2em] text-white/45'>
+          <p className='text-sm uppercase tracking-[0.2em] text-[var(--color-text-subtle)]'>
             {settingsText.preferences}
           </p>
         ) : null}
-        <h2 className='mt-2 text-xl font-semibold text-white'>
+        <h2 className='mt-2 text-xl font-semibold text-[var(--color-text-primary)]'>
           {settingsText.userSettings}
         </h2>
-        <p className='mt-2 text-sm text-white/60'>{settingsText.description}</p>
+        <p className='mt-2 text-sm text-[var(--color-text-soft)]'>{settingsText.description}</p>
       </div>
 
       <form action={updateSettingsAction} className='grid gap-4'>
-        <label className='space-y-2 text-sm text-white/70'>
+        <label className='space-y-2 text-sm text-[var(--color-text-secondary)]'>
           <span>{settingsText.language}</span>
           <select
             name='language'
             defaultValue={settings.language}
-            className='w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 outline-none transition focus:border-sky-400'
+            className='w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 py-3 outline-none transition focus:border-[var(--color-accent)]'
           >
             {LANGUAGE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
