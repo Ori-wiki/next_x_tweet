@@ -50,7 +50,7 @@ export default async function HomePage() {
             language={language}
           />
         </main>
-        <div className='hidden lg:block'>
+        <div className='sidebar-scroll hidden self-start lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto'>
           <HomeSidebar currentUser={currentUser} />
         </div>
       </div>

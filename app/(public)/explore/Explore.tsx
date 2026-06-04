@@ -110,7 +110,8 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
         )}
       </section>
 
-      <aside className='space-y-4'>
+      <aside className='sidebar-scroll self-start lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto'>
+        <div className='space-y-4'>
         <SurfaceCard className='p-5'>
           <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>{explore.trendingNow}</h2>
           <div className='mt-4 space-y-3'>
@@ -128,6 +129,7 @@ export const Explore = async ({ q, tag, sort, currentUser }: ExploreProps) => {
             ))}
           </div>
         </SurfaceCard>
+        </div>
       </aside>
     </div>
   );

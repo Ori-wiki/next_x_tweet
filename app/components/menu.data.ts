@@ -14,6 +14,6 @@ export function getMenuItems(language?: UserLanguage): MenuItemData[] {
     { href: PAGES.HOME, name: common.home },
     { href: PAGES.EXPLORE, name: common.explore },
     { href: PAGES.PROFILE_FAKE, name: common.dashboard },
-    { href: PAGES.SHOP, name: common.shop },
+    { href: PAGES.NOTIFICATIONS, name: common.notifications },
   ];
 }

@@ -120,6 +120,14 @@ a {
   animation: shimmer 1.5s infinite;
 }
 
+.sidebar-scroll {
+  scrollbar-width: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);

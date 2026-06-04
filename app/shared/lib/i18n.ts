@@ -6,6 +6,7 @@ const en = {
     home: 'Home',
     explore: 'Explore',
     dashboard: 'Dashboard',
+    notifications: 'Notifications',
     shop: 'Shop',
     close: 'Close',
     search: 'Search',
@@ -134,6 +135,28 @@ const en = {
     noReposts: 'No reposts yet. Repost a few tweets to keep them here.',
     loadingTitle: 'Loading dashboard',
   },
+  notifications: {
+    eyebrow: 'Activity',
+    title: 'Notifications',
+    description:
+      'Track replies, likes, reposts and saves around your demo timeline.',
+    signedOut:
+      'Sign in with a demo account to see personalized notifications.',
+    noNotifications:
+      'No notifications yet. Post, reply and react to tweets to create activity.',
+    replies: 'Replies',
+    reactions: 'Reactions',
+    repliedTo: 'replied to your tweet',
+    liked: 'liked your tweet',
+    reposted: 'reposted your tweet',
+    bookmarked: 'saved your tweet',
+    globalReply: 'replied in a conversation',
+    globalLike: 'liked a tweet',
+    globalRepost: 'reposted a tweet',
+    globalBookmark: 'saved a tweet',
+    openTweet: 'Open tweet',
+    loadingTitle: 'Loading notifications',
+  },
   settings: {
     preferences: 'Preferences',
     userSettings: 'User settings',
@@ -203,6 +226,7 @@ const ru: Dictionary = {
     home: 'Главная',
     explore: 'Обзор',
     dashboard: 'Панель',
+    notifications: 'Notifications',
     shop: 'Магазин',
     close: 'Закрыть',
     search: 'Найти',
@@ -333,6 +357,28 @@ const ru: Dictionary = {
     repostedTweets: 'Репостнутые твиты',
     noReposts: 'Пока нет репостов. Сделай пару репостов, чтобы увидеть их здесь.',
     loadingTitle: 'Загрузка панели',
+  },
+  notifications: {
+    eyebrow: 'Activity',
+    title: 'Notifications',
+    description:
+      'Track replies, likes, reposts and saves around your demo timeline.',
+    signedOut:
+      'Sign in with a demo account to see personalized notifications.',
+    noNotifications:
+      'No notifications yet. Post, reply and react to tweets to create activity.',
+    replies: 'Replies',
+    reactions: 'Reactions',
+    repliedTo: 'replied to your tweet',
+    liked: 'liked your tweet',
+    reposted: 'reposted your tweet',
+    bookmarked: 'saved your tweet',
+    globalReply: 'replied in a conversation',
+    globalLike: 'liked a tweet',
+    globalRepost: 'reposted a tweet',
+    globalBookmark: 'saved a tweet',
+    openTweet: 'Open tweet',
+    loadingTitle: 'Loading notifications',
   },
   settings: {
     preferences: 'Настройки',
