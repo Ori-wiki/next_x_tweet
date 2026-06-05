@@ -10,7 +10,7 @@ import {
   getDictionary,
   resolveLanguage,
 } from '@/src/shared/lib/i18n';
-import { getUserProfile } from '@/src/entities/tweet/model/selectors';
+import { getUserProfile } from '@/src/entities/tweet';
 import type { SessionUser } from '@/src/entities/user/model/types';
 
 interface ProfileProps {

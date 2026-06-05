@@ -1,0 +1,1 @@
+export { getTweetThread } from './core';

@@ -10,9 +10,9 @@ import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
 const headerButtonBaseClassName =
   'rounded-full border border-[var(--color-border)] text-[var(--color-text-primary)] transition hover:cursor-pointer';
 const profileButtonClassName =
-  'bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-border)]';
+  'bg-[var(--color-surface)] px-2 py-1.5 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-border)] sm:px-3 sm:py-2';
 const signOutButtonClassName =
-  `${headerButtonBaseClassName} bg-[var(--color-surface-raised)] px-4 py-[0.8125rem] hover:bg-[var(--color-surface-hover)]`;
+  `${headerButtonBaseClassName} bg-[var(--color-surface-raised)] px-3 py-2 text-xs hover:bg-[var(--color-surface-hover)] sm:px-4 sm:py-[0.8125rem] sm:text-sm`;
 
 export const AuthControls = async () => {
   const currentUser = await getSessionUser();
@@ -21,7 +21,7 @@ export const AuthControls = async () => {
 
   if (currentUser) {
     return (
-      <div className='flex flex-wrap items-center justify-end gap-3 text-sm'>
+      <div className='flex items-center justify-end gap-2 text-sm'>
         <Link
           href={PAGES.PROFILE(currentUser.username)}
           aria-label={`${currentUser.name} @${currentUser.username}`}
@@ -31,7 +31,7 @@ export const AuthControls = async () => {
               <div className='flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-xs font-semibold text-[var(--color-text-inverse)]'>
                 {currentUser.avatar}
               </div>
-              <p className='truncate font-semibold text-[var(--color-text-primary)]'>{currentUser.name}</p>
+              <p className='hidden max-w-32 truncate font-semibold text-[var(--color-text-primary)] sm:block'>{currentUser.name}</p>
             </div>
           </SurfaceCard>
         </Link>

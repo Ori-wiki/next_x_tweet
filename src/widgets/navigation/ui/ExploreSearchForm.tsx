@@ -66,6 +66,7 @@ function persistSearchHistory(nextHistory: string[]) {
 
 export const ExploreSearchForm = ({
   q,
+  suggestions,
   tag,
   sort,
   texts,
@@ -73,6 +74,8 @@ export const ExploreSearchForm = ({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState(q ?? '');
+  const [history] = useState(() => readSearchHistory());
+  const quickFilters = [...new Set([...history, ...suggestions])].slice(0, 6);
   const fieldClassName =
     'h-12 w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 text-sm outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]';
 
@@ -143,6 +146,30 @@ export const ExploreSearchForm = ({
         </button>
       </form>
 
+      <div className='flex flex-wrap gap-2'>
+        {quickFilters.map((item) => (
+          <button
+            key={item}
+            type='button'
+            onClick={() => setQuery(item)}
+            className='rounded-full border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-3 py-1 text-xs text-[var(--color-text-secondary)] transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)] hover:text-[var(--color-text-primary)]'
+          >
+            {item}
+          </button>
+        ))}
+        {(q || tag || sort === 'top') ? (
+          <button
+            type='button'
+            onClick={() => {
+              setQuery('');
+              startTransition(() => router.push('/explore'));
+            }}
+            className='rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-accent-text)] transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)]'
+          >
+            Clear filters
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };

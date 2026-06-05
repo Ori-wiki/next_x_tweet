@@ -14,6 +14,7 @@ export function getMenuItems(language?: UserLanguage): MenuItemData[] {
     { href: PAGES.HOME, name: common.home },
     { href: PAGES.EXPLORE, name: common.explore },
     { href: PAGES.DASHBOARD, name: common.dashboard },
+    { href: PAGES.BOOKMARKS, name: common.bookmarks },
     { href: PAGES.NOTIFICATIONS, name: common.notifications },
   ];
 }

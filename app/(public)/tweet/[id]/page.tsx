@@ -3,10 +3,10 @@ import { EmptyState } from '@/src/shared/ui/EmptyState';
 import { PageHero } from '@/src/shared/ui/PageHero';
 import { ThreadReplyTree } from '@/src/entities/tweet/ui/ThreadReplyTree';
 import { Tweet } from '@/src/entities/tweet/ui/Tweet';
-import { TweetForm } from '@/src/features/create-tweet/ui/TweetForm';
+import { TweetForm } from '@/src/features/create-tweet';
 import { getSessionUser } from '@/src/entities/user/model/session';
 import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
-import { getTweetThread } from '@/src/entities/tweet/model/selectors';
+import { getTweetThread } from '@/src/entities/tweet';
 
 interface TweetPageProps {
   params: Promise<{ id: string }>;

@@ -1,15 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Bookmark,
-  Heart,
-  MessageCircle,
-  Repeat2,
-  Trash2,
-} from 'lucide-react';
+import { MessageCircle, Trash2 } from 'lucide-react';
 import { CopyLinkButton } from '@/src/shared/ui/CopyLinkButton';
 import { SubmitButton } from '@/src/shared/ui/SubmitButton';
 import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { TweetActionButton } from '@/src/entities/tweet/ui/TweetActionButton';
 import { TweetMediaCard } from '@/src/entities/tweet/ui/TweetMediaCard';
 import { PAGES } from '@/src/shared/config/pages';
 import { deleteTweetAction } from '@/src/features/delete-tweet/model/actions';
@@ -49,23 +44,33 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
   const actions = [
     {
       action: toggleLikeAction,
-      className: tweet.isLiked ? likedActionClassName : '',
-      Icon: Heart,
-      label: `${tweet.isLiked ? tweetText.unlike : tweetText.like} · ${tweet.likes}`,
+      active: tweet.isLiked,
+      activeClassName: likedActionClassName,
+      activeLabel: tweetText.unlike,
+      count: tweet.likes,
+      inactiveLabel: tweetText.like,
+      kind: 'like' as const,
     },
     {
       action: toggleBookmarkAction,
-      className: tweet.isBookmarked ? bookmarkedActionClassName : '',
-      Icon: Bookmark,
-      label: `${tweet.isBookmarked ? tweetText.bookmarked : tweetText.bookmark} · ${tweet.bookmarks}`,
+      active: tweet.isBookmarked,
+      activeClassName: bookmarkedActionClassName,
+      activeLabel: tweetText.bookmarked,
+      count: tweet.bookmarks,
+      inactiveLabel: tweetText.bookmark,
+      kind: 'bookmark' as const,
     },
     {
       action: toggleRepostAction,
-      className: tweet.isReposted ? repostedActionClassName : '',
-      Icon: Repeat2,
-      label: `${tweet.isReposted ? tweetText.reposted : tweetText.repost} · ${tweet.reposts}`,
+      active: tweet.isReposted,
+      activeClassName: repostedActionClassName,
+      activeLabel: tweetText.reposted,
+      count: tweet.reposts,
+      inactiveLabel: tweetText.repost,
+      kind: 'repost' as const,
     },
-  ];  const metrics = [
+  ];
+  const metrics = [
     `${tweet.views.toLocaleString('en-US')} ${tweetText.views}`,
     `${tweet.repliesCount} ${tweetText.replies}`,
     `${tweet.reposts} ${tweetText.reposts}`,
@@ -139,23 +144,21 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
 
       <div className='flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-secondary)]'>
         {actions.map((item) => (
-          <form key={item.label} action={item.action}>
-            <input type='hidden' name='tweetId' value={tweet.id} />
-            <SubmitButton
-              idleLabel={
-                <>
-                  <item.Icon aria-hidden='true' size={16} />
-                  <span>{item.label}</span>
-                </>
-              }
-              pendingLabel='...'
-              className={`${tweetActionClassName} ${item.className} ${
-                !canInteract ? 'pointer-events-none opacity-60' : ''
-              }`}
-            />
-          </form>
+          <TweetActionButton
+            key={item.kind}
+            action={item.action}
+            active={item.active}
+            activeClassName={item.activeClassName}
+            activeLabel={item.activeLabel}
+            baseClassName={`${tweetActionClassName} ${
+              !canInteract ? 'pointer-events-none opacity-60' : ''
+            }`}
+            count={item.count}
+            inactiveLabel={item.inactiveLabel}
+            kind={item.kind}
+            tweetId={tweet.id}
+          />
         ))}
-
         <Link
           href={PAGES.TWEET(tweet.id)}
           className='inline-flex min-w-[108px] items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-transparent px-4 py-2 text-center text-sm font-medium text-[var(--color-text-secondary)] backdrop-blur-sm transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]'

@@ -9,7 +9,9 @@ interface HomeSidebarProps {
   currentUser: SessionUser | null;
 }
 
-function getTrends(tweets: Awaited<ReturnType<typeof readDemoDatabase>>['tweets']) {
+function getTrends(
+  tweets: Awaited<ReturnType<typeof readDemoDatabase>>['tweets'],
+) {
   const counts = tweets.reduce<Map<string, number>>((accumulator, tweet) => {
     tweet.hashtags.forEach((hashtag) => {
       accumulator.set(hashtag, (accumulator.get(hashtag) ?? 0) + 1);
@@ -74,7 +76,9 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
               href={`/explore?tag=${hashtag}`}
               className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]'
             >
-              <p className='font-medium text-[var(--color-accent)]'>#{hashtag}</p>
+              <p className='font-medium text-[var(--color-accent)]'>
+                #{hashtag}
+              </p>
               <p className='text-sm text-[var(--color-text-secondary)]'>
                 {count} tweets
               </p>

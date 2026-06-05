@@ -3,9 +3,9 @@ import { PageHero } from '@/src/shared/ui/PageHero';
 import { TweetList } from '@/src/entities/tweet/ui/TweetList';
 import { getSessionUser } from '@/src/entities/user/model/session';
 import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
-import { getTimeline } from '@/src/entities/tweet/model/selectors';
+import { getTimeline } from '@/src/entities/tweet';
 import { HomeSidebar } from './HomeSidebar';
-import { TweetForm } from '@/src/features/create-tweet/ui/TweetForm';
+import { TweetForm } from '@/src/features/create-tweet';
 
 export default async function HomePage() {
   const currentUser = await getSessionUser();

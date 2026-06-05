@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Profile } from './Profile';
 import { getSessionUser } from '@/src/entities/user/model/session';
-import { getUserProfile } from '@/src/entities/tweet/model/selectors';
+import { getUserProfile } from '@/src/entities/tweet';
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;

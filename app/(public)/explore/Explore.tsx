@@ -6,7 +6,7 @@ import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
 import { TweetList } from '@/src/entities/tweet/ui/TweetList';
 import { PAGES } from '@/src/shared/config/pages';
 import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
-import { getExploreData } from '@/src/entities/tweet/model/selectors';
+import { getExploreData } from '@/src/entities/tweet';
 import type { SessionUser } from '@/src/entities/user/model/types';
 
 interface ExploreProps {

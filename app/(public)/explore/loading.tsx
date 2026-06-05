@@ -11,11 +11,14 @@ export default async function ExploreLoading() {
     <div className='space-y-5'>
       <PageHero
         eyebrow={explore.eyebrow}
-        title={explore.loadingTitle}
-        description={explore.loadingDescription}
+        title={explore.title}
+        description={explore.description}
       />
-      <TweetSkeleton />
-      <TweetSkeleton />
+      <section className='space-y-3'>
+        <p className='text-sm text-[var(--color-text-soft)]'>{explore.loadingTitle}</p>
+        <TweetSkeleton />
+        <TweetSkeleton />
+      </section>
     </div>
   );
 }
