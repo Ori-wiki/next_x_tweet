@@ -1,17 +1,17 @@
 import Link from 'next/link';
-import { PROFILE_TABS, type ProfileTabKey } from '@/app/config/profile.config';
-import { SettingsPanel } from '@/app/components/SettingsPanel';
-import { SurfaceCard } from '@/app/components/SurfaceCard';
-import { StatCard } from '@/app/components/StatCard';
-import { TweetList } from '@/app/components/TweetList';
-import { toggleFollowAction } from '@/app/server-actions/post-tweet';
+import { PROFILE_TABS, type ProfileTabKey } from '@/src/entities/user/config/profile';
+import { SettingsPanel } from '@/src/features/update-settings/ui/SettingsPanel';
+import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { StatCard } from '@/src/shared/ui/StatCard';
+import { TweetList } from '@/src/entities/tweet/ui/TweetList';
+import { toggleFollowAction } from '@/src/features/follow-user/model/actions';
 import {
   formatMessage,
   getDictionary,
   resolveLanguage,
-} from '@/app/shared/lib/i18n';
-import { getUserProfile } from '@/app/shared/lib/tweets';
-import type { SessionUser } from '@/app/shared/types/user.interface';
+} from '@/src/shared/lib/i18n';
+import { getUserProfile } from '@/src/entities/tweet/model/selectors';
+import type { SessionUser } from '@/src/entities/user/model/types';
 
 interface ProfileProps {
   username: string;

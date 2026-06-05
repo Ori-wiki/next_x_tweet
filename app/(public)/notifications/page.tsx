@@ -7,16 +7,16 @@ import {
   UserPlus,
   type LucideIcon,
 } from 'lucide-react';
-import { EmptyState } from '@/app/components/EmptyState';
-import { PageHero } from '@/app/components/PageHero';
-import { SurfaceCard } from '@/app/components/SurfaceCard';
-import { PAGES } from '@/app/config/pages.config';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { readDemoDatabase } from '@/app/shared/lib/demo-db';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
-import { formatRelativeDate } from '@/app/shared/lib/utils';
-import type { TweetRecord } from '@/app/shared/types/tweet.interface';
-import type { UserRecord } from '@/app/shared/types/user.interface';
+import { EmptyState } from '@/src/shared/ui/EmptyState';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { PAGES } from '@/src/shared/config/pages';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { readDemoDatabase } from '@/src/shared/lib/demo-db';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { formatRelativeDate } from '@/src/shared/lib/utils';
+import type { TweetRecord } from '@/src/entities/tweet/model/types';
+import type { UserRecord } from '@/src/entities/user/model/types';
 
 type NotificationIcon = LucideIcon;
 

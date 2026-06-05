@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { TrendingUp, UserRound } from 'lucide-react';
-import { SurfaceCard } from '@/app/components/SurfaceCard';
-import { PAGES } from '@/app/config/pages.config';
-import { readDemoDatabase } from '@/app/shared/lib/demo-db';
-import type { SessionUser } from '@/app/shared/types/user.interface';
+import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { PAGES } from '@/src/shared/config/pages';
+import { readDemoDatabase } from '@/src/shared/lib/demo-db';
+import type { SessionUser } from '@/src/entities/user/model/types';
 
 interface HomeSidebarProps {
   currentUser: SessionUser | null;

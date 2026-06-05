@@ -1,5 +1,5 @@
-import { TweetSkeleton } from '@/app/components/TweetSkeleton';
-import { getDictionary } from '@/app/shared/lib/i18n';
+import { TweetSkeleton } from '@/src/entities/tweet/ui/TweetSkeleton';
+import { getDictionary } from '@/src/shared/lib/i18n';
 
 export default function NotificationsLoading() {
   const { notifications } = getDictionary();

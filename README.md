@@ -16,7 +16,6 @@ Live demo: https://next-x-tweet.vercel.app/
 - Explore с поиском, фильтром по тегам и трендами
 - Лайки, закладки и репосты для твитов
 - Треды с цепочкой ответов и вложенными replies
-- Shop-раздел для сравнения `SSR`, `SSG` и `ISR`
 - Базовые тесты для валидации и формы
 
 ## Запуск
@@ -54,4 +53,3 @@ npm run build
 - `app/server-actions/post-tweet.ts` — server actions для твитов и демо-сессии
 - `app/shared/lib/demo-db.ts` — чтение и запись локальной JSON-базы
 - `app/shared/lib/tweets.ts` — селекторы ленты, профиля, explore, dashboard и тредов
-- `app/(public)/shop/*` — примеры `SSR`, `SSG`, `ISR`, `loading.tsx`, `error.tsx`

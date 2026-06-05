@@ -1,4 +1,4 @@
-import { TweetSkeleton } from '@/app/components/TweetSkeleton';
+import { TweetSkeleton } from '@/src/entities/tweet/ui/TweetSkeleton';
 
 export default function ProfileLoading() {
   return (

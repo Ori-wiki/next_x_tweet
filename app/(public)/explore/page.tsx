@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Explore } from './Explore';
-import { getSessionUser } from '@/app/shared/lib/auth';
+import { getSessionUser } from '@/src/entities/user/model/session';
 
 export const metadata: Metadata = {
   title: 'Explore',

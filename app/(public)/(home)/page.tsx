@@ -1,11 +1,11 @@
-import { EmptyState } from '@/app/components/EmptyState';
-import { PageHero } from '@/app/components/PageHero';
-import { TweetList } from '@/app/components/TweetList';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
-import { getTimeline } from '@/app/shared/lib/tweets';
+import { EmptyState } from '@/src/shared/ui/EmptyState';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { TweetList } from '@/src/entities/tweet/ui/TweetList';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { getTimeline } from '@/src/entities/tweet/model/selectors';
 import { HomeSidebar } from './HomeSidebar';
-import { TweetForm } from './TweetForm';
+import { TweetForm } from '@/src/features/create-tweet/ui/TweetForm';
 
 export default async function HomePage() {
   const currentUser = await getSessionUser();

@@ -1,6 +1,6 @@
-import { TweetSkeleton } from '@/app/components/TweetSkeleton';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
+import { TweetSkeleton } from '@/src/entities/tweet/ui/TweetSkeleton';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
 
 export default async function DashboardLoading() {
   const currentUser = await getSessionUser();

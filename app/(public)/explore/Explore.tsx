@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { EmptyState } from '@/app/components/EmptyState';
-import { ExploreSearchForm } from '@/app/components/ExploreSearchForm';
-import { PageHero } from '@/app/components/PageHero';
-import { SurfaceCard } from '@/app/components/SurfaceCard';
-import { TweetList } from '@/app/components/TweetList';
-import { PAGES } from '@/app/config/pages.config';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
-import { getExploreData } from '@/app/shared/lib/tweets';
-import type { SessionUser } from '@/app/shared/types/user.interface';
+import { EmptyState } from '@/src/shared/ui/EmptyState';
+import { ExploreSearchForm } from '@/src/widgets/navigation/ui/ExploreSearchForm';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { TweetList } from '@/src/entities/tweet/ui/TweetList';
+import { PAGES } from '@/src/shared/config/pages';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { getExploreData } from '@/src/entities/tweet/model/selectors';
+import type { SessionUser } from '@/src/entities/user/model/types';
 
 interface ExploreProps {
   q?: string;

@@ -1,7 +1,7 @@
-import { PageHero } from '@/app/components/PageHero';
-import { TweetSkeleton } from '@/app/components/TweetSkeleton';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { TweetSkeleton } from '@/src/entities/tweet/ui/TweetSkeleton';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
 
 export default async function TweetLoading() {
   const currentUser = await getSessionUser();

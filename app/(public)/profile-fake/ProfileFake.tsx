@@ -1,12 +1,12 @@
-import { EmptyState } from '@/app/components/EmptyState';
-import { LinkButton } from '@/app/components/LinkButton';
-import { PageHero } from '@/app/components/PageHero';
-import { StatCard } from '@/app/components/StatCard';
-import { TweetList } from '@/app/components/TweetList';
-import { PAGES } from '@/app/config/pages.config';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
-import { getDashboardData } from '@/app/shared/lib/tweets';
+import { EmptyState } from '@/src/shared/ui/EmptyState';
+import { LinkButton } from '@/src/shared/ui/LinkButton';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { StatCard } from '@/src/shared/ui/StatCard';
+import { TweetList } from '@/src/entities/tweet/ui/TweetList';
+import { PAGES } from '@/src/shared/config/pages';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { getDashboardData } from '@/src/entities/tweet/model/selectors';
 
 export const ProfileFake = async () => {
   const currentUser = await getSessionUser();

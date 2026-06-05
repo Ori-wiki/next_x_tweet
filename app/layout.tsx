@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
-import { DEFAULT_USER_SETTINGS } from '@/app/config/preferences.config';
-import { getSessionUser } from '@/app/shared/lib/auth';
+import { DEFAULT_USER_SETTINGS } from '@/src/entities/user/config/preferences';
+import { getSessionUser } from '@/src/entities/user/model/session';
 import './globals.css';
 
 const geistSans = Geist({

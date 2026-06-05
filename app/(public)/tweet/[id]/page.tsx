@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { EmptyState } from '@/app/components/EmptyState';
-import { PageHero } from '@/app/components/PageHero';
-import { ThreadReplyTree } from '@/app/components/ThreadReplyTree';
-import { Tweet } from '@/app/(public)/(home)/Tweet';
-import { TweetForm } from '@/app/(public)/(home)/TweetForm';
-import { getSessionUser } from '@/app/shared/lib/auth';
-import { getDictionary, resolveLanguage } from '@/app/shared/lib/i18n';
-import { getTweetThread } from '@/app/shared/lib/tweets';
+import { EmptyState } from '@/src/shared/ui/EmptyState';
+import { PageHero } from '@/src/shared/ui/PageHero';
+import { ThreadReplyTree } from '@/src/entities/tweet/ui/ThreadReplyTree';
+import { Tweet } from '@/src/entities/tweet/ui/Tweet';
+import { TweetForm } from '@/src/features/create-tweet/ui/TweetForm';
+import { getSessionUser } from '@/src/entities/user/model/session';
+import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { getTweetThread } from '@/src/entities/tweet/model/selectors';
 
 interface TweetPageProps {
   params: Promise<{ id: string }>;
