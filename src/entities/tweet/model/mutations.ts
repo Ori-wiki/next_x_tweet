@@ -97,7 +97,7 @@ export function revalidateTweetSurfaces({
 }) {
   revalidatePath('/');
   revalidatePath('/explore');
-  revalidatePath('/profile-fake');
+  revalidatePath('/dashboard');
 
   if (profileUsername) {
     revalidatePath(`/u/${profileUsername}`);

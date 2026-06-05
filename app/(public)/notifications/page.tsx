@@ -164,8 +164,27 @@ export default async function NotificationsPage() {
   const currentUser = await getSessionUser();
   const language = resolveLanguage(currentUser?.settings);
   const { notifications } = getDictionary(language);
+
+  if (!currentUser) {
+    return (
+      <div className='space-y-5'>
+        <PageHero
+          eyebrow={notifications.eyebrow}
+          title={notifications.title}
+          description={notifications.signedOut}
+        />
+
+        <EmptyState
+          message={notifications.signedOut}
+          actionHref={PAGES.HOME}
+          actionLabel='Go to home'
+        />
+      </div>
+    );
+  }
+
   const database = await readDemoDatabase();
-  const currentUserId = currentUser?.id;
+  const currentUserId = currentUser.id;
   const items = [
     ...createFollowItems({ users: database.users, currentUserId }),
     ...createReplyItems({
@@ -192,9 +211,7 @@ export default async function NotificationsPage() {
       <PageHero
         eyebrow={notifications.eyebrow}
         title={notifications.title}
-        description={
-          currentUser ? notifications.description : notifications.signedOut
-        }
+        description={notifications.description}
       />
 
       {items.length > 0 ? (

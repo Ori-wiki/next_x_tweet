@@ -4,7 +4,7 @@ import { SESSION_COOKIE } from '@/src/entities/user/model/session';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
 
-  if (!token && request.nextUrl.pathname.startsWith('/profile-fake')) {
+  if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -12,5 +12,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile-fake/:path*'],
+  matcher: ['/dashboard/:path*'],
 };

@@ -21,7 +21,7 @@ export async function loginAction(formData: FormData) {
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, user.id, SESSION_COOKIE_OPTIONS);
 
-  redirect('/profile-fake');
+  redirect('/dashboard');
 }
 
 export async function logoutAction() {

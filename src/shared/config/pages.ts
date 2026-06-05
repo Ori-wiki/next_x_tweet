@@ -1,7 +1,7 @@
 export const PAGES = {
   HOME: '/',
   EXPLORE: '/explore',
-  PROFILE_FAKE: '/profile-fake',
+  DASHBOARD: '/dashboard',
   NOTIFICATIONS: '/notifications',
   TWEET: (tweetId: string) => `/tweet/${tweetId}`,
   PROFILE: (username: string) => `/u/${username}`,

@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useTransition, type FormEvent } from 'react';
 import { SelectField } from '@/src/shared/ui/SelectField';
 
 type ExploreSearchFormTexts = {
@@ -54,30 +55,6 @@ function readSearchHistory() {
   }
 }
 
-function subscribeToSearchHistory(callback: () => void) {
-  if (typeof window === 'undefined') {
-    return () => undefined;
-  }
-
-  const handleChange = () => callback();
-
-  window.addEventListener('storage', handleChange);
-  window.addEventListener(searchHistoryEvent, handleChange);
-
-  return () => {
-    window.removeEventListener('storage', handleChange);
-    window.removeEventListener(searchHistoryEvent, handleChange);
-  };
-}
-
-function createMergedSuggestions(
-  query: string,
-  history: string[],
-  suggestions: string[],
-) {
-  return [...new Set([query, ...history, ...suggestions])].filter(Boolean).slice(0, 8);
-}
-
 function buildNextHistory(query: string, history: string[]) {
   return [query, ...history.filter((item) => item !== query)].slice(0, 5);
 }
@@ -91,50 +68,62 @@ export const ExploreSearchForm = ({
   q,
   tag,
   sort,
-  suggestions,
   texts,
 }: ExploreSearchFormProps) => {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState(q ?? '');
-  const history = useSyncExternalStore(
-    subscribeToSearchHistory,
-    readSearchHistory,
-    () => EMPTY_HISTORY,
-  );
-
-  const mergedSuggestions = useMemo(() => {
-    return createMergedSuggestions(query, history, suggestions);
-  }, [history, query, suggestions]);
   const fieldClassName =
     'h-12 w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 text-sm outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]';
 
-  function handleSubmit() {
-    const normalized = query.trim();
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-    if (!normalized) {
-      return;
+    const formData = new FormData(event.currentTarget);
+    const normalized = query.trim();
+    const normalizedTag = String(formData.get('tag') ?? '').trim().replace(/^#/, '');
+    const selectedSort = String(formData.get('sort') ?? 'latest');
+    const params = new URLSearchParams();
+
+    if (normalized) {
+      params.set('q', normalized);
+      persistSearchHistory(buildNextHistory(normalized, readSearchHistory()));
     }
 
-    persistSearchHistory(buildNextHistory(normalized, history));
+    if (normalizedTag) {
+      params.set('tag', normalizedTag);
+    }
+
+    if (selectedSort === 'top') {
+      params.set('sort', selectedSort);
+    }
+
+    const queryString = params.toString();
+    startTransition(() => {
+      router.push(queryString ? `/explore?${queryString}` : '/explore');
+    });
   }
 
   return (
     <div className='mt-4 space-y-2'>
       <form
-        className='grid gap-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_170px_140px] sm:items-stretch'
+        className='grid gap-3 transition-opacity sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_170px_140px] sm:items-stretch data-[pending=true]:opacity-80'
+        data-pending={isPending}
         onSubmit={handleSubmit}
       >
         <input
           name='q'
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          list='explore-suggestions'
-          placeholder={texts.searchPlaceholder}
+          aria-label={texts.searchPlaceholder}
+          placeholder={texts.search}
           className={fieldClassName}
         />
         <input
           name='tag'
           defaultValue={tag}
-          placeholder={texts.tagPlaceholder}
+          aria-label={texts.tagPlaceholder}
+          placeholder='#tag'
           className={fieldClassName}
         />
         <SelectField
@@ -147,17 +136,13 @@ export const ExploreSearchForm = ({
         </SelectField>
         <button
           type='submit'
-          className='h-12 rounded-2xl bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)]'
+          disabled={isPending}
+          className='h-12 rounded-2xl bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-70'
         >
-          {texts.search}
+          {isPending ? 'Loading...' : texts.search}
         </button>
       </form>
 
-      <datalist id='explore-suggestions'>
-        {mergedSuggestions.map((suggestion) => (
-          <option key={suggestion} value={suggestion} />
-        ))}
-      </datalist>
     </div>
   );
 };

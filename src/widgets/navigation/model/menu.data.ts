@@ -13,7 +13,7 @@ export function getMenuItems(language?: UserLanguage): MenuItemData[] {
   return [
     { href: PAGES.HOME, name: common.home },
     { href: PAGES.EXPLORE, name: common.explore },
-    { href: PAGES.PROFILE_FAKE, name: common.dashboard },
+    { href: PAGES.DASHBOARD, name: common.dashboard },
     { href: PAGES.NOTIFICATIONS, name: common.notifications },
   ];
 }

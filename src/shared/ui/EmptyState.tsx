@@ -29,7 +29,7 @@ export const EmptyState = ({
       {actionHref && actionLabel ? (
         <Link
           href={actionHref}
-          className='mt-1 rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:bg-[var(--color-accent-hover)]'
+          className='mt-1 rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold !text-[var(--color-background)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)]'
         >
           {actionLabel}
         </Link>

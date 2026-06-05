@@ -8,7 +8,7 @@ import { getSessionUser } from '@/src/entities/user/model/session';
 import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
 import { getDashboardData } from '@/src/entities/tweet/model/selectors';
 
-export const ProfileFake = async () => {
+export const Dashboard = async () => {
   const currentUser = await getSessionUser();
   const language = resolveLanguage(currentUser?.settings);
   const { dashboard: dashboardText, profile: profileText } = getDictionary(language);
