@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getDictionary } from '@/src/shared/lib/i18n';
-import type { TweetMedia } from '@/src/entities/tweet/model/types';
-import type { UserLanguage } from '@/src/entities/user/model/types';
+import { getDictionary } from '@/shared/lib/i18n';
+import type { TweetMedia } from '../model/types';
+import type { Language as UserLanguage } from '@/shared/config/language';
 
 interface TweetMediaCardProps {
   media: TweetMedia;

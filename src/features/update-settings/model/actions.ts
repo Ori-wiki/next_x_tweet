@@ -1,9 +1,8 @@
 'use server';
 
-import { revalidateTweetSurfaces } from '@/src/entities/tweet/model/mutations';
-import { ALLOWED_LANGUAGES } from '@/src/entities/user/config/preferences';
-import { updateUsers, withCurrentUser } from '@/src/entities/user/model/mutations';
-import type { UserLanguage } from '@/src/entities/user/model/types';
+import { ALLOWED_LANGUAGES } from '@/shared/config/language';
+import { updateUsers, withCurrentUser } from '@/entities/user';
+import type { UserLanguage } from '@/entities/user';
 
 function normalizeSettings(formData: FormData) {
   const language = String(formData.get('language') ?? '') as UserLanguage;
@@ -23,19 +22,20 @@ export async function updateSettingsAction(formData: FormData) {
       return;
     }
 
-    await updateUsers((users) =>
-      users.map((user) =>
-        user.id === currentUserId
-          ? {
-              ...user,
-              settings,
-            }
-          : user,
-      ),
+    await updateUsers(
+      (users) =>
+        users.map((user) =>
+          user.id === currentUserId
+            ? {
+                ...user,
+                settings,
+              }
+            : user,
+        ),
+      {
+        profileUsernames: [currentUser.username],
+        revalidateSharedSurfaces: true,
+      },
     );
-
-    revalidateTweetSurfaces({
-      profileUsername: currentUser.username,
-    });
   });
 }

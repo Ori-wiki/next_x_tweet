@@ -1,5 +1,6 @@
-import { readDemoDatabase, updateDemoDatabase } from '@/src/shared/lib/demo-db';
-import type { DemoDatabase } from '@/src/shared/lib/demo-db.types';
+import { revalidatePath } from 'next/cache';
+import { readDemoDatabase, updateDemoDatabase } from '@/shared/db';
+import type { DemoDatabase } from '@/shared/db';
 import type { SessionUser } from './types';
 import { getSessionUserId } from './session';
 
@@ -50,9 +51,23 @@ export async function updateUsers(
       ? (users: U[]) => U[]
       : never
     : never,
+  surfaces: {
+    profileUsernames?: string[];
+    revalidateSharedSurfaces?: boolean;
+  } = {},
 ) {
   await updateDemoDatabase((draft) => ({
     ...draft,
     users: updater(draft.users),
   }));
+
+  if (surfaces.revalidateSharedSurfaces) {
+    revalidatePath('/');
+    revalidatePath('/explore');
+    revalidatePath('/dashboard');
+  }
+
+  surfaces.profileUsernames?.forEach((username) => {
+    revalidatePath(`/u/${username}`);
+  });
 }

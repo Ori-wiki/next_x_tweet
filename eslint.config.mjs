@@ -12,16 +12,24 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["@/src/entities/tweet/model/selectors"],
-              message: "Use the public API: @/src/entities/tweet.",
+              group: [
+                "@/entities/*/model/*",
+                "@/entities/*/ui/*",
+                "@/entities/*/config/*",
+              ],
+              message: "Import entity slices through their public API.",
             },
             {
-              group: ["@/src/features/create-tweet/ui/*"],
-              message: "Use the public API: @/src/features/create-tweet.",
+              group: ["@/features/*/model/*", "@/features/*/ui/*"],
+              message: "Import feature slices through their public API.",
             },
             {
-              group: ["@/src/widgets/header/ui/*"],
-              message: "Use the public API: @/src/widgets/header.",
+              group: ["@/widgets/*/model/*", "@/widgets/*/ui/*"],
+              message: "Import widget slices through their public API.",
+            },
+            {
+              group: ["@/pages/*/model/*", "@/pages/*/ui/*"],
+              message: "Import page slices through their public API.",
             },
           ],
         },

@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation';
 import {
   SESSION_COOKIE,
   SESSION_COOKIE_OPTIONS,
-} from '@/src/entities/user/model/session';
-import { findUserById } from '@/src/entities/user/model/mutations';
-import { readDemoDatabase } from '@/src/shared/lib/demo-db';
+} from '@/entities/user';
+import { findUserById } from '@/entities/user';
+import { readDemoDatabase } from '@/shared/db';
 
 export async function loginAction(formData: FormData) {
   const userId = String(formData.get('userId') ?? '');

@@ -1,4 +1,4 @@
-import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 
 export const TweetSkeleton = () => {
   return (

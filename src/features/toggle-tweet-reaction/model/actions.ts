@@ -2,12 +2,11 @@
 
 import {
   findTweetById,
-  revalidateTweetSurfaces,
   updateTweetRelation,
   updateTweets,
-} from '@/src/entities/tweet/model/mutations';
-import type { TweetRelationKey } from '@/src/entities/tweet/model/types';
-import { withCurrentUser } from '@/src/entities/user/model/mutations';
+} from '@/entities/tweet';
+import type { TweetRelationKey } from '@/entities/tweet';
+import { withCurrentUser } from '@/entities/user';
 
 async function toggleTweetRelation(
   formData: FormData,
@@ -21,15 +20,15 @@ async function toggleTweetRelation(
       return;
     }
 
-    await updateTweets((tweets) =>
-      updateTweetRelation(tweets, tweetId, currentUserId, relationKey),
+    await updateTweets(
+      (tweets) =>
+        updateTweetRelation(tweets, tweetId, currentUserId, relationKey),
+      {
+        profileUsername: currentUser.username,
+        tweetId: targetTweet.id,
+        replyToId: targetTweet.replyToId,
+      },
     );
-
-    revalidateTweetSurfaces({
-      profileUsername: currentUser.username,
-      tweetId: targetTweet.id,
-      replyToId: targetTweet.replyToId,
-    });
   });
 }
 

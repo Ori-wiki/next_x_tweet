@@ -2,10 +2,9 @@
 
 import {
   findTweetById,
-  revalidateTweetSurfaces,
   updateTweets,
-} from '@/src/entities/tweet/model/mutations';
-import { withCurrentUser } from '@/src/entities/user/model/mutations';
+} from '@/entities/tweet';
+import { withCurrentUser } from '@/entities/user';
 
 export async function deleteTweetAction(formData: FormData) {
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
@@ -16,12 +15,13 @@ export async function deleteTweetAction(formData: FormData) {
       return;
     }
 
-    await updateTweets((tweets) => tweets.filter((tweet) => tweet.id !== tweetId));
-
-    revalidateTweetSurfaces({
-      profileUsername: currentUser.username,
-      tweetId: targetTweet.id,
-      replyToId: targetTweet.replyToId,
-    });
+    await updateTweets(
+      (tweets) => tweets.filter((tweet) => tweet.id !== tweetId),
+      {
+        profileUsername: currentUser.username,
+        tweetId: targetTweet.id,
+        replyToId: targetTweet.replyToId,
+      },
+    );
   });
 }

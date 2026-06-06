@@ -1,3 +1,8 @@
+import type {
+  DatabaseTweetMedia,
+  DatabaseTweetRecord,
+} from '@/shared/db';
+
 export interface TweetAuthor {
   id: string;
   username: string;
@@ -9,27 +14,8 @@ export interface TweetAuthor {
   topics: string[];
 }
 
-export interface TweetMedia {
-  url: string;
-  type: 'image' | 'link';
-  title?: string;
-  description?: string;
-  attachmentLabel?: string;
-}
-
-export interface TweetRecord {
-  id: string;
-  authorId: string;
-  content: string;
-  createdAt: string;
-  hashtags: string[];
-  likedBy: string[];
-  bookmarkedBy: string[];
-  repostedBy: string[];
-  views: number;
-  replyToId: string | null;
-  media?: TweetMedia | null;
-}
+export type TweetMedia = DatabaseTweetMedia;
+export type TweetRecord = DatabaseTweetRecord;
 
 export type TweetRelationKey = 'likedBy' | 'bookmarkedBy' | 'repostedBy';
 

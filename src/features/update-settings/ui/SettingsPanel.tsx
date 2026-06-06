@@ -1,10 +1,10 @@
-import { LANGUAGE_OPTIONS } from '@/src/entities/user/config/preferences';
-import { getDictionary } from '@/src/shared/lib/i18n';
-import { updateSettingsAction } from '@/src/features/update-settings/model/actions';
-import type { UserSettings } from '@/src/entities/user/model/types';
-import { SelectField } from '@/src/shared/ui/SelectField';
-import { SubmitButton } from '@/src/shared/ui/SubmitButton';
-import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { LANGUAGE_OPTIONS } from '@/shared/config/language';
+import { getDictionary } from '@/shared/lib/i18n';
+import { updateSettingsAction } from '../model/actions';
+import type { UserSettings } from '@/entities/user';
+import { SelectField } from '@/shared/ui/SelectField';
+import { SubmitButton } from '@/shared/ui/SubmitButton';
+import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 
 interface SettingsPanelProps {
   settings: UserSettings;

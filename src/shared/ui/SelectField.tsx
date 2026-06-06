@@ -11,7 +11,7 @@ import {
   type OptionHTMLAttributes,
   type ReactNode,
 } from 'react';
-import { cn } from '@/src/shared/lib/cn';
+import { cn } from '@/shared/lib/cn';
 
 interface SelectOption {
   label: string;

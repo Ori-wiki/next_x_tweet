@@ -1,6 +1,6 @@
 import { revalidatePath } from 'next/cache';
-import { updateDemoDatabase } from '@/src/shared/lib/demo-db';
-import type { DemoDatabase } from '@/src/shared/lib/demo-db.types';
+import { updateDemoDatabase } from '@/shared/db';
+import type { DemoDatabase } from '@/shared/db';
 import type { TweetMedia, TweetRecord, TweetRelationKey } from './types';
 
 export function findTweetById(database: DemoDatabase, tweetId: string) {
@@ -79,35 +79,30 @@ export function updateTweetRelation(
 
 export async function updateTweets(
   updater: (tweets: TweetRecord[]) => TweetRecord[],
+  surfaces: {
+    profileUsername?: string;
+    tweetId?: string;
+    replyToId?: string | null;
+  } = {},
 ) {
   await updateDemoDatabase((draft) => ({
     ...draft,
     tweets: updater(draft.tweets),
   }));
-}
 
-export function revalidateTweetSurfaces({
-  profileUsername,
-  tweetId,
-  replyToId,
-}: {
-  profileUsername?: string;
-  tweetId?: string;
-  replyToId?: string | null;
-}) {
   revalidatePath('/');
   revalidatePath('/explore');
   revalidatePath('/dashboard');
 
-  if (profileUsername) {
-    revalidatePath(`/u/${profileUsername}`);
+  if (surfaces.profileUsername) {
+    revalidatePath(`/u/${surfaces.profileUsername}`);
   }
 
-  if (tweetId) {
-    revalidatePath(`/tweet/${tweetId}`);
+  if (surfaces.tweetId) {
+    revalidatePath(`/tweet/${surfaces.tweetId}`);
   }
 
-  if (replyToId) {
-    revalidatePath(`/tweet/${replyToId}`);
+  if (surfaces.replyToId) {
+    revalidatePath(`/tweet/${surfaces.replyToId}`);
   }
 }

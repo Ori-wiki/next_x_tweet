@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { loginAction } from '@/src/features/auth/model/actions';
-import { getDictionary } from '@/src/shared/lib/i18n';
-import type { UserRecord } from '@/src/entities/user/model/types';
-import type { UserLanguage } from '@/src/entities/user/model/types';
-import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
+import { loginAction } from '../model/actions';
+import { getDictionary } from '@/shared/lib/i18n';
+import type { UserRecord } from '@/entities/user';
+import type { UserLanguage } from '@/entities/user';
+import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 
 interface DemoRolePickerProps {
   users: UserRecord[];

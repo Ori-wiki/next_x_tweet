@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { cn } from '@/src/shared/lib/cn';
+import { cn } from '@/shared/lib/cn';
 
 interface PageHeroProps extends PropsWithChildren {
   eyebrow: string;

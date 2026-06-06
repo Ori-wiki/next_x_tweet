@@ -1,5 +1,8 @@
-import { DEFAULT_USER_SETTINGS } from '@/src/entities/user/config/preferences';
-import type { UserLanguage, UserSettings } from '@/src/entities/user/model/types';
+import { DEFAULT_USER_SETTINGS } from '@/shared/config/language';
+import type {
+  Language as UserLanguage,
+  LanguageSettings as UserSettings,
+} from '@/shared/config/language';
 
 const en = {
   common: {

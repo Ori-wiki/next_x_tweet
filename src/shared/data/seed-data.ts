@@ -1,4 +1,4 @@
-import type { DemoDatabase } from '@/src/shared/lib/demo-db.types';
+import type { DemoDatabase } from '@/shared/db';
 
 export const seedDatabase: DemoDatabase = {
   users: [

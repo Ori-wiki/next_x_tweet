@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { TweetActionState } from '@/src/features/create-tweet/model/state';
+import type { TweetActionState } from '../model/state';
 import { TweetForm } from './TweetForm';
 
 describe('TweetForm', () => {

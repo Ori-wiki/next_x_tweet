@@ -3,12 +3,11 @@
 import {
   buildTweet,
   findTweetById,
-  revalidateTweetSurfaces,
   updateTweets,
-} from '@/src/entities/tweet/model/mutations';
-import { createTweetSchema, extractHashtags } from '@/src/entities/tweet/model/validation';
-import { getDatabaseContext } from '@/src/entities/user/model/mutations';
-import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+} from '@/entities/tweet';
+import { createTweetSchema, extractHashtags } from '@/entities/tweet';
+import { getDatabaseContext } from '@/entities/user';
+import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import type { TweetActionState } from './state';
 
 export async function createTweetAction(
@@ -49,22 +48,23 @@ export async function createTweetAction(
     };
   }
 
-  await updateTweets((tweets) => [
-    buildTweet(
-      context.currentUser.id,
-      parsed.data.content,
-      extractHashtags(parsed.data.content),
-      parsed.data.mediaUrl,
-      parsed.data.attachmentLabel,
+  await updateTweets(
+    (tweets) => [
+      buildTweet(
+        context.currentUser.id,
+        parsed.data.content,
+        extractHashtags(parsed.data.content),
+        parsed.data.mediaUrl,
+        parsed.data.attachmentLabel,
+        replyToId,
+      ),
+      ...tweets,
+    ],
+    {
+      profileUsername: context.currentUser.username,
       replyToId,
-    ),
-    ...tweets,
-  ]);
-
-  revalidateTweetSurfaces({
-    profileUsername: context.currentUser.username,
-    replyToId,
-  });
+    },
+  );
 
   return {
     status: 'success',

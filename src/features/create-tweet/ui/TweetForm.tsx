@@ -2,13 +2,13 @@
 
 import { Link2, Send, Tag } from 'lucide-react';
 import { useActionState, useEffect, useRef, useState } from 'react';
-import { SubmitButton } from '@/src/shared/ui/SubmitButton';
-import { SurfaceCard } from '@/src/shared/ui/SurfaceCard';
-import { createTweetAction } from '@/src/features/create-tweet/model/actions';
+import { SubmitButton } from '@/shared/ui/SubmitButton';
+import { SurfaceCard } from '@/shared/ui/SurfaceCard';
+import { createTweetAction } from '../model/actions';
 import {
   initialTweetActionState,
   type TweetActionState,
-} from '@/src/features/create-tweet/model/state';
+} from '../model/state';
 
 interface TweetFormProps {
   title?: string;

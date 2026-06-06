@@ -11,7 +11,12 @@ export { getExploreData } from './model/explore';
 export { getUserProfile } from './model/profile';
 export { getTweetThread } from './model/thread';
 export { getTimeline } from './model/timeline';
-export { ThreadReplyTree } from './ui/ThreadReplyTree';
-export { Tweet } from './ui/Tweet';
-export { TweetList } from './ui/TweetList';
+export {
+  buildTweet,
+  findTweetById,
+  updateTweetRelation,
+  updateTweets,
+} from './model/mutations';
+export { createTweetSchema, extractHashtags } from './model/validation';
+export { TweetMediaCard } from './ui/TweetMediaCard';
 export { TweetSkeleton } from './ui/TweetSkeleton';

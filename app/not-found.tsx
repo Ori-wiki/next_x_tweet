@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { getSessionUser } from '@/src/entities/user/model/session';
-import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
+import { getSessionUser } from '@/entities/user';
+import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 
 export default async function NotFound() {
   const currentUser = await getSessionUser();

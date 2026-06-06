@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { Bell, Bookmark, CircleUserRound, Home, Search } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { PAGES } from '@/src/shared/config/pages';
-import { cn } from '@/src/shared/lib/cn';
+import { PAGES } from '@/shared/config/pages';
+import { cn } from '@/shared/lib/cn';
 
 const icons = {
   [PAGES.HOME]: Home,
@@ -22,7 +22,7 @@ interface SidebarNavProps {
 }
 
 export const SidebarNav = ({ items }: SidebarNavProps) => {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
 
   return (
     <nav className='grid gap-1'>

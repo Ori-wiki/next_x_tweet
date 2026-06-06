@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
-import { readDemoDatabase } from '@/src/shared/lib/demo-db';
+import { readDemoDatabase } from '@/shared/db';
 import type {
   TweetAuthor,
   TweetRecord,
   TweetThreadNode,
   TweetView,
-} from '@/src/entities/tweet/model/types';
-import type { SessionUser, UserRecord } from '@/src/entities/user/model/types';
+} from './types';
+import type { SessionUser, UserRecord } from '@/entities/user/@x/tweet';
 
 type UsersById = Map<string, UserRecord>;
 type TweetsById = Map<string, TweetRecord>;

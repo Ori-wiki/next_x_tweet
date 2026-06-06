@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getDictionary } from '@/src/shared/lib/i18n';
+import { getDictionary } from '@/shared/lib/i18n';
 
 export function createTweetSchema(language?: 'en' | 'ru') {
   const { validation } = getDictionary(language);

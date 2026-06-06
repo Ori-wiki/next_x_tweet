@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { readDemoDatabase } from '@/src/shared/lib/demo-db';
+import { readDemoDatabase } from '@/shared/db';
 import type { SessionUser } from './types';
 
 export const SESSION_COOKIE = 'demo_session';

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { cn } from '@/src/shared/lib/cn';
+import { cn } from '@/shared/lib/cn';
 
 interface LinkButtonProps {
   href: string;

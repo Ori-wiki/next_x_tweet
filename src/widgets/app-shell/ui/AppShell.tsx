@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
-import { getSessionUser } from '@/src/entities/user/model/session';
-import { ComposeModal } from '@/src/features/create-tweet';
-import { DemoRolePicker } from '@/src/features/auth/ui/DemoRolePicker';
-import { PAGES } from '@/src/shared/config/pages';
-import { readDemoDatabase } from '@/src/shared/lib/demo-db';
-import { getDictionary, resolveLanguage } from '@/src/shared/lib/i18n';
-import { getMenuItems } from '@/src/widgets/navigation/model/menu.data';
+import { getSessionUser } from '@/entities/user';
+import { ComposeModal } from '@/features/create-tweet';
+import { DemoRolePicker } from '@/features/auth';
+import { PAGES } from '@/shared/config/pages';
+import { readDemoDatabase } from '@/shared/db';
+import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
+import { getMenuItems } from '../model/menu.data';
 import { SidebarNav } from './SidebarNav';
 
 export const AppShell = async ({ children }: PropsWithChildren) => {

@@ -1,20 +1,11 @@
-export type UserLanguage = 'en' | 'ru';
+import type {
+  DatabaseUserLanguage,
+  DatabaseUserRecord,
+  DatabaseUserSettings,
+} from '@/shared/db';
 
-export interface UserSettings {
-  language: UserLanguage;
-}
-
-export interface UserRecord {
-  id: string;
-  username: string;
-  name: string;
-  bio: string;
-  avatar: string;
-  followers: number;
-  following: number;
-  followingIds: string[];
-  topics: string[];
-  settings: UserSettings;
-}
+export type UserLanguage = DatabaseUserLanguage;
+export type UserSettings = DatabaseUserSettings;
+export type UserRecord = DatabaseUserRecord;
 
 export type SessionUser = UserRecord;
