@@ -2,6 +2,7 @@
 
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { TweetForm } from './TweetForm';
 
 interface ComposeModalProps {
@@ -28,6 +29,37 @@ export const ComposeModal = ({
     return null;
   }
 
+  const modal = isOpen ? (
+    <div
+      className='fixed inset-0 z-100 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-16 backdrop-blur-sm'
+      onClick={() => setIsOpen(false)}
+    >
+      <div
+        className='relative z-10 w-full max-w-xl'
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className='mb-3 flex justify-end'>
+          <button
+            type='button'
+            aria-label='Close'
+            onClick={() => setIsOpen(false)}
+            className='inline-flex size-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface) text-(--color-text-primary) transition hover:cursor-pointer hover:bg-(--color-surface-hover)'
+          >
+            <X aria-hidden='true' size={18} />
+          </button>
+        </div>
+        <TweetForm
+          title={texts.title}
+          submitLabel={texts.submitLabel}
+          pendingLabel={texts.pendingLabel}
+          placeholder={texts.placeholder}
+          mediaUrlPlaceholder={texts.mediaUrlPlaceholder}
+          attachmentLabelPlaceholder={texts.attachmentLabelPlaceholder}
+        />
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       <button
@@ -45,30 +77,9 @@ export const ComposeModal = ({
         {!compact ? <span>New tweet</span> : null}
       </button>
 
-      {isOpen ? (
-        <div className='fixed inset-0 z-50 flex items-start justify-center bg-black/60 px-4 py-16 backdrop-blur-sm'>
-          <div className='w-full max-w-xl'>
-            <div className='mb-3 flex justify-end'>
-              <button
-                type='button'
-                aria-label='Close'
-                onClick={() => setIsOpen(false)}
-                className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface) text-(--color-text-primary) transition hover:cursor-pointer hover:bg-(--color-surface-hover)'
-              >
-                <X aria-hidden='true' size={18} />
-              </button>
-            </div>
-            <TweetForm
-              title={texts.title}
-              submitLabel={texts.submitLabel}
-              pendingLabel={texts.pendingLabel}
-              placeholder={texts.placeholder}
-              mediaUrlPlaceholder={texts.mediaUrlPlaceholder}
-              attachmentLabelPlaceholder={texts.attachmentLabelPlaceholder}
-            />
-          </div>
-        </div>
-      ) : null}
+      {typeof document !== 'undefined'
+        ? createPortal(modal, document.body)
+        : null}
     </>
   );
 };
