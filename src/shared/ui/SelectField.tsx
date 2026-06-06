@@ -93,7 +93,7 @@ export const SelectField = ({
           aria-hidden='true'
           size={18}
           className={cn(
-            'shrink-0 text-[var(--color-text-soft)] transition-transform duration-150',
+            'shrink-0 text-(--color-text-soft) transition-transform duration-150',
             isOpen ? 'rotate-180' : 'rotate-0',
           )}
         />
@@ -103,7 +103,7 @@ export const SelectField = ({
         <div
           id={listboxId}
           role='listbox'
-          className='absolute left-0 right-0 top-full z-30 overflow-hidden rounded-b-2xl border border-t-0 border-[var(--color-accent)] bg-[var(--color-surface-dark-medium)] py-1 shadow-[var(--shadow-card)]'
+          className='absolute left-0 right-0 top-full z-30 overflow-hidden rounded-b-2xl border border-t-0 border-(--color-accent) bg-(--color-surface-dark-medium) py-1 shadow-(--shadow-card)'
         >
           {options.map((option) => {
             const isSelected = option.value === value;
@@ -119,10 +119,10 @@ export const SelectField = ({
                   setIsOpen(false);
                 }}
                 className={cn(
-                  'block w-full cursor-pointer px-4 py-2.5 text-left text-sm transition hover:bg-[var(--color-surface-hover)]',
+                  'block w-full cursor-pointer px-4 py-2.5 text-left text-sm transition hover:bg-(--color-surface-hover)',
                   isSelected
-                    ? 'text-[var(--color-text-primary)]'
-                    : 'text-[var(--color-text-secondary)]',
+                    ? 'text-(--color-text-primary)'
+                    : 'text-(--color-text-secondary)',
                 )}
               >
                 {option.label}

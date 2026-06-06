@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getSessionUser } from '@/entities/user';
-import { Explore } from './ExplorePage';
+import ExplorePageView from './ExplorePage';
 
 export const metadata: Metadata = {
   title: 'Explore',
@@ -21,7 +21,7 @@ export default async function ExplorePage({
   const currentUser = await getSessionUser();
 
   return (
-    <Explore
+    <ExplorePageView
       currentUser={currentUser}
       q={params.q}
       tag={params.tag}

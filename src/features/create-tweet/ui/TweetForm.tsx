@@ -55,13 +55,13 @@ export const TweetForm = ({
       onReset={() => setContentLength(0)}
       className={compact ? '' : 'mb-6'}
     >
-      <SurfaceCard className='space-y-4 p-4 text-[var(--color-text-primary)] shadow-[var(--shadow-form)]'>
+      <SurfaceCard className='space-y-4 p-4 text-(--color-text-primary) shadow-(--shadow-form)'>
         {replyToId ? <input type='hidden' name='replyToId' value={replyToId} /> : null}
         <div className='flex items-center justify-between gap-3'>
-          <label className='block text-sm font-semibold text-[var(--color-text-primary)]' htmlFor='content'>
+          <label className='block text-sm font-semibold text-(--color-text-primary)' htmlFor='content'>
             {title}
           </label>
-          <p className='rounded-full border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)]'>
+          <p className='rounded-full border border-(--color-border) bg-(--color-surface-dark-medium) px-3 py-1 text-xs font-medium text-(--color-text-secondary)'>
             {contentLength}/{maxLength}
           </p>
         </div>
@@ -72,23 +72,23 @@ export const TweetForm = ({
           maxLength={maxLength}
           placeholder={placeholder}
           onChange={(event) => setContentLength(event.target.value.length)}
-          className='w-full resize-none rounded-[20px] border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 text-sm outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)] sm:text-base'
+          className='w-full resize-none rounded-[20px] border border-(--color-border) bg-(--color-background) px-4 py-3 text-sm outline-none transition placeholder:text-(--color-text-faint) focus:border-(--color-accent) sm:text-base'
         />
         <div className='grid gap-3 sm:grid-cols-2'>
-          <label className='flex items-center gap-2 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 py-3 text-sm text-[var(--color-text-secondary)] focus-within:border-[var(--color-accent)]'>
-            <Link2 aria-hidden='true' className='shrink-0 text-[var(--color-accent)]' size={16} />
+          <label className='flex items-center gap-2 rounded-2xl border border-(--color-border) bg-(--color-surface-dark-medium) px-4 py-3 text-sm text-(--color-text-secondary) focus-within:border-(--color-accent)'>
+            <Link2 aria-hidden='true' className='shrink-0 text-(--color-accent)' size={16} />
             <input
               name='mediaUrl'
               placeholder={mediaUrlPlaceholder}
-              className='min-w-0 flex-1 bg-transparent outline-none placeholder:text-[var(--color-text-faint)]'
+              className='min-w-0 flex-1 bg-transparent outline-none placeholder:text-(--color-text-faint)'
             />
           </label>
-          <label className='flex items-center gap-2 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 py-3 text-sm text-[var(--color-text-secondary)] focus-within:border-[var(--color-accent)]'>
-            <Tag aria-hidden='true' className='shrink-0 text-[var(--color-accent)]' size={16} />
+          <label className='flex items-center gap-2 rounded-2xl border border-(--color-border) bg-(--color-surface-dark-medium) px-4 py-3 text-sm text-(--color-text-secondary) focus-within:border-(--color-accent)'>
+            <Tag aria-hidden='true' className='shrink-0 text-(--color-accent)' size={16} />
             <input
               name='attachmentLabel'
               placeholder={attachmentLabelPlaceholder}
-              className='min-w-0 flex-1 bg-transparent outline-none placeholder:text-[var(--color-text-faint)]'
+              className='min-w-0 flex-1 bg-transparent outline-none placeholder:text-(--color-text-faint)'
             />
           </label>
         </div>
@@ -98,24 +98,24 @@ export const TweetForm = ({
             {state.message ? (
               <p
                 className={
-                  state.status === 'error' ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'
+                  state.status === 'error' ? 'text-(--color-danger)' : 'text-(--color-success)'
                 }
               >
                 {state.message}
               </p>
             ) : null}
             {state.errors?.content?.map((error) => (
-              <p key={error} className='text-[var(--color-danger)]'>
+              <p key={error} className='text-(--color-danger)'>
                 {error}
               </p>
             ))}
             {state.errors?.mediaUrl?.map((error) => (
-              <p key={error} className='text-[var(--color-danger)]'>
+              <p key={error} className='text-(--color-danger)'>
                 {error}
               </p>
             ))}
             {state.errors?.attachmentLabel?.map((error) => (
-              <p key={error} className='text-[var(--color-danger)]'>
+              <p key={error} className='text-(--color-danger)'>
                 {error}
               </p>
             ))}

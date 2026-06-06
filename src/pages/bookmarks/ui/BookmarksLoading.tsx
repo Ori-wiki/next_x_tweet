@@ -6,8 +6,8 @@ export default function BookmarksLoading() {
 
   return (
     <div className='space-y-5'>
-      <div className='skeleton h-40 rounded-[24px]' />
-      <p className='text-sm text-[var(--color-text-soft)]'>{bookmarks.loadingTitle}</p>
+      <div className='skeleton h-40 rounded-3xl' />
+      <p className='text-sm text-(--color-text-soft)'>{bookmarks.loadingTitle}</p>
       <TweetSkeleton />
       <TweetSkeleton />
     </div>

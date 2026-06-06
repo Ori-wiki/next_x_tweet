@@ -18,25 +18,25 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
   const { auth, common, demoRolePicker } = getDictionary(language);
 
   const modal = isOpen ? (
-    <div className='fixed inset-0 z-[100] overflow-y-auto bg-[var(--color-overlay)] p-4 backdrop-blur-md'>
+    <div className='fixed inset-0 z-[100] overflow-y-auto bg-(--color-overlay) p-4 backdrop-blur-md'>
       <div className='flex min-h-full items-start justify-center py-4 sm:items-center'>
-        <SurfaceCard className='relative my-auto w-full max-w-3xl space-y-8 px-6 py-7 shadow-2xl shadow-[var(--shadow-accent)] sm:px-8 sm:py-8'>
+        <SurfaceCard className='relative my-auto w-full max-w-3xl space-y-8 px-6 py-7 shadow-2xl shadow-(--shadow-accent) sm:px-8 sm:py-8'>
           <button
             type='button'
             onClick={() => setIsOpen(false)}
-            className='absolute right-5 top-5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-sm text-[var(--color-text-secondary)] transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]'
+            className='absolute right-5 top-5 rounded-full border border-(--color-border) bg-(--color-surface) px-3 py-1 text-sm text-(--color-text-secondary) transition hover:border-(--color-border-hover) hover:bg-(--color-surface-raised) hover:text-(--color-text-primary)'
           >
             {common.close}
           </button>
 
           <div className='mx-auto max-w-2xl text-center'>
-            <p className='text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-accent-muted)]'>
+            <p className='text-xs font-semibold uppercase tracking-[0.24em] text-(--color-accent-muted)'>
               {common.demoMode}
             </p>
-            <h2 className='mt-3 text-3xl font-semibold leading-tight text-[var(--color-text-primary)] sm:text-4xl'>
+            <h2 className='mt-3 text-3xl font-semibold leading-tight text-(--color-text-primary) sm:text-4xl'>
               {demoRolePicker.title}
             </h2>
-            <p className='mx-auto mt-3 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]'>
+            <p className='mx-auto mt-3 max-w-xl text-base leading-7 text-(--color-text-secondary)'>
               {demoRolePicker.description}
             </p>
           </div>
@@ -47,18 +47,18 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
                 <input type='hidden' name='userId' value={user.id} />
                 <button
                   type='submit'
-                  className='flex h-full w-full flex-col rounded-3xl border border-[var(--color-border)] bg-[var(--color-overlay)] p-5 text-left shadow-lg shadow-black/10 transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)]'
+                  className='flex h-full w-full flex-col rounded-3xl border border-(--color-border) bg-(--color-overlay) p-5 text-left shadow-lg shadow-black/10 transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface)'
                 >
-                  <span className='flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-lg font-semibold text-[var(--color-text-inverse)]'>
+                  <span className='flex h-14 w-14 items-center justify-center rounded-full bg-(--color-surface-solid) text-lg font-semibold text-(--color-text-inverse)'>
                     {user.avatar}
                   </span>
-                  <span className='mt-4 text-lg font-semibold text-[var(--color-text-primary)]'>
+                  <span className='mt-4 text-lg font-semibold text-(--color-text-primary)'>
                     {user.name}
                   </span>
-                  <span className='mt-1 text-sm font-medium text-[var(--color-accent-text)]'>
+                  <span className='mt-1 text-sm font-medium text-(--color-accent-text)'>
                     @{user.username}
                   </span>
-                  <span className='mt-3 text-sm leading-6 text-[var(--color-text-secondary)]'>
+                  <span className='mt-3 text-sm leading-6 text-(--color-text-secondary)'>
                     {user.bio}
                   </span>
                 </button>
@@ -66,7 +66,7 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
             ))}
           </div>
 
-          <div className='mx-auto max-w-2xl rounded-3xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-dark)] px-5 py-4 text-center text-sm leading-6 text-[var(--color-text-muted)]'>
+          <div className='mx-auto max-w-2xl rounded-3xl border border-dashed border-(--color-border) bg-(--color-surface-dark) px-5 py-4 text-center text-sm leading-6 text-(--color-text-muted)'>
             {demoRolePicker.tour}
           </div>
         </SurfaceCard>
@@ -79,7 +79,7 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
       <button
         type='button'
         onClick={() => setIsOpen(true)}
-        className='rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-surface)] px-4 py-2 text-sm text-[var(--color-accent-text-strong)] transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface-hover)]'
+        className='rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) px-4 py-2 text-sm text-(--color-accent-text-strong) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface-hover)'
       >
         {auth.chooseDemoRole}
       </button>

@@ -33,8 +33,8 @@ export const ComposeModal = ({ canCompose, compact = false, texts }: ComposeModa
         onClick={() => setIsOpen(true)}
         className={
           compact
-            ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-background)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)]'
-            : 'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-4 text-sm font-semibold text-[var(--color-background)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)]'
+            ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-(--color-accent) text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
+            : 'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-(--color-accent) px-4 text-sm font-semibold text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
         }
       >
         <Plus aria-hidden='true' size={16} />
@@ -49,7 +49,7 @@ export const ComposeModal = ({ canCompose, compact = false, texts }: ComposeModa
                 type='button'
                 aria-label='Close'
                 onClick={() => setIsOpen(false)}
-                className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] transition hover:cursor-pointer hover:bg-[var(--color-surface-hover)]'
+                className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface) text-(--color-text-primary) transition hover:cursor-pointer hover:bg-(--color-surface-hover)'
               >
                 <X aria-hidden='true' size={18} />
               </button>

@@ -38,10 +38,10 @@ export const SidebarNav = ({ items }: SidebarNavProps) => {
             href={item.href}
             aria-current={isActive ? 'page' : undefined}
             className={cn(
-              'group inline-flex items-center gap-4 rounded-full px-3 py-3 text-xl transition hover:bg-[var(--color-surface-hover)]',
+              'group inline-flex items-center gap-4 rounded-full px-3 py-3 text-xl transition hover:bg-(--color-surface-hover)',
               isActive
-                ? 'font-bold text-[var(--color-text-primary)]'
-                : 'text-[var(--color-text-secondary)]',
+                ? 'font-bold text-(--color-text-primary)'
+                : 'text-(--color-text-secondary)',
             )}
           >
             <Icon aria-hidden='true' size={26} />

@@ -6,9 +6,9 @@ interface InfoBannerProps {
 }
 
 const toneClassNames = {
-  sky: 'border-[var(--color-accent-border)] bg-[var(--color-accent-surface)] text-[var(--color-accent-text-strong)]',
-  emerald: 'border-[var(--color-success-border)] bg-[var(--color-success-surface)] text-[var(--color-success-text)]',
-  amber: 'border-[var(--color-warning-border)] bg-[var(--color-warning-surface)] text-[var(--color-warning-text)]',
+  sky: 'border-(--color-accent-border) bg-(--color-accent-surface) text-(--color-accent-text-strong)',
+  emerald: 'border-(--color-success-border) bg-(--color-success-surface) text-(--color-success-text)',
+  amber: 'border-(--color-warning-border) bg-(--color-warning-surface) text-(--color-warning-text)',
 };
 
 export const InfoBanner = ({ children, tone = 'sky' }: InfoBannerProps) => {

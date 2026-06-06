@@ -5,6 +5,7 @@ import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { StatCard } from '@/shared/ui/StatCard';
 import { TweetList } from '@/widgets/tweet-feed';
 import { toggleFollowAction } from '@/features/follow-user';
+import { PAGES } from '@/shared/config/pages';
 import {
   formatMessage,
   getDictionary,
@@ -13,13 +14,17 @@ import {
 import { getUserProfile } from '@/entities/tweet';
 import type { SessionUser } from '@/entities/user';
 
-interface ProfileProps {
+export interface ProfilePageViewProps {
   username: string;
   currentUser: SessionUser | null;
   tab?: ProfileTabKey;
 }
 
-export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
+export default async function ProfilePageView({
+  username,
+  currentUser,
+  tab,
+}: ProfilePageViewProps) {
   const language = resolveLanguage(currentUser?.settings);
   const { profile: profileText } = getDictionary(language);
   const {
@@ -45,22 +50,22 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
 
   return (
     <div className='space-y-6'>
-      <section className='rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6'>
+      <section className='rounded-3xl border border-(--color-border) bg-(--color-surface) p-6'>
         <div className='flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between'>
           <div className='flex items-start gap-4'>
-            <div className='flex h-18 w-18 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-xl font-semibold text-[var(--color-text-inverse)]'>
+            <div className='flex h-18 w-18 items-center justify-center rounded-full bg-(--color-surface-solid) text-xl font-semibold text-(--color-text-inverse)'>
               {profile.avatar}
             </div>
             <div>
-              <h1 className='text-3xl font-bold text-[var(--color-text-primary)]'>{profile.name}</h1>
-              <p className='text-[var(--color-accent-text)]'>@{profile.username}</p>
-              <p className='mt-3 max-w-2xl text-[var(--color-text-secondary)]'>{profile.bio}</p>
+              <h1 className='text-3xl font-bold text-(--color-text-primary)'>{profile.name}</h1>
+              <p className='text-(--color-accent-text)'>@{profile.username}</p>
+              <p className='mt-3 max-w-2xl text-(--color-text-secondary)'>{profile.bio}</p>
               <div className='mt-3 flex flex-wrap gap-2'>
                 {profile.topics.map((topic) => (
                   <Link
                     key={topic}
-                    href={`/explore?q=${topic}`}
-                    className='rounded-full border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-3 py-1 text-sm text-[var(--color-text-secondary)] transition hover:border-[var(--color-accent-border-soft)] hover:text-[var(--color-text-primary)]'
+                    href={PAGES.EXPLORE_WITH({ q: topic })}
+                    className='rounded-full border border-(--color-border) bg-(--color-surface-dark) px-3 py-1 text-sm text-(--color-text-secondary) transition hover:border-(--color-accent-border-soft) hover:text-(--color-text-primary)'
                   >
                     {topic}
                   </Link>
@@ -69,7 +74,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
             </div>
           </div>
           <div className='space-y-3'>
-            <div className='flex gap-3 text-sm text-[var(--color-text-secondary)]'>
+            <div className='flex gap-3 text-sm text-(--color-text-secondary)'>
               {stats.map((stat) => (
                 <StatCard
                   key={stat.label}
@@ -83,7 +88,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
                 <input type='hidden' name='targetUserId' value={profile.id} />
                 <button
                   type='submit'
-                  className='rounded-full bg-[var(--color-surface-solid)] px-5 py-2 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:cursor-pointer hover:bg-[var(--color-foreground)]'
+                  className='rounded-full bg-(--color-surface-solid) px-5 py-2 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-foreground)'
                 >
                   {isFollowing
                     ? profileText.followingState
@@ -95,7 +100,7 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
         </div>
       </section>
 
-      <div className='sticky top-31 z-10 rounded-3xl border border-[var(--color-border)] bg-[var(--color-overlay)] p-2 backdrop-blur'>
+      <div className='sticky top-31 z-10 rounded-3xl border border-(--color-border) bg-(--color-overlay) p-2 backdrop-blur'>
         <div className='flex flex-wrap gap-2'>
           {PROFILE_TABS.map((item) => {
             const isActive = item.key === activeTab;
@@ -103,11 +108,11 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
             return (
               <Link
                 key={item.key}
-                href={`/u/${profile.username}?tab=${item.key}`}
+                href={PAGES.PROFILE_TAB(profile.username, item.key)}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                   isActive
-                    ? 'bg-[var(--color-accent)] text-[var(--color-text-inverse)]'
-                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)]'
+                    ? 'bg-(--color-accent) text-(--color-text-inverse)'
+                    : 'text-(--color-text-muted) hover:bg-(--color-surface) hover:text-(--color-text-primary)'
                 }`}
               >
                 {tabLabels[item.key]}
@@ -133,19 +138,19 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
           ) : null}
 
           <SurfaceCard className='p-5'>
-            <h2 className='text-lg font-semibold text-[var(--color-text-primary)]'>
+            <h2 className='text-lg font-semibold text-(--color-text-primary)'>
               {profileText.similarProfiles}
             </h2>
             <div className='mt-4 space-y-3'>
               {relatedUsers.map((user) => (
                 <Link
                   key={user.id}
-                  href={`/u/${user.username}`}
-                  className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-4 py-3 transition hover:border-[var(--color-accent-border-soft)] hover:bg-[var(--color-accent-surface)]'
+                  href={PAGES.PROFILE(user.username)}
+                  className='block rounded-2xl border border-(--color-border) bg-(--color-surface-dark) px-4 py-3 transition hover:border-(--color-accent-border-soft) hover:bg-(--color-accent-surface)'
                 >
-                  <p className='font-medium text-[var(--color-text-primary)]'>{user.name}</p>
-                  <p className='text-sm text-[var(--color-accent-text)]'>@{user.username}</p>
-                  <p className='mt-2 text-sm text-[var(--color-text-soft)]'>
+                  <p className='font-medium text-(--color-text-primary)'>{user.name}</p>
+                  <p className='text-sm text-(--color-accent-text)'>@{user.username}</p>
+                  <p className='mt-2 text-sm text-(--color-text-soft)'>
                     {user.sharedTopics.join(' · ') ||
                       user.topics.slice(0, 2).join(' · ')}
                   </p>
@@ -157,4 +162,4 @@ export const Profile = async ({ username, currentUser, tab }: ProfileProps) => {
       </div>
     </div>
   );
-};
+}

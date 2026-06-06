@@ -18,12 +18,12 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
   const menuItems = getMenuItems(language);
 
   return (
-    <div className='min-h-screen text-[var(--color-text-primary)]'>
-      <div className='mx-auto grid w-full max-w-[1280px] lg:grid-cols-[280px_minmax(0,1fr)]'>
-        <aside className='sticky top-0 hidden h-screen border-r border-[var(--color-border)] bg-[var(--color-background)] px-4 py-5 lg:flex lg:flex-col'>
+    <div className='min-h-screen text-(--color-text-primary)'>
+      <div className='mx-auto grid w-full max-w-7xl lg:grid-cols-[280px_minmax(0,1fr)]'>
+        <aside className='sticky top-0 hidden h-screen border-r border-(--color-border) bg-(--color-background) px-4 py-5 lg:flex lg:flex-col'>
           <Link
             href={PAGES.HOME}
-            className='mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full transition hover:bg-[var(--color-surface-hover)]'
+            className='mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover)'
             aria-label='Home'
           >
             <Image
@@ -55,16 +55,16 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
             {currentUser ? (
               <Link
                 href={PAGES.PROFILE(currentUser.username)}
-                className='flex items-center gap-3 rounded-full px-3 py-3 transition hover:bg-[var(--color-surface-hover)]'
+                className='flex items-center gap-3 rounded-full px-3 py-3 transition hover:bg-(--color-surface-hover)'
               >
-                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-sm font-bold text-[var(--color-text-inverse)]'>
+                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-bold text-(--color-text-inverse)'>
                   {currentUser.avatar}
                 </div>
                 <div className='min-w-0'>
                   <p className='truncate text-sm font-bold'>
                     {currentUser.name}
                   </p>
-                  <p className='truncate text-sm text-[var(--color-text-soft)]'>
+                  <p className='truncate text-sm text-(--color-text-soft)'>
                     @{currentUser.username}
                   </p>
                 </div>

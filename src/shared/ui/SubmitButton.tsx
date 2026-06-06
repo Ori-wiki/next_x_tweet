@@ -20,7 +20,7 @@ export const SubmitButton = ({
     <button
       type='submit'
       disabled={pending}
-      className={`cursor-pointer rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-60 ${className ?? ''}`}
+      className={`cursor-pointer rounded-full bg-(--color-accent) px-4 py-2 text-sm font-semibold text-(--color-text-inverse) transition hover:bg-(--color-accent-hover) disabled:cursor-not-allowed disabled:opacity-60 ${className ?? ''}`}
     >
       {pending ? pendingLabel : idleLabel}
     </button>

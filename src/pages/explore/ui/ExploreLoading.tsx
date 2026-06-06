@@ -15,7 +15,7 @@ export default async function ExploreLoading() {
         description={explore.description}
       />
       <section className='space-y-3'>
-        <p className='text-sm text-[var(--color-text-soft)]'>{explore.loadingTitle}</p>
+        <p className='text-sm text-(--color-text-soft)'>{explore.loadingTitle}</p>
         <TweetSkeleton />
         <TweetSkeleton />
       </section>

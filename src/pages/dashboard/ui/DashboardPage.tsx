@@ -9,7 +9,7 @@ import { getSessionUser } from '@/entities/user';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import { getDashboardData } from '@/entities/tweet';
 
-export const Dashboard = async () => {
+export default async function DashboardPageView() {
   const currentUser = await getSessionUser();
   const language = resolveLanguage(currentUser?.settings);
   const { dashboard: dashboardText, profile: profileText } = getDictionary(language);
@@ -108,12 +108,12 @@ export const Dashboard = async () => {
       <aside className='space-y-4 lg:sticky lg:top-8 lg:self-start'>
         <SurfaceCard className='p-5'>
           <div className='flex items-center gap-3'>
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-surface-solid)] font-semibold text-[var(--color-text-inverse)]'>
+            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-(--color-surface-solid) font-semibold text-(--color-text-inverse)'>
               {currentUser.avatar}
             </div>
             <div className='min-w-0'>
-              <p className='truncate font-semibold text-[var(--color-text-primary)]'>{currentUser.name}</p>
-              <p className='truncate text-sm text-[var(--color-accent-text)]'>@{currentUser.username}</p>
+              <p className='truncate font-semibold text-(--color-text-primary)'>{currentUser.name}</p>
+              <p className='truncate text-sm text-(--color-accent-text)'>@{currentUser.username}</p>
             </div>
           </div>
           <div className='mt-4 grid gap-2'>
@@ -128,4 +128,4 @@ export const Dashboard = async () => {
       </aside>
     </div>
   );
-};
+}

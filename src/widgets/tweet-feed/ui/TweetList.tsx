@@ -21,7 +21,7 @@ export const TweetList = ({
 }: TweetListProps) => {
   return (
     <section className='space-y-5'>
-      {title ? <h2 className='text-xl font-semibold text-[var(--color-text-primary)]'>{title}</h2> : null}
+      {title ? <h2 className='text-xl font-semibold text-(--color-text-primary)'>{title}</h2> : null}
       {tweets.length > 0 ? (
         tweets.map((tweet) => (
           <Tweet

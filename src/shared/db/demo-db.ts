@@ -5,6 +5,7 @@ import type { DemoDatabase } from './types';
 
 const demoDbPath =
   process.env.DEMO_DB_PATH ?? path.join(process.cwd(), 'data', 'demo-db.json');
+let updateQueue = Promise.resolve();
 
 async function ensureDatabaseFile() {
   await mkdir(path.dirname(demoDbPath), { recursive: true });
@@ -30,8 +31,17 @@ export async function writeDemoDatabase(database: DemoDatabase) {
 export async function updateDemoDatabase(
   updater: (database: DemoDatabase) => DemoDatabase | Promise<DemoDatabase>,
 ) {
-  const database = await readDemoDatabase();
-  const nextDatabase = await updater(database);
-  await writeDemoDatabase(nextDatabase);
-  return nextDatabase;
+  const update = updateQueue.then(async () => {
+    const database = await readDemoDatabase();
+    const nextDatabase = await updater(database);
+    await writeDemoDatabase(nextDatabase);
+    return nextDatabase;
+  });
+
+  updateQueue = update.then(
+    () => undefined,
+    () => undefined,
+  );
+
+  return update;
 }

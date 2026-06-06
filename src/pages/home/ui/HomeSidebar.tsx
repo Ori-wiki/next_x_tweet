@@ -3,6 +3,7 @@ import { TrendingUp, UserRound } from 'lucide-react';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
+import { formatNumber } from '@/shared/lib/utils';
 import type { SessionUser } from '@/entities/user';
 
 interface HomeSidebarProps {
@@ -36,36 +37,42 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
     <aside className='space-y-4'>
       <SurfaceCard className='p-5'>
         <div className='flex items-center gap-3'>
-          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-sm font-semibold text-[var(--color-text-inverse)]'>
+          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
             {currentUser?.avatar ?? <UserRound aria-hidden='true' size={20} />}
           </div>
           <div className='min-w-0'>
-            <p className='truncate font-semibold text-[var(--color-text-primary)]'>
+            <p className='truncate font-semibold text-(--color-text-primary)'>
               {currentUser?.name ?? 'Demo visitor'}
             </p>
-            <p className='truncate text-sm text-[var(--color-text-secondary)]'>
+            <p className='truncate text-sm text-(--color-text-secondary)'>
               {currentUser ? `@${currentUser.username}` : 'Choose a demo role'}
             </p>
           </div>
         </div>
         <div className='mt-4 grid grid-cols-2 gap-3 text-sm'>
           <div>
-            <p className='font-semibold text-[var(--color-text-primary)]'>
-              {currentUser?.followers.toLocaleString('en-US') ?? '0'}
+            <p className='font-semibold text-(--color-text-primary)'>
+              {formatNumber(
+                currentUser?.followers ?? 0,
+                currentUser?.settings.language,
+              )}
             </p>
-            <p className='text-[var(--color-text-secondary)]'>Followers</p>
+            <p className='text-(--color-text-secondary)'>Followers</p>
           </div>
           <div>
-            <p className='font-semibold text-[var(--color-text-primary)]'>
-              {currentUser?.following.toLocaleString('en-US') ?? '0'}
+            <p className='font-semibold text-(--color-text-primary)'>
+              {formatNumber(
+                currentUser?.following ?? 0,
+                currentUser?.settings.language,
+              )}
             </p>
-            <p className='text-[var(--color-text-secondary)]'>Following</p>
+            <p className='text-(--color-text-secondary)'>Following</p>
           </div>
         </div>
       </SurfaceCard>
 
       <SurfaceCard className='p-5'>
-        <div className='mb-4 flex items-center gap-2 text-[var(--color-text-primary)]'>
+        <div className='mb-4 flex items-center gap-2 text-(--color-text-primary)'>
           <TrendingUp aria-hidden='true' size={18} />
           <h2 className='font-semibold'>Trending</h2>
         </div>
@@ -73,13 +80,13 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
           {trends.map(([hashtag, count]) => (
             <Link
               key={hashtag}
-              href={`/explore?tag=${hashtag}`}
-              className='block rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]'
+              href={PAGES.EXPLORE_WITH({ tag: hashtag })}
+              className='block rounded-2xl border border-(--color-border) bg-(--color-background) px-4 py-3 transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover)'
             >
-              <p className='font-medium text-[var(--color-accent)]'>
+              <p className='font-medium text-(--color-accent)'>
                 #{hashtag}
               </p>
-              <p className='text-sm text-[var(--color-text-secondary)]'>
+              <p className='text-sm text-(--color-text-secondary)'>
                 {count} tweets
               </p>
             </Link>
@@ -88,7 +95,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
       </SurfaceCard>
 
       <SurfaceCard className='p-5'>
-        <h2 className='font-semibold text-[var(--color-text-primary)]'>
+        <h2 className='font-semibold text-(--color-text-primary)'>
           Suggested profiles
         </h2>
         <div className='mt-4 space-y-3'>
@@ -96,16 +103,16 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
             <Link
               key={user.id}
               href={PAGES.PROFILE(user.username)}
-              className='flex items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]'
+              className='flex items-center gap-3 rounded-2xl border border-(--color-border) bg-(--color-background) px-4 py-3 transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover)'
             >
-              <span className='flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-sm font-semibold text-[var(--color-text-inverse)]'>
+              <span className='flex h-9 w-9 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
                 {user.avatar}
               </span>
               <span className='min-w-0'>
-                <span className='block truncate font-medium text-[var(--color-text-primary)]'>
+                <span className='block truncate font-medium text-(--color-text-primary)'>
                   {user.name}
                 </span>
-                <span className='block truncate text-sm text-[var(--color-text-secondary)]'>
+                <span className='block truncate text-sm text-(--color-text-secondary)'>
                   @{user.username}
                 </span>
               </span>

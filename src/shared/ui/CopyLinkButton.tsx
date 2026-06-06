@@ -31,13 +31,13 @@ export const CopyLinkButton = ({
       <button
         type='button'
         onClick={handleCopy}
-        className='inline-flex min-w-[108px] cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-transparent px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] backdrop-blur-sm transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]'
+        className='inline-flex min-w-27 cursor-pointer items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-4 py-2 text-sm font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)'
       >
         {copied ? <Check aria-hidden='true' size={16} /> : <Link2 aria-hidden='true' size={16} />}
         <span>{copied ? copiedLabel : label}</span>
       </button>
       {copied ? (
-        <span className='pointer-events-none absolute -top-10 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-xs font-medium text-[var(--color-text-primary)] shadow-[var(--shadow-card)]'>
+        <span className='pointer-events-none absolute -top-10 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-(--color-border) bg-(--color-surface) px-3 py-1 text-xs font-medium text-(--color-text-primary) shadow-(--shadow-card)'>
           {copiedLabel}
         </span>
       ) : null}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export { Dashboard as DashboardPage } from './ui/DashboardPage';
+export { default as DashboardPage } from './ui/DashboardPage';
 export { default as DashboardLoading } from './ui/DashboardLoading';
 
 export const metadata: Metadata = {

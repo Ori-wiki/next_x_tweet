@@ -8,13 +8,13 @@ export default async function DashboardLoading() {
 
   return (
     <div className='space-y-5'>
-      <div className='skeleton h-56 rounded-[2rem]' />
+      <div className='skeleton h-56 rounded-4xl' />
       <div className='grid gap-4 md:grid-cols-3'>
         <div className='skeleton h-32 rounded-3xl' />
         <div className='skeleton h-32 rounded-3xl' />
         <div className='skeleton h-32 rounded-3xl' />
       </div>
-      <p className='text-sm text-[var(--color-text-soft)]'>{dashboard.loadingTitle}</p>
+      <p className='text-sm text-(--color-text-soft)'>{dashboard.loadingTitle}</p>
       <TweetSkeleton />
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useTransition, type FormEvent } from 'react';
+import { PAGES } from '@/shared/config/pages';
 import { SelectField } from '@/shared/ui/SelectField';
 
 type ExploreSearchFormTexts = {
@@ -77,7 +78,7 @@ export const ExploreSearchForm = ({
   const [history] = useState(() => readSearchHistory());
   const quickFilters = [...new Set([...history, ...suggestions])].slice(0, 6);
   const fieldClassName =
-    'h-12 w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-dark-medium)] px-4 text-sm outline-none transition placeholder:text-[var(--color-text-faint)] focus:border-[var(--color-accent)]';
+    'h-12 w-full rounded-2xl border border-(--color-border) bg-(--color-surface-dark-medium) px-4 text-sm outline-none transition placeholder:text-(--color-text-faint) focus:border-(--color-accent)';
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,24 +87,18 @@ export const ExploreSearchForm = ({
     const normalized = query.trim();
     const normalizedTag = String(formData.get('tag') ?? '').trim().replace(/^#/, '');
     const selectedSort = String(formData.get('sort') ?? 'latest');
-    const params = new URLSearchParams();
-
     if (normalized) {
-      params.set('q', normalized);
       persistSearchHistory(buildNextHistory(normalized, readSearchHistory()));
     }
 
-    if (normalizedTag) {
-      params.set('tag', normalizedTag);
-    }
-
-    if (selectedSort === 'top') {
-      params.set('sort', selectedSort);
-    }
-
-    const queryString = params.toString();
     startTransition(() => {
-      router.push(queryString ? `/explore?${queryString}` : '/explore');
+      router.push(
+        PAGES.EXPLORE_WITH({
+          q: normalized || undefined,
+          tag: normalizedTag || undefined,
+          sort: selectedSort === 'top' ? 'top' : undefined,
+        }),
+      );
     });
   }
 
@@ -140,7 +135,7 @@ export const ExploreSearchForm = ({
         <button
           type='submit'
           disabled={isPending}
-          className='h-12 rounded-2xl bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-text-inverse)] transition hover:cursor-pointer hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-70'
+          className='h-12 rounded-2xl bg-(--color-accent) px-5 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-accent-hover) disabled:cursor-not-allowed disabled:opacity-70'
         >
           {isPending ? 'Loading...' : texts.search}
         </button>
@@ -152,7 +147,7 @@ export const ExploreSearchForm = ({
             key={item}
             type='button'
             onClick={() => setQuery(item)}
-            className='rounded-full border border-[var(--color-border)] bg-[var(--color-surface-dark)] px-3 py-1 text-xs text-[var(--color-text-secondary)] transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)] hover:text-[var(--color-text-primary)]'
+            className='rounded-full border border-(--color-border) bg-(--color-surface-dark) px-3 py-1 text-xs text-(--color-text-secondary) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface) hover:text-(--color-text-primary)'
           >
             {item}
           </button>
@@ -162,9 +157,9 @@ export const ExploreSearchForm = ({
             type='button'
             onClick={() => {
               setQuery('');
-              startTransition(() => router.push('/explore'));
+              startTransition(() => router.push(PAGES.EXPLORE));
             }}
-            className='rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-accent-text)] transition hover:cursor-pointer hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface)]'
+            className='rounded-full border border-(--color-border) px-3 py-1 text-xs text-(--color-accent-text) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface)'
           >
             Clear filters
           </button>

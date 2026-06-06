@@ -14,7 +14,7 @@ import {
   toggleRepostAction,
 } from '@/features/toggle-tweet-reaction';
 import { getDictionary } from '@/shared/lib/i18n';
-import { formatRelativeDate } from '@/shared/lib/utils';
+import { formatDateTime, formatNumber } from '@/shared/lib/utils';
 import type { UserLanguage } from '@/entities/user';
 
 interface TweetProps {
@@ -24,19 +24,19 @@ interface TweetProps {
 }
 
 const tweetActionClassName =
-  'inline-flex min-w-[108px] items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-transparent px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] backdrop-blur-sm transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]';
+  'inline-flex min-w-27 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-4 py-2 text-sm font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)';
 
 const likedActionClassName =
-  '!border-[var(--color-neutral-border)] !bg-[var(--color-neutral-surface)] !text-[var(--color-neutral-text)] hover:!border-[var(--color-neutral-border-hover)] hover:!bg-[var(--color-neutral-surface-hover)]';
+  '!border-(--color-neutral-border) !bg-(--color-neutral-surface) !text-(--color-neutral-text) hover:!border-(--color-neutral-border-hover) hover:!bg-(--color-neutral-surface-hover)';
 
 const bookmarkedActionClassName =
-  '!border-[var(--color-teal-border)] !bg-[var(--color-teal-surface)] !text-[var(--color-teal-text)] hover:!border-[var(--color-teal-border-hover)] hover:!bg-[var(--color-teal-surface-hover)]';
+  '!border-(--color-teal-border) !bg-(--color-teal-surface) !text-(--color-teal-text) hover:!border-(--color-teal-border-hover) hover:!bg-(--color-teal-surface-hover)';
 
 const repostedActionClassName =
-  '!border-[var(--color-warning-border-strong)] !bg-[var(--color-warning-surface-strong)] !text-[var(--color-warning-text)] hover:!border-[var(--color-warning-border-hover)] hover:!bg-[var(--color-warning-surface-hover)]';
+  '!border-(--color-warning-border-strong) !bg-(--color-warning-surface-strong) !text-(--color-warning-text) hover:!border-(--color-warning-border-hover) hover:!bg-(--color-warning-surface-hover)';
 
 const deleteActionClassName =
-  'border-[var(--color-border)] bg-transparent text-[var(--color-text-muted)] hover:border-[var(--color-danger-border-hover)] hover:bg-[var(--color-danger-surface-hover)] hover:text-[var(--color-danger-text)]';
+  'border-(--color-border) bg-transparent text-(--color-text-muted) hover:border-(--color-danger-border-hover) hover:bg-(--color-danger-surface-hover) hover:text-(--color-danger-text)';
 
 export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
   const { tweet: tweetText } = getDictionary(language);
@@ -70,19 +70,19 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
     },
   ];
   const metrics = [
-    `${tweet.views.toLocaleString('en-US')} ${tweetText.views}`,
+    `${formatNumber(tweet.views, language)} ${tweetText.views}`,
     `${tweet.repliesCount} ${tweetText.replies}`,
     `${tweet.reposts} ${tweetText.reposts}`,
   ];
 
   return (
-    <SurfaceCard className='p-5 shadow-[var(--shadow-card)]'>
+    <SurfaceCard className='p-5 shadow-(--shadow-card)'>
       {tweet.replyTo ? (
-        <p className='mb-3 text-sm text-[var(--color-text-subtle)]'>
+        <p className='mb-3 text-sm text-(--color-text-subtle)'>
           {tweetText.replyingTo}{' '}
           <Link
             href={PAGES.PROFILE(tweet.replyTo.username)}
-            className='text-[var(--color-accent)] transition hover:text-[var(--color-accent-text)]'
+            className='text-(--color-accent) transition hover:text-(--color-accent-text)'
           >
             @{tweet.replyTo.username}
           </Link>
@@ -91,20 +91,20 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
 
       <div className='mb-3 flex items-start justify-between gap-4'>
         <div className='flex items-center gap-3'>
-          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-surface-solid)] text-sm font-semibold text-[var(--color-text-inverse)]'>
+          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
             {tweet.author.avatar}
           </div>
           <div>
             <div className='flex items-center gap-2'>
-              <p className='font-semibold text-[var(--color-text-primary)]'>{tweet.author.name}</p>
-              <span className='text-sm text-[var(--color-text-subtle)]'>·</span>
-              <p className='text-sm text-[var(--color-text-soft)]'>
-                {formatRelativeDate(tweet.createdAt)}
+              <p className='font-semibold text-(--color-text-primary)'>{tweet.author.name}</p>
+              <span className='text-sm text-(--color-text-subtle)'>·</span>
+              <p className='text-sm text-(--color-text-soft)'>
+                {formatDateTime(tweet.createdAt, language)}
               </p>
             </div>
             <Link
               href={PAGES.PROFILE(tweet.author.username)}
-              className='text-sm text-[var(--color-accent)] transition hover:text-[var(--color-accent-text)]'
+              className='text-sm text-(--color-accent) transition hover:text-(--color-accent-text)'
             >
               @{tweet.author.username}
             </Link>
@@ -113,7 +113,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         <Image src='/XTwitterW.svg' width={24} height={24} alt='X logo' />
       </div>
 
-      <p className='mb-4 whitespace-pre-wrap text-[var(--color-text-strong)]'>{tweet.content}</p>
+      <p className='mb-4 whitespace-pre-wrap text-(--color-text-strong)'>{tweet.content}</p>
 
       {tweet.media ? (
         <div className='mb-4'>
@@ -126,8 +126,8 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
           {tweet.hashtags.map((hashtag) => (
             <Link
               key={hashtag}
-              href={`/explore?tag=${hashtag}`}
-              className='rounded-full border border-[var(--color-accent-border)] bg-[var(--color-accent-surface)] px-3 py-1 text-sm text-[var(--color-accent-text)] transition hover:border-[var(--color-accent-border-hover)] hover:bg-[var(--color-accent-surface-hover)]'
+              href={PAGES.EXPLORE_WITH({ tag: hashtag })}
+              className='rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) px-3 py-1 text-sm text-(--color-accent-text) transition hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface-hover)'
             >
               #{hashtag}
             </Link>
@@ -135,13 +135,13 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         </div>
       ) : null}
 
-      <div className='mb-4 flex flex-wrap gap-3 text-sm text-[var(--color-text-subtle)]'>
+      <div className='mb-4 flex flex-wrap gap-3 text-sm text-(--color-text-subtle)'>
         {metrics.map((metric) => (
           <span key={metric}>{metric}</span>
         ))}
       </div>
 
-      <div className='flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-secondary)]'>
+      <div className='flex flex-wrap items-center gap-3 text-sm text-(--color-text-secondary)'>
         {actions.map((item) => (
           <TweetActionButton
             key={item.kind}
@@ -160,7 +160,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ))}
         <Link
           href={PAGES.TWEET(tweet.id)}
-          className='inline-flex min-w-[108px] items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-transparent px-4 py-2 text-center text-sm font-medium text-[var(--color-text-secondary)] backdrop-blur-sm transition hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]'
+          className='inline-flex min-w-27 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-4 py-2 text-center text-sm font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)'
         >
           <MessageCircle aria-hidden='true' size={16} />
           <span>{tweetText.thread}</span>
@@ -189,7 +189,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ) : null}
 
         {!canInteract ? (
-          <p className='text-sm text-[var(--color-text-subtle)]'>{tweetText.signInHint}</p>
+          <p className='text-sm text-(--color-text-subtle)'>{tweetText.signInHint}</p>
         ) : null}
       </div>
     </SurfaceCard>

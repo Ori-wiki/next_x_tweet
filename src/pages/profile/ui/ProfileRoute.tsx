@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getSessionUser } from '@/entities/user';
 import { getUserProfile } from '@/entities/tweet';
 import type { ProfileTabKey } from '@/entities/user';
-import { Profile } from './ProfilePage';
+import ProfilePageView from './ProfilePage';
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -29,5 +29,11 @@ export default async function ProfilePage({
   const { tab } = await searchParams;
   const currentUser = await getSessionUser();
 
-  return <Profile username={username} currentUser={currentUser} tab={tab} />;
+  return (
+    <ProfilePageView
+      username={username}
+      currentUser={currentUser}
+      tab={tab}
+    />
+  );
 }

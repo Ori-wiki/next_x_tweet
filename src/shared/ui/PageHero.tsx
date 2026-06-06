@@ -18,17 +18,17 @@ export const PageHero = ({
   return (
     <section
       className={cn(
-        'rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6',
+        'rounded-3xl border border-(--color-border) bg-(--color-surface) p-6',
         className,
       )}
     >
-      <p className='text-sm uppercase tracking-[0.2em] text-[var(--color-text-subtle)]'>
+      <p className='text-sm uppercase tracking-[0.2em] text-(--color-text-subtle)'>
         {eyebrow}
       </p>
-      <h1 className='mt-2 text-2xl font-bold text-[var(--color-text-primary)] sm:text-3xl'>
+      <h1 className='mt-2 text-2xl font-bold text-(--color-text-primary) sm:text-3xl'>
         {title}
       </h1>
-      <p className='mt-3 max-w-2xl text-[var(--color-text-secondary)]'>{description}</p>
+      <p className='mt-3 max-w-2xl text-(--color-text-secondary)'>{description}</p>
       {children ? <div className='mt-5'>{children}</div> : null}
     </section>
   );

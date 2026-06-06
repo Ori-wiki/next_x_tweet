@@ -7,15 +7,15 @@ export default async function NotFound() {
   const { common, notFound } = getDictionary(resolveLanguage(currentUser?.settings));
 
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center px-4 text-center text-[var(--color-text-primary)]'>
-      <div className='rounded-[24px] border border-[var(--color-border)] bg-[var(--color-surface)] p-10'>
+    <div className='flex min-h-screen flex-col items-center justify-center px-4 text-center text-(--color-text-primary)'>
+      <div className='rounded-3xl border border-(--color-border) bg-(--color-surface) p-10'>
         <h1 className='mb-4 text-7xl font-bold'>404</h1>
-        <p className='mb-6 max-w-md text-[var(--color-text-muted)]'>
+        <p className='mb-6 max-w-md text-(--color-text-muted)'>
           {notFound.message}
         </p>
         <Link
           href='/'
-          className='rounded-full bg-[var(--color-accent)] px-4 py-2 font-semibold text-[var(--color-text-inverse)] transition hover:bg-[var(--color-accent-hover)]'
+          className='rounded-full bg-(--color-accent) px-4 py-2 font-semibold text-(--color-text-inverse) transition hover:bg-(--color-accent-hover)'
         >
           {common.backToHome}
         </Link>
