@@ -53,20 +53,26 @@ export default async function ProfilePageView({
   const canManageSettings = currentUser?.id === profile.id;
 
   return (
-    <div className='space-y-6'>
-      <section className='rounded-3xl border border-(--color-border) bg-(--color-surface) p-6'>
+    <div className='min-w-0 space-y-4 sm:space-y-6'>
+      <section className='min-w-0 rounded-2xl border border-(--color-border) bg-(--color-surface) p-4 sm:rounded-3xl sm:p-6'>
         <div className='flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between'>
-          <div className='flex items-start gap-4'>
+          <div className='flex min-w-0 items-start gap-3 sm:gap-4'>
             <UserAvatar
               src={profile.avatar}
               alt={`${profile.name} avatar`}
-              sizes='72px'
-              className='size-18'
+              sizes='(max-width: 639px) 56px, 72px'
+              className='size-14 sm:size-18'
             />
-            <div>
-              <h1 className='text-3xl font-bold text-(--color-text-primary)'>{profile.name}</h1>
-              <p className='text-(--color-accent-text)'>@{profile.username}</p>
-              <p className='mt-3 max-w-2xl text-(--color-text-secondary)'>{profile.bio}</p>
+            <div className='min-w-0'>
+              <h1 className='break-words text-2xl font-bold leading-tight text-(--color-text-primary) sm:text-3xl'>
+                {profile.name}
+              </h1>
+              <p className='truncate text-sm text-(--color-accent-text) sm:text-base'>
+                @{profile.username}
+              </p>
+              <p className='mt-3 max-w-2xl break-words text-sm text-(--color-text-secondary) sm:text-base'>
+                {profile.bio}
+              </p>
               <div className='mt-3 flex flex-wrap gap-2'>
                 {profile.topics.map((topic) => (
                   <Link
@@ -80,13 +86,14 @@ export default async function ProfilePageView({
               </div>
             </div>
           </div>
-          <div className='space-y-3'>
-            <div className='flex gap-3 text-sm text-(--color-text-secondary)'>
+          <div className='min-w-0 space-y-3'>
+            <div className='grid grid-cols-3 gap-2 text-sm text-(--color-text-secondary) sm:gap-3'>
               {stats.map((stat) => (
                 <StatCard
                   key={stat.label}
                   label={stat.label}
                   value={stat.value}
+                  compactOnMobile
                 />
               ))}
             </div>
@@ -95,7 +102,7 @@ export default async function ProfilePageView({
                 <input type='hidden' name='targetUserId' value={profile.id} />
                 <button
                   type='submit'
-                  className='rounded-full bg-(--color-surface-solid) px-5 py-2 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-foreground)'
+                  className='w-full rounded-full bg-(--color-surface-solid) px-5 py-2 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-foreground) sm:w-auto'
                 >
                   {isFollowing
                     ? profileText.followingState
@@ -108,8 +115,8 @@ export default async function ProfilePageView({
       </section>
 
       <div>
-        <div className='rounded-3xl border border-(--color-border) bg-(--color-background) p-2 shadow-(--shadow-card)'>
-          <div className='flex flex-wrap gap-2'>
+        <div className='rounded-2xl border border-(--color-border) bg-(--color-background) p-1.5 shadow-(--shadow-card) sm:rounded-3xl sm:p-2'>
+          <div className='grid grid-cols-3 gap-1 sm:flex sm:flex-wrap sm:gap-2'>
             {PROFILE_TABS.map((item) => {
               const isActive = item.key === activeTab;
 
@@ -117,7 +124,7 @@ export default async function ProfilePageView({
                 <Link
                   key={item.key}
                   href={PAGES.PROFILE_TAB(profile.username, item.key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                  className={`min-w-0 rounded-full px-2 py-2 text-center text-sm font-medium transition sm:px-4 ${
                     isActive
                       ? 'bg-(--color-accent) text-(--color-text-inverse)'
                       : 'text-(--color-text-muted) hover:bg-(--color-surface) hover:text-(--color-text-primary)'
@@ -131,7 +138,7 @@ export default async function ProfilePageView({
         </div>
       </div>
 
-      <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
+      <div className='grid min-w-0 gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
         <TweetList
           tweets={activeTweets}
           canInteract={Boolean(currentUser)}

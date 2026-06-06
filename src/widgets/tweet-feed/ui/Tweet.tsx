@@ -25,7 +25,7 @@ interface TweetProps {
 }
 
 const tweetActionClassName =
-  'inline-flex min-w-27 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-4 py-2 text-sm font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)';
+  'inline-flex w-full min-w-0 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-2 py-2 text-xs font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:w-auto sm:min-w-27 sm:px-4 sm:text-sm';
 
 const likedActionClassName =
   '!border-(--color-neutral-border) !bg-(--color-neutral-surface) !text-(--color-neutral-text) hover:!border-(--color-neutral-border-hover) hover:!bg-(--color-neutral-surface-hover)';
@@ -91,15 +91,15 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
       ) : null}
 
       <div className='mb-3 flex items-start justify-between gap-4'>
-        <div className='flex items-center gap-3'>
+        <div className='flex min-w-0 items-center gap-3'>
           <UserAvatar
             src={tweet.author.avatar}
             alt={`${tweet.author.name} avatar`}
             sizes='44px'
             className='size-11'
           />
-          <div>
-            <div className='flex items-center gap-2'>
+          <div className='min-w-0'>
+            <div className='flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5'>
               <p className='font-semibold text-(--color-text-primary)'>
                 {tweet.author.name}
               </p>
@@ -149,7 +149,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ))}
       </div>
 
-      <div className='flex flex-wrap items-center gap-3 text-sm text-(--color-text-secondary)'>
+      <div className='grid grid-cols-2 items-center gap-2 text-sm text-(--color-text-secondary) sm:flex sm:flex-wrap sm:gap-3'>
         {actions.map((item) => (
           <TweetActionButton
             key={item.kind}
@@ -168,10 +168,10 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ))}
         <Link
           href={PAGES.TWEET(tweet.id)}
-          className='inline-flex min-w-27 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-4 py-2 text-center text-sm font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)'
+          className='inline-flex w-full min-w-0 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-2 py-2 text-center text-xs font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:w-auto sm:min-w-27 sm:px-4 sm:text-sm'
         >
           <MessageCircle aria-hidden='true' size={16} />
-          <span>{tweetText.thread}</span>
+          <span className='min-w-0 truncate'>{tweetText.thread}</span>
         </Link>
 
         <CopyLinkButton
