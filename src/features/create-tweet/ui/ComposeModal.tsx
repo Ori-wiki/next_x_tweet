@@ -17,7 +17,11 @@ interface ComposeModalProps {
   };
 }
 
-export const ComposeModal = ({ canCompose, compact = false, texts }: ComposeModalProps) => {
+export const ComposeModal = ({
+  canCompose,
+  compact = false,
+  texts,
+}: ComposeModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!canCompose) {
@@ -33,8 +37,8 @@ export const ComposeModal = ({ canCompose, compact = false, texts }: ComposeModa
         onClick={() => setIsOpen(true)}
         className={
           compact
-            ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-(--color-accent) text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
-            : 'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-(--color-accent) px-4 text-sm font-semibold text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
+            ? 'inline-flex size-11 items-center justify-center rounded-full bg-(--color-accent) text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
+            : 'ml-3 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-(--color-accent) px-4 text-sm font-semibold text-(--color-background) transition hover:cursor-pointer hover:bg-(--color-accent-hover)'
         }
       >
         <Plus aria-hidden='true' size={16} />

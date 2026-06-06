@@ -18,7 +18,7 @@ export const PageHero = ({
   return (
     <section
       className={cn(
-        'rounded-3xl border border-(--color-border) bg-(--color-surface) p-6',
+        'rounded-2xl border border-(--color-border) bg-(--color-surface) p-4 sm:rounded-3xl sm:p-6',
         className,
       )}
     >

@@ -5,6 +5,7 @@ import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
 import { formatNumber } from '@/shared/lib/utils';
 import type { SessionUser } from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 
 interface HomeSidebarProps {
   currentUser: SessionUser | null;
@@ -37,9 +38,18 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
     <aside className='space-y-4'>
       <SurfaceCard className='p-5'>
         <div className='flex items-center gap-3'>
-          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
-            {currentUser?.avatar ?? <UserRound aria-hidden='true' size={20} />}
-          </div>
+          {currentUser ? (
+            <UserAvatar
+              src={currentUser.avatar}
+              alt={`${currentUser.name} avatar`}
+              sizes='44px'
+              className='size-11'
+            />
+          ) : (
+            <div className='flex size-11 shrink-0 items-center justify-center rounded-full bg-(--color-surface-solid) text-(--color-text-inverse)'>
+              <UserRound aria-hidden='true' size={20} />
+            </div>
+          )}
           <div className='min-w-0'>
             <p className='truncate font-semibold text-(--color-text-primary)'>
               {currentUser?.name ?? 'Demo visitor'}
@@ -105,9 +115,12 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
               href={PAGES.PROFILE(user.username)}
               className='flex items-center gap-3 rounded-2xl border border-(--color-border) bg-(--color-background) px-4 py-3 transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover)'
             >
-              <span className='flex h-9 w-9 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
-                {user.avatar}
-              </span>
+              <UserAvatar
+                src={user.avatar}
+                alt={`${user.name} avatar`}
+                sizes='36px'
+                className='size-9'
+              />
               <span className='min-w-0'>
                 <span className='block truncate font-medium text-(--color-text-primary)'>
                   {user.name}

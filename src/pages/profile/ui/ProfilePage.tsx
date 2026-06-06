@@ -1,5 +1,9 @@
 import Link from 'next/link';
-import { PROFILE_TABS, type ProfileTabKey } from '@/entities/user';
+import {
+  PROFILE_TABS,
+  type ProfileTabKey,
+} from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 import { SettingsPanel } from '@/features/update-settings';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { StatCard } from '@/shared/ui/StatCard';
@@ -53,9 +57,12 @@ export default async function ProfilePageView({
       <section className='rounded-3xl border border-(--color-border) bg-(--color-surface) p-6'>
         <div className='flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between'>
           <div className='flex items-start gap-4'>
-            <div className='flex h-18 w-18 items-center justify-center rounded-full bg-(--color-surface-solid) text-xl font-semibold text-(--color-text-inverse)'>
-              {profile.avatar}
-            </div>
+            <UserAvatar
+              src={profile.avatar}
+              alt={`${profile.name} avatar`}
+              sizes='72px'
+              className='size-18'
+            />
             <div>
               <h1 className='text-3xl font-bold text-(--color-text-primary)'>{profile.name}</h1>
               <p className='text-(--color-accent-text)'>@{profile.username}</p>
@@ -100,25 +107,27 @@ export default async function ProfilePageView({
         </div>
       </section>
 
-      <div className='sticky top-31 z-10 rounded-3xl border border-(--color-border) bg-(--color-overlay) p-2 backdrop-blur'>
-        <div className='flex flex-wrap gap-2'>
-          {PROFILE_TABS.map((item) => {
-            const isActive = item.key === activeTab;
+      <div>
+        <div className='rounded-3xl border border-(--color-border) bg-(--color-background) p-2 shadow-(--shadow-card)'>
+          <div className='flex flex-wrap gap-2'>
+            {PROFILE_TABS.map((item) => {
+              const isActive = item.key === activeTab;
 
-            return (
-              <Link
-                key={item.key}
-                href={PAGES.PROFILE_TAB(profile.username, item.key)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                  isActive
-                    ? 'bg-(--color-accent) text-(--color-text-inverse)'
-                    : 'text-(--color-text-muted) hover:bg-(--color-surface) hover:text-(--color-text-primary)'
-                }`}
-              >
-                {tabLabels[item.key]}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.key}
+                  href={PAGES.PROFILE_TAB(profile.username, item.key)}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                    isActive
+                      ? 'bg-(--color-accent) text-(--color-text-inverse)'
+                      : 'text-(--color-text-muted) hover:bg-(--color-surface) hover:text-(--color-text-primary)'
+                  }`}
+                >
+                  {tabLabels[item.key]}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
 

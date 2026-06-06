@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
 import { getSessionUser } from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 import { ComposeModal } from '@/features/create-tweet';
 import { DemoRolePicker } from '@/features/auth';
 import { PAGES } from '@/shared/config/pages';
@@ -19,11 +20,11 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
 
   return (
     <div className='min-h-screen text-(--color-text-primary)'>
-      <div className='mx-auto grid w-full max-w-7xl lg:grid-cols-[280px_minmax(0,1fr)]'>
-        <aside className='sticky top-0 hidden h-screen border-r border-(--color-border) bg-(--color-background) px-4 py-5 lg:flex lg:flex-col'>
+      <div className='mx-auto grid w-full max-w-7xl grid-cols-[72px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)]'>
+        <aside className='sticky top-0 flex h-screen flex-col items-center border-r border-(--color-border) bg-(--color-background) px-2 py-3 xl:items-stretch xl:px-4 xl:py-5'>
           <Link
             href={PAGES.HOME}
-            className='mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover)'
+            className='mb-4 inline-flex size-12 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover) xl:mb-5'
             aria-label='Home'
           >
             <Image
@@ -37,7 +38,22 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
 
           <SidebarNav items={menuItems} />
 
-          <div className='mt-5'>
+          <div className='mt-4 xl:hidden'>
+            <ComposeModal
+              compact
+              canCompose={Boolean(currentUser)}
+              texts={{
+                title: tweetForm.newTweet,
+                submitLabel: tweetForm.postTweet,
+                pendingLabel: tweetForm.posting,
+                placeholder: tweetForm.placeholder,
+                mediaUrlPlaceholder: tweetForm.mediaUrl,
+                attachmentLabelPlaceholder: tweetForm.attachmentLabel,
+              }}
+            />
+          </div>
+
+          <div className='mt-5 hidden xl:block'>
             <ComposeModal
               canCompose={Boolean(currentUser)}
               texts={{
@@ -55,12 +71,15 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
             {currentUser ? (
               <Link
                 href={PAGES.PROFILE(currentUser.username)}
-                className='flex items-center gap-3 rounded-full px-3 py-3 transition hover:bg-(--color-surface-hover)'
+                className='flex items-center justify-center rounded-full p-1.5 transition hover:bg-(--color-surface-hover) xl:justify-start xl:gap-3 xl:px-3 xl:py-3'
               >
-                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-bold text-(--color-text-inverse)'>
-                  {currentUser.avatar}
-                </div>
-                <div className='min-w-0'>
+                <UserAvatar
+                  src={currentUser.avatar}
+                  alt={`${currentUser.name} avatar`}
+                  sizes='40px'
+                  className='size-10'
+                />
+                <div className='hidden min-w-0 xl:block'>
                   <p className='truncate text-sm font-bold'>
                     {currentUser.name}
                   </p>
@@ -70,13 +89,17 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
                 </div>
               </Link>
             ) : (
-              <DemoRolePicker users={database.users} language={language} />
+              <div className='hidden xl:block'>
+                <DemoRolePicker users={database.users} language={language} />
+              </div>
             )}
           </div>
         </aside>
 
         <main className='min-w-0'>
-          <div className='w-full px-4 py-6 sm:px-6 sm:py-8'>{children}</div>
+          <div className='w-full px-2 py-3 sm:px-4 sm:py-6 xl:px-6 xl:py-8'>
+            {children}
+          </div>
         </main>
       </div>
     </div>

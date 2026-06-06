@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { loginAction } from '../model/actions';
 import { getDictionary } from '@/shared/lib/i18n';
-import type { UserRecord } from '@/entities/user';
-import type { UserLanguage } from '@/entities/user';
+import {
+  type UserLanguage,
+  type UserRecord,
+} from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 
 interface DemoRolePickerProps {
@@ -49,9 +52,12 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
                   type='submit'
                   className='flex h-full w-full flex-col rounded-3xl border border-(--color-border) bg-(--color-overlay) p-5 text-left shadow-lg shadow-black/10 transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface)'
                 >
-                  <span className='flex h-14 w-14 items-center justify-center rounded-full bg-(--color-surface-solid) text-lg font-semibold text-(--color-text-inverse)'>
-                    {user.avatar}
-                  </span>
+                  <UserAvatar
+                    src={user.avatar}
+                    alt={`${user.name} avatar`}
+                    sizes='56px'
+                    className='size-14'
+                  />
                   <span className='mt-4 text-lg font-semibold text-(--color-text-primary)'>
                     {user.name}
                   </span>

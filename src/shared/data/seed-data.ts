@@ -7,7 +7,8 @@ export const seedDatabase: DemoDatabase = {
       username: 'jane_dev',
       name: 'Jane Dev',
       bio: 'Frontend engineer. Building calm interfaces and shipping every week.',
-      avatar: 'JD',
+      avatar:
+        'https://i.pinimg.com/736x/4e/77/39/4e77391dd7a90c134f5127870d9bf3ad.jpg',
       followers: 1240,
       following: 312,
       followingIds: ['user-max', 'user-olga'],
@@ -21,7 +22,8 @@ export const seedDatabase: DemoDatabase = {
       username: 'max_router',
       name: 'Max Router',
       bio: 'App Router enthusiast. I compare SSR, SSG and ISR for fun.',
-      avatar: 'MR',
+      avatar:
+        'https://i.pinimg.com/736x/3b/df/c0/3bdfc0212da6874742e67e6e5ef71780.jpg',
       followers: 842,
       following: 188,
       followingIds: ['user-jane'],
@@ -35,7 +37,8 @@ export const seedDatabase: DemoDatabase = {
       username: 'olga_ui',
       name: 'Olga UI',
       bio: 'Product designer focused on clear writing, states and polish.',
-      avatar: 'OU',
+      avatar:
+        'https://i.pinimg.com/736x/5d/e3/f1/5de3f1cfbb9055b31e8acbd3ac8db9d2.jpg',
       followers: 1634,
       following: 251,
       followingIds: ['user-jane'],

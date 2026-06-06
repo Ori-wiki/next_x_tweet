@@ -16,7 +16,7 @@ export default async function HomePage() {
   return (
     <div className='w-full'>
       <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
-        <main className='min-w-0'>
+        <div className='min-w-0'>
           <PageHero
             eyebrow={home.eyebrow}
             title={home.title}
@@ -49,7 +49,7 @@ export default async function HomePage() {
             emptyMessage={home.noTweets}
             language={language}
           />
-        </main>
+        </div>
         <div className='sidebar-scroll hidden self-start lg:sticky lg:top-8 lg:block lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto'>
           <HomeSidebar currentUser={currentUser} />
         </div>

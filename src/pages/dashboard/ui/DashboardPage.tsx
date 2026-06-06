@@ -6,6 +6,7 @@ import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { TweetList } from '@/widgets/tweet-feed';
 import { PAGES } from '@/shared/config/pages';
 import { getSessionUser } from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import { getDashboardData } from '@/entities/tweet';
 
@@ -108,9 +109,12 @@ export default async function DashboardPageView() {
       <aside className='space-y-4 lg:sticky lg:top-8 lg:self-start'>
         <SurfaceCard className='p-5'>
           <div className='flex items-center gap-3'>
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-(--color-surface-solid) font-semibold text-(--color-text-inverse)'>
-              {currentUser.avatar}
-            </div>
+            <UserAvatar
+              src={currentUser.avatar}
+              alt={`${currentUser.name} avatar`}
+              sizes='48px'
+              className='size-12'
+            />
             <div className='min-w-0'>
               <p className='truncate font-semibold text-(--color-text-primary)'>{currentUser.name}</p>
               <p className='truncate text-sm text-(--color-accent-text)'>@{currentUser.username}</p>

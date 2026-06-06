@@ -16,6 +16,7 @@ import {
 import { getDictionary } from '@/shared/lib/i18n';
 import { formatDateTime, formatNumber } from '@/shared/lib/utils';
 import type { UserLanguage } from '@/entities/user';
+import { UserAvatar } from '@/entities/user/ui';
 
 interface TweetProps {
   tweet: TweetView;
@@ -76,7 +77,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
   ];
 
   return (
-    <SurfaceCard className='p-5 shadow-(--shadow-card)'>
+    <SurfaceCard className='p-4 shadow-(--shadow-card) sm:p-5'>
       {tweet.replyTo ? (
         <p className='mb-3 text-sm text-(--color-text-subtle)'>
           {tweetText.replyingTo}{' '}
@@ -91,12 +92,17 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
 
       <div className='mb-3 flex items-start justify-between gap-4'>
         <div className='flex items-center gap-3'>
-          <div className='flex h-11 w-11 items-center justify-center rounded-full bg-(--color-surface-solid) text-sm font-semibold text-(--color-text-inverse)'>
-            {tweet.author.avatar}
-          </div>
+          <UserAvatar
+            src={tweet.author.avatar}
+            alt={`${tweet.author.name} avatar`}
+            sizes='44px'
+            className='size-11'
+          />
           <div>
             <div className='flex items-center gap-2'>
-              <p className='font-semibold text-(--color-text-primary)'>{tweet.author.name}</p>
+              <p className='font-semibold text-(--color-text-primary)'>
+                {tweet.author.name}
+              </p>
               <span className='text-sm text-(--color-text-subtle)'>·</span>
               <p className='text-sm text-(--color-text-soft)'>
                 {formatDateTime(tweet.createdAt, language)}
@@ -113,7 +119,9 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         <Image src='/XTwitterW.svg' width={24} height={24} alt='X logo' />
       </div>
 
-      <p className='mb-4 whitespace-pre-wrap text-(--color-text-strong)'>{tweet.content}</p>
+      <p className='mb-4 whitespace-pre-wrap text-(--color-text-strong)'>
+        {tweet.content}
+      </p>
 
       {tweet.media ? (
         <div className='mb-4'>
@@ -189,7 +197,9 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ) : null}
 
         {!canInteract ? (
-          <p className='text-sm text-(--color-text-subtle)'>{tweetText.signInHint}</p>
+          <p className='text-sm text-(--color-text-subtle)'>
+            {tweetText.signInHint}
+          </p>
         ) : null}
       </div>
     </SurfaceCard>

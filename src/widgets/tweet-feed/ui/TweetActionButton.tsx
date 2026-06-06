@@ -69,7 +69,7 @@ export const TweetActionButton = ({
       >
         <Icon aria-hidden='true' size={16} />
         <span>
-          {optimisticState.active ? activeLabel : inactiveLabel} В· {optimisticState.count}
+          {optimisticState.active ? activeLabel : inactiveLabel} · {optimisticState.count}
         </span>
       </button>
     </form>

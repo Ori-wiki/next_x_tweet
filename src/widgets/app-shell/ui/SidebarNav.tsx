@@ -38,7 +38,7 @@ export const SidebarNav = ({ items }: SidebarNavProps) => {
             href={item.href}
             aria-current={isActive ? 'page' : undefined}
             className={cn(
-              'group inline-flex items-center gap-4 rounded-full px-3 py-3 text-xl transition hover:bg-(--color-surface-hover)',
+              'group relative inline-flex size-12 items-center justify-center rounded-full text-xl transition hover:bg-(--color-surface-hover) xl:w-auto xl:justify-start xl:gap-4 xl:px-3',
               isActive
                 ? 'font-bold text-(--color-text-primary)'
                 : 'text-(--color-text-secondary)',
@@ -46,6 +46,12 @@ export const SidebarNav = ({ items }: SidebarNavProps) => {
           >
             <Icon aria-hidden='true' size={26} />
             <span className='hidden xl:inline'>{item.name}</span>
+            {isActive ? (
+              <span
+                aria-hidden='true'
+                className='absolute right-1 top-1 size-2 rounded-full bg-(--color-accent) xl:hidden'
+              />
+            ) : null}
           </Link>
         );
       })}
