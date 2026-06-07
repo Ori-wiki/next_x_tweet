@@ -22,20 +22,23 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
   return (
     <div className='min-h-screen w-full min-w-0 overflow-x-clip text-(--color-text-primary)'>
       <header className='sticky top-0 z-40 flex h-14 items-center justify-between border-b border-(--color-border) bg-(--color-background-header) px-4 backdrop-blur-xl sm:hidden'>
-        <Link
-          href={PAGES.HOME}
-          className='inline-flex items-center gap-3 font-semibold'
-          aria-label='Home'
-        >
-          <Image
-            src='/XTwitterW.svg'
-            width={26}
-            height={26}
-            alt=''
-            priority
-          />
-          <span>Next X</span>
-        </Link>
+        <div className='flex min-w-0 items-center gap-2'>
+          <MobileMenu items={menuItems} />
+          <Link
+            href={PAGES.HOME}
+            className='inline-flex min-w-0 items-center gap-2 font-semibold'
+            aria-label='Home'
+          >
+            <Image
+              src='/XTwitterW.svg'
+              width={25}
+              height={25}
+              alt=''
+              priority
+            />
+            <span className='truncate'>Next X</span>
+          </Link>
+        </div>
         <div className='flex items-center gap-2'>
           {currentUser ? (
             <Link
@@ -57,7 +60,6 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
               compact
             />
           )}
-          <MobileMenu items={menuItems} />
         </div>
       </header>
 
