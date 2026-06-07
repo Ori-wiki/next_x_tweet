@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Bell,
   Bookmark,
@@ -186,15 +185,8 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
           <Link
             href={PAGES.HOME}
             onClick={() => setIsOpen(false)}
-            aria-label='Home'
-            className='inline-flex min-w-0 items-center gap-3 rounded-full px-2 py-2 font-semibold transition hover:bg-(--color-surface-hover)'
+            className='inline-flex min-w-0 items-center rounded-full px-2 py-2 font-semibold transition hover:bg-(--color-surface-hover)'
           >
-            <Image
-              src='/XTwitterW.svg'
-              width={27}
-              height={27}
-              alt=''
-            />
             <span className='truncate'>Next X</span>
           </Link>
         </div>
