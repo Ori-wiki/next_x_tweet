@@ -26,7 +26,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
           <MobileMenu items={menuItems} />
           <Link
             href={PAGES.HOME}
-            className='inline-flex min-w-0 items-center gap-2 font-semibold'
+            className='inline-flex size-10 shrink-0 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover)'
             aria-label='Home'
           >
             <Image
@@ -36,7 +36,6 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
               alt=''
               priority
             />
-            <span className='truncate'>Next X</span>
           </Link>
         </div>
         <div className='flex items-center gap-2'>
