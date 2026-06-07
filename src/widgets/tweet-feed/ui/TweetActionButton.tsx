@@ -44,6 +44,7 @@ export const TweetActionButton = ({
     }),
   );
   const Icon = icons[kind];
+  const label = optimisticState.active ? activeLabel : inactiveLabel;
   const formAction = async (formData: FormData) => {
     setIsPending(true);
     toggleOptimisticState(undefined);
@@ -56,11 +57,12 @@ export const TweetActionButton = ({
   };
 
   return (
-    <form action={formAction}>
+    <form action={formAction} className='min-w-0'>
       <input type='hidden' name='tweetId' value={tweetId} />
       <button
         type='submit'
         disabled={isPending}
+        aria-label={`${label}: ${optimisticState.count}`}
         className={cn(
           baseClassName,
           optimisticState.active && activeClassName,
@@ -68,8 +70,11 @@ export const TweetActionButton = ({
         )}
       >
         <Icon aria-hidden='true' size={16} />
-        <span className='min-w-0 truncate'>
-          {optimisticState.active ? activeLabel : inactiveLabel} · {optimisticState.count}
+        <span className='hidden min-w-0 truncate sm:inline'>
+          {label} · {optimisticState.count}
+        </span>
+        <span className='text-xs sm:hidden' aria-hidden='true'>
+          {optimisticState.count}
         </span>
       </button>
     </form>

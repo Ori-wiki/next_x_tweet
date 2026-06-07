@@ -22,13 +22,15 @@ export const PageHero = ({
         className,
       )}
     >
-      <p className='text-sm uppercase tracking-[0.2em] text-(--color-text-subtle)'>
+      <p className='text-xs uppercase tracking-[0.18em] text-(--color-text-subtle) sm:text-sm sm:tracking-[0.2em]'>
         {eyebrow}
       </p>
-      <h1 className='mt-2 text-2xl font-bold text-(--color-text-primary) sm:text-3xl'>
+      <h1 className='mt-2 text-[1.65rem] font-bold leading-tight text-(--color-text-primary) sm:text-3xl'>
         {title}
       </h1>
-      <p className='mt-3 max-w-2xl text-(--color-text-secondary)'>{description}</p>
+      <p className='mt-2 max-w-2xl text-sm leading-6 text-(--color-text-secondary) sm:mt-3 sm:text-base'>
+        {description}
+      </p>
       {children ? <div className='mt-5'>{children}</div> : null}
     </section>
   );

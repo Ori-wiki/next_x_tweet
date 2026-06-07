@@ -19,13 +19,17 @@ interface SidebarNavProps {
     href: string;
     name: string;
   }>;
+  mobile?: boolean;
 }
 
-export const SidebarNav = ({ items }: SidebarNavProps) => {
+export const SidebarNav = ({ items, mobile = false }: SidebarNavProps) => {
   const pathname = usePathname() ?? '';
 
   return (
-    <nav className='grid gap-1'>
+    <nav
+      aria-label={mobile ? 'Mobile navigation' : 'Primary navigation'}
+      className={mobile ? 'grid w-full min-w-0 grid-cols-5 overflow-hidden' : 'grid gap-1'}
+    >
       {items.map((item) => {
         const Icon = icons[item.href] ?? CircleUserRound;
         const isActive = pathname === item.href || (
@@ -38,18 +42,39 @@ export const SidebarNav = ({ items }: SidebarNavProps) => {
             href={item.href}
             aria-current={isActive ? 'page' : undefined}
             className={cn(
-              'group relative inline-flex size-12 items-center justify-center rounded-full text-xl transition hover:bg-(--color-surface-hover) xl:w-auto xl:justify-start xl:gap-4 xl:px-3',
+              mobile
+                ? 'group relative flex min-w-0 overflow-hidden flex-col items-center justify-center gap-0.5 px-0.5 py-2 text-[9px] leading-none transition'
+                : 'group relative inline-flex size-12 items-center justify-center rounded-full text-xl transition hover:bg-(--color-surface-hover) xl:w-auto xl:justify-start xl:gap-4 xl:px-3',
               isActive
                 ? 'font-bold text-(--color-text-primary)'
                 : 'text-(--color-text-secondary)',
             )}
           >
-            <Icon aria-hidden='true' size={26} />
-            <span className='hidden xl:inline'>{item.name}</span>
+            <span
+              className={cn(
+                'relative flex items-center justify-center rounded-full transition',
+                mobile && 'h-8 w-12',
+                mobile && isActive && 'bg-(--color-accent-surface)',
+              )}
+            >
+              <Icon aria-hidden='true' size={mobile ? 22 : 26} />
+              {mobile && isActive ? (
+                <span
+                  aria-hidden='true'
+                  className='absolute -bottom-1 h-0.5 w-4 rounded-full bg-(--color-accent)'
+                />
+              ) : null}
+            </span>
+            <span className={mobile ? 'block w-full truncate text-center' : 'hidden xl:inline'}>
+              {item.name}
+            </span>
             {isActive ? (
               <span
                 aria-hidden='true'
-                className='absolute right-1 top-1 size-2 rounded-full bg-(--color-accent) xl:hidden'
+                className={cn(
+                  'absolute right-1 top-1 size-2 rounded-full bg-(--color-accent) xl:hidden',
+                  mobile && 'hidden',
+                )}
               />
             ) : null}
           </Link>

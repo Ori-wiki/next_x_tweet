@@ -119,9 +119,9 @@ export default async function NotificationsPage({
                   const Icon = notificationIcons[item.kind];
 
                   return (
-                    <SurfaceCard key={item.id} className='p-5'>
-                      <div className='flex gap-4'>
-                        <div className='flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) text-(--color-accent)'>
+                    <SurfaceCard key={item.id} className='p-4 sm:p-5'>
+                      <div className='flex gap-3 sm:gap-4'>
+                        <div className='flex size-10 shrink-0 items-center justify-center rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) text-(--color-accent) sm:size-11'>
                           <Icon aria-hidden='true' size={20} />
                         </div>
                         <div className='min-w-0 flex-1'>

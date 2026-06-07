@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { UserRound } from 'lucide-react';
 import { loginAction } from '../model/actions';
 import { getDictionary } from '@/shared/lib/i18n';
 import {
@@ -14,9 +15,14 @@ import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 interface DemoRolePickerProps {
   users: UserRecord[];
   language?: UserLanguage;
+  compact?: boolean;
 }
 
-export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
+export const DemoRolePicker = ({
+  users,
+  language,
+  compact = false,
+}: DemoRolePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { auth, common, demoRolePicker } = getDictionary(language);
 
@@ -85,9 +91,15 @@ export const DemoRolePicker = ({ users, language }: DemoRolePickerProps) => {
       <button
         type='button'
         onClick={() => setIsOpen(true)}
-        className='rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) px-4 py-2 text-sm text-(--color-accent-text-strong) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface-hover)'
+        aria-label={compact ? auth.chooseDemoRole : undefined}
+        title={compact ? auth.chooseDemoRole : undefined}
+        className={
+          compact
+            ? 'inline-flex size-9 items-center justify-center rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) text-(--color-accent-text-strong) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface-hover)'
+            : 'rounded-full border border-(--color-accent-border) bg-(--color-accent-surface) px-4 py-2 text-sm text-(--color-accent-text-strong) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface-hover)'
+        }
       >
-        {auth.chooseDemoRole}
+        {compact ? <UserRound aria-hidden='true' size={18} /> : auth.chooseDemoRole}
       </button>
       {typeof document !== 'undefined' ? createPortal(modal, document.body) : null}
     </>

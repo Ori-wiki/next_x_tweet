@@ -15,13 +15,13 @@ export default async function HomePage() {
 
   return (
     <div className='w-full'>
-      <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
+      <div className='grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_300px]'>
         <div className='min-w-0'>
           <PageHero
             eyebrow={home.eyebrow}
             title={home.title}
             description={home.description}
-            className='mb-5'
+            className='mb-4 sm:mb-5'
           />
 
           {currentUser ? (

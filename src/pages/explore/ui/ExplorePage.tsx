@@ -118,7 +118,7 @@ export default async function ExplorePageView({
         )}
       </section>
 
-      <aside className='sidebar-scroll self-start lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto'>
+      <aside className='sidebar-scroll hidden self-start lg:sticky lg:top-8 lg:block lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto'>
         <div className='space-y-4'>
         <SurfaceCard className='p-5'>
           <h2 className='text-lg font-semibold text-(--color-text-primary)'>{explore.trendingNow}</h2>

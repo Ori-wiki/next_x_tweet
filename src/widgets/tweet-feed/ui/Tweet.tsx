@@ -25,7 +25,7 @@ interface TweetProps {
 }
 
 const tweetActionClassName =
-  'inline-flex w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-2 py-2 text-xs font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:w-auto sm:min-w-27 sm:px-4 sm:text-sm';
+  'inline-flex min-h-11 w-full min-w-0 cursor-pointer items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm';
 
 const likedActionClassName =
   '!border-(--color-neutral-border) !bg-(--color-neutral-surface) !text-(--color-neutral-text) hover:!border-(--color-neutral-border-hover) hover:!bg-(--color-neutral-surface-hover)';
@@ -77,7 +77,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
   ];
 
   return (
-    <SurfaceCard className='p-4 shadow-(--shadow-card) sm:p-5'>
+    <SurfaceCard className='p-3.5 shadow-(--shadow-card) sm:p-5'>
       {tweet.replyTo ? (
         <p className='mb-3 text-sm text-(--color-text-subtle)'>
           {tweetText.replyingTo}{' '}
@@ -90,13 +90,13 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         </p>
       ) : null}
 
-      <div className='mb-3 flex items-start justify-between gap-4'>
+      <div className='mb-3 flex items-start justify-between gap-3 sm:gap-4'>
         <div className='flex min-w-0 items-center gap-3'>
           <UserAvatar
             src={tweet.author.avatar}
             alt={`${tweet.author.name} avatar`}
             sizes='44px'
-            className='size-11'
+            className='size-10 sm:size-11'
           />
           <div className='min-w-0'>
             <div className='flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5'>
@@ -116,7 +116,13 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
             </Link>
           </div>
         </div>
-        <Image src='/XTwitterW.svg' width={24} height={24} alt='X logo' />
+        <Image
+          src='/XTwitterW.svg'
+          width={22}
+          height={22}
+          alt=''
+          className='opacity-70'
+        />
       </div>
 
       <p className='mb-4 whitespace-pre-wrap text-(--color-text-strong)'>
@@ -143,13 +149,13 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         </div>
       ) : null}
 
-      <div className='mb-4 flex flex-wrap gap-3 text-sm text-(--color-text-subtle)'>
+      <div className='mb-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-(--color-text-subtle) sm:mb-4 sm:text-sm'>
         {metrics.map((metric) => (
           <span key={metric}>{metric}</span>
         ))}
       </div>
 
-      <div className='grid grid-cols-2 items-center gap-2 text-sm text-(--color-text-secondary) sm:flex sm:flex-wrap sm:gap-3'>
+      <div className='grid grid-cols-5 items-center gap-0 text-sm text-(--color-text-secondary) sm:flex sm:flex-wrap sm:gap-3'>
         {actions.map((item) => (
           <TweetActionButton
             key={item.kind}
@@ -168,10 +174,14 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         ))}
         <Link
           href={PAGES.TWEET(tweet.id)}
-          className='inline-flex w-full min-w-0 items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-2 py-2 text-center text-xs font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:w-auto sm:min-w-27 sm:px-4 sm:text-sm'
+          aria-label={tweetText.thread}
+          className='inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-center text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm'
         >
           <MessageCircle aria-hidden='true' size={16} />
-          <span className='min-w-0 truncate'>{tweetText.thread}</span>
+          <span className='text-xs sm:hidden' aria-hidden='true'>
+            {tweet.repliesCount}
+          </span>
+          <span className='hidden min-w-0 truncate sm:inline'>{tweetText.thread}</span>
         </Link>
 
         <CopyLinkButton
@@ -181,23 +191,25 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         />
 
         {tweet.isOwn ? (
-          <form action={deleteTweetAction}>
+          <form action={deleteTweetAction} className='min-w-0'>
             <input type='hidden' name='tweetId' value={tweet.id} />
             <SubmitButton
               idleLabel={
                 <>
                   <Trash2 aria-hidden='true' size={16} />
-                  <span>{tweetText.delete}</span>
+                  <span className='hidden sm:inline'>{tweetText.delete}</span>
                 </>
               }
-              pendingLabel={tweetText.deleting}
+              pendingLabel={
+                <span className='hidden sm:inline'>{tweetText.deleting}</span>
+              }
               className={`${tweetActionClassName} ${deleteActionClassName}`}
             />
           </form>
         ) : null}
 
         {!canInteract ? (
-          <p className='text-sm text-(--color-text-subtle)'>
+          <p className='col-span-5 mt-2 text-center text-xs text-(--color-text-subtle) sm:text-left sm:text-sm'>
             {tweetText.signInHint}
           </p>
         ) : null}

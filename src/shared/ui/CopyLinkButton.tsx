@@ -27,14 +27,15 @@ export const CopyLinkButton = ({
   }
 
   return (
-    <div className='relative flex w-full sm:inline-flex sm:w-auto'>
+    <div className='relative flex min-w-0 w-full sm:inline-flex sm:w-auto'>
       <button
         type='button'
         onClick={handleCopy}
-        className='inline-flex w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-(--color-border) bg-transparent px-2 py-2 text-xs font-medium text-(--color-text-secondary) backdrop-blur-sm transition hover:border-(--color-border-hover) hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:w-auto sm:min-w-27 sm:px-4 sm:text-sm'
+        aria-label={copied ? copiedLabel : label}
+        className='inline-flex min-h-11 w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:border-(--color-border) sm:px-4 sm:text-sm'
       >
         {copied ? <Check aria-hidden='true' size={16} /> : <Link2 aria-hidden='true' size={16} />}
-        <span className='min-w-0 truncate'>
+        <span className='hidden min-w-0 truncate sm:inline'>
           {copied ? copiedLabel : label}
         </span>
       </button>

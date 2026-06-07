@@ -55,7 +55,7 @@ export const TweetForm = ({
       onReset={() => setContentLength(0)}
       className={compact ? '' : 'mb-6'}
     >
-      <SurfaceCard className='space-y-4 p-4 text-(--color-text-primary) shadow-(--shadow-form)'>
+      <SurfaceCard className='space-y-4 rounded-2xl p-4 text-(--color-text-primary) shadow-(--shadow-form) sm:rounded-3xl'>
         {replyToId ? <input type='hidden' name='replyToId' value={replyToId} /> : null}
         <div className='flex items-center justify-between gap-3'>
           <label className='block text-sm font-semibold text-(--color-text-primary)' htmlFor='content'>
@@ -128,7 +128,7 @@ export const TweetForm = ({
               </>
             }
             pendingLabel={pendingLabel}
-            className='inline-flex items-center justify-center gap-2 px-5'
+            className='inline-flex min-h-11 w-full items-center justify-center gap-2 px-5 sm:w-auto'
           />
         </div>
       </SurfaceCard>
