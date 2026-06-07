@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Check } from 'lucide-react';
 import {
   PROFILE_TABS,
   type ProfileTabKey,
@@ -86,7 +87,7 @@ export default async function ProfilePageView({
               </div>
             </div>
           </div>
-          <div className='min-w-0 space-y-3'>
+          <div className='min-w-0 space-y-3 sm:min-w-100'>
             <div className='grid grid-cols-3 gap-2 text-sm text-(--color-text-secondary) sm:gap-3'>
               {stats.map((stat) => (
                 <StatCard
@@ -102,11 +103,19 @@ export default async function ProfilePageView({
                 <input type='hidden' name='targetUserId' value={profile.id} />
                 <button
                   type='submit'
-                  className='w-full rounded-full bg-(--color-surface-solid) px-5 py-2 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-foreground) sm:w-auto'
+                  aria-pressed={isFollowing}
+                  className={`inline-flex w-full items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition hover:cursor-pointer sm:w-auto ${
+                    isFollowing
+                      ? 'border-(--color-accent-border-hover) bg-(--color-accent) text-(--color-text-inverse) hover:bg-(--color-accent-hover)'
+                      : 'border-(--color-surface-solid) bg-(--color-surface-solid) text-(--color-text-inverse) hover:border-(--color-foreground) hover:bg-(--color-foreground)'
+                  }`}
                 >
-                  {isFollowing
-                    ? profileText.followingState
-                    : profileText.follow}
+                  {isFollowing ? <Check aria-hidden='true' size={16} strokeWidth={2.5} /> : null}
+                  <span>
+                    {isFollowing
+                      ? profileText.followingState
+                      : profileText.follow}
+                  </span>
                 </button>
               </form>
             ) : null}
