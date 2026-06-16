@@ -17,10 +17,9 @@ import {
   useState,
   type TouchEvent,
 } from 'react';
-import { createPortal } from 'react-dom';
 import { PAGES } from '@/shared/config/pages';
 import { cn } from '@/shared/lib/cn';
-import { useIsHydrated } from '@/shared/lib/useIsHydrated';
+import { ModalPortal } from '@/shared/ui/AppProviders';
 import type { MenuItemData } from '../model/menu.data';
 
 interface MobileMenuProps {
@@ -39,7 +38,6 @@ const swipeThreshold = 56;
 
 export const MobileMenu = ({ items }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const isHydrated = useIsHydrated();
   const pathname = usePathname() ?? '';
   const touchStartX = useRef<number | null>(null);
 
@@ -269,9 +267,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
         />
       </button>
 
-      {isHydrated
-        ? createPortal(menu, document.body)
-        : null}
+      <ModalPortal>{menu}</ModalPortal>
     </>
   );
 };

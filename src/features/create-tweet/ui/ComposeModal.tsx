@@ -2,8 +2,7 @@
 
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
-import { useIsHydrated } from '@/shared/lib/useIsHydrated';
+import { ModalPortal } from '@/shared/ui/AppProviders';
 import { TweetForm } from './TweetForm';
 
 interface ComposeModalProps {
@@ -26,7 +25,6 @@ export const ComposeModal = ({
   texts,
 }: ComposeModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const isHydrated = useIsHydrated();
 
   if (!canCompose) {
     return null;
@@ -82,9 +80,7 @@ export const ComposeModal = ({
         {!compact ? <span>{texts.title}</span> : null}
       </button>
 
-      {isHydrated
-        ? createPortal(modal, document.body)
-        : null}
+      <ModalPortal>{modal}</ModalPortal>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { AppProviders } from '@/shared/ui/AppProviders';
 import type { TweetActionState } from '../model/state';
 import { TweetForm } from './TweetForm';
 
@@ -13,7 +14,11 @@ describe('TweetForm', () => {
       message: String(formData.get('content') ?? ''),
     });
 
-    render(<TweetForm action={fakeAction} />);
+    render(
+      <AppProviders>
+        <TweetForm action={fakeAction} />
+      </AppProviders>,
+    );
 
     const textarea = screen.getByLabelText('New tweet');
     fireEvent.change(textarea, { target: { value: 'Hello world' } });

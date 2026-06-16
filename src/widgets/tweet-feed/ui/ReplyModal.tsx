@@ -3,14 +3,13 @@
 import Link from 'next/link';
 import { MessageCircle, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { TweetForm } from '@/features/create-tweet';
 import type { TweetView } from '@/entities/tweet';
 import type { UserLanguage } from '@/entities/user';
 import { PAGES } from '@/shared/config/pages';
 import { cn } from '@/shared/lib/cn';
 import { formatDateTime, formatNumber } from '@/shared/lib/utils';
-import { useIsHydrated } from '@/shared/lib/useIsHydrated';
+import { ModalPortal } from '@/shared/ui/AppProviders';
 import { EmptyState } from '@/shared/ui/EmptyState';
 
 interface ReplyModalProps {
@@ -42,7 +41,6 @@ export const ReplyModal = ({
   tweet,
 }: ReplyModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const isHydrated = useIsHydrated();
 
   useEffect(() => {
     if (!isOpen) {
@@ -174,7 +172,7 @@ export const ReplyModal = ({
         </span>
       </button>
 
-      {isHydrated ? createPortal(modal, document.body) : null}
+      <ModalPortal>{modal}</ModalPortal>
     </>
   );
 };

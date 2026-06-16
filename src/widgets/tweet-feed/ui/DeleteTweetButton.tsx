@@ -3,7 +3,7 @@
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/shared/lib/cn';
-import { showToast } from '@/shared/ui/ToastViewport';
+import { useToast } from '@/shared/ui/AppProviders';
 
 interface DeleteTweetButtonProps {
   action: (formData: FormData) => Promise<void>;
@@ -25,6 +25,7 @@ export const DeleteTweetButton = ({
   tweetId,
 }: DeleteTweetButtonProps) => {
   const [isPending, setIsPending] = useState(false);
+  const { showToast } = useToast();
   const formAction = async (formData: FormData) => {
     setIsPending(true);
 

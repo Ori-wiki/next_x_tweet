@@ -1,5 +1,6 @@
 'use server';
 
+import { z } from 'zod';
 import {
   findTweetById,
   updateTweetRelation,
@@ -7,13 +8,24 @@ import {
 } from '@/entities/tweet';
 import type { TweetRelationKey } from '@/entities/tweet';
 import { withCurrentUser } from '@/entities/user';
+import { formDataToObject } from '@/shared/lib/formData';
+
+const tweetRelationSchema = z.object({
+  tweetId: z.string().trim().min(1),
+});
 
 async function toggleTweetRelation(
   formData: FormData,
   relationKey: TweetRelationKey,
 ) {
+  const parsed = tweetRelationSchema.safeParse(formDataToObject(formData));
+
+  if (!parsed.success) {
+    return;
+  }
+
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
-    const tweetId = String(formData.get('tweetId') ?? '');
+    const { tweetId } = parsed.data;
     const targetTweet = findTweetById(database, tweetId);
 
     if (!targetTweet) {

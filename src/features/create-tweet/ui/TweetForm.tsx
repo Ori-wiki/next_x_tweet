@@ -4,7 +4,7 @@ import { Link2, Send, Tag } from 'lucide-react';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { SubmitButton } from '@/shared/ui/SubmitButton';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
-import { showToast } from '@/shared/ui/ToastViewport';
+import { useToast } from '@/shared/ui/AppProviders';
 import { createTweetAction } from '../model/actions';
 import {
   initialTweetActionState,
@@ -43,6 +43,7 @@ export const TweetForm = ({
 }: TweetFormProps) => {
   const [state, formAction] = useActionState(action, initialTweetActionState);
   const [contentLength, setContentLength] = useState(0);
+  const { showToast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export const TweetForm = ({
       showToast(state.message);
       onSuccess?.();
     }
-  }, [onSuccess, state.message, state.status]);
+  }, [onSuccess, showToast, state.message, state.status]);
 
   return (
     <form

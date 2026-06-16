@@ -1,12 +1,24 @@
 'use server';
 
+import { z } from 'zod';
 import { updateUsers, withCurrentUser } from '@/entities/user';
+import { formDataToObject } from '@/shared/lib/formData';
+
+const followSchema = z.object({
+  targetUserId: z.string().trim().min(1),
+});
 
 export async function toggleFollowAction(formData: FormData) {
-  await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
-    const targetUserId = String(formData.get('targetUserId') ?? '');
+  const parsed = followSchema.safeParse(formDataToObject(formData));
 
-    if (!targetUserId || currentUserId === targetUserId) {
+  if (!parsed.success) {
+    return;
+  }
+
+  await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
+    const { targetUserId } = parsed.data;
+
+    if (currentUserId === targetUserId) {
       return;
     }
 

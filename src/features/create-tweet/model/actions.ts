@@ -1,5 +1,6 @@
 'use server';
 
+import { z } from 'zod';
 import {
   buildTweet,
   findTweetById,
@@ -7,6 +8,7 @@ import {
 } from '@/entities/tweet';
 import { createTweetSchema, extractHashtags } from '@/entities/tweet';
 import { getDatabaseContext } from '@/entities/user';
+import { formDataToObject } from '@/shared/lib/formData';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import type { TweetActionState } from './state';
 
@@ -25,11 +27,15 @@ export async function createTweetAction(
     };
   }
 
-  const parsed = createTweetSchema(language).safeParse({
-    content: formData.get('content'),
-    mediaUrl: formData.get('mediaUrl'),
-    attachmentLabel: formData.get('attachmentLabel'),
-  });
+  const parsed = createTweetSchema(language)
+    .extend({
+      replyToId: z
+        .string()
+        .trim()
+        .optional()
+        .transform((value) => value || null),
+    })
+    .safeParse(formDataToObject(formData));
 
   if (!parsed.success) {
     return {
@@ -39,7 +45,7 @@ export async function createTweetAction(
     };
   }
 
-  const replyToId = String(formData.get('replyToId') ?? '').trim() || null;
+  const { replyToId } = parsed.data;
 
   if (replyToId && !findTweetById(context.database, replyToId)) {
     return {

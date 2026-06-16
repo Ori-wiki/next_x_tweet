@@ -1,34 +1,28 @@
 'use server';
 
-import { ALLOWED_LANGUAGES } from '@/shared/config/language';
+import { z } from 'zod';
 import { updateUsers, withCurrentUser } from '@/entities/user';
-import type { UserLanguage } from '@/entities/user';
+import { formDataToObject } from '@/shared/lib/formData';
 
-function normalizeSettings(formData: FormData) {
-  const language = String(formData.get('language') ?? '') as UserLanguage;
-
-  if (!ALLOWED_LANGUAGES.has(language)) {
-    return null;
-  }
-
-  return { language };
-}
+const settingsSchema = z.object({
+  language: z.enum(['en', 'ru']),
+});
 
 export async function updateSettingsAction(formData: FormData) {
+  const parsed = settingsSchema.safeParse(formDataToObject(formData));
+
+  if (!parsed.success) {
+    return;
+  }
+
   await withCurrentUser(async ({ currentUser, currentUserId }) => {
-    const settings = normalizeSettings(formData);
-
-    if (!settings) {
-      return;
-    }
-
     await updateUsers(
       (users) =>
         users.map((user) =>
           user.id === currentUserId
             ? {
                 ...user,
-                settings,
+                settings: parsed.data,
               }
             : user,
         ),

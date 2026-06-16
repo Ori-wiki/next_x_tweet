@@ -3,7 +3,7 @@
 import { Bookmark, Heart, Repeat2 } from 'lucide-react';
 import { useOptimistic, useState } from 'react';
 import { cn } from '@/shared/lib/cn';
-import { showToast } from '@/shared/ui/ToastViewport';
+import { useToast } from '@/shared/ui/AppProviders';
 
 type TweetActionKind = 'like' | 'bookmark' | 'repost';
 
@@ -39,6 +39,7 @@ export const TweetActionButton = ({
   tweetId,
 }: TweetActionButtonProps) => {
   const [isPending, setIsPending] = useState(false);
+  const { showToast } = useToast();
   const [optimisticState, toggleOptimisticState] = useOptimistic(
     { active, count },
     (state) => ({

@@ -2,7 +2,7 @@
 
 import { Check, Link2 } from 'lucide-react';
 import { useState } from 'react';
-import { showToast } from './ToastViewport';
+import { useToast } from './AppProviders';
 
 interface CopyLinkButtonProps {
   url: string;
@@ -16,6 +16,7 @@ export const CopyLinkButton = ({
   copiedLabel,
 }: CopyLinkButtonProps) => {
   const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
 
   async function handleCopy() {
     try {

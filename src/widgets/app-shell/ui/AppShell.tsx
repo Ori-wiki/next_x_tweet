@@ -8,7 +8,7 @@ import { DemoRolePicker } from '@/features/auth';
 import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
-import { ToastViewport } from '@/shared/ui/ToastViewport';
+import { AppProviders } from '@/shared/ui/AppProviders';
 import { getMenuItems } from '../model/menu.data';
 import { MobileMenu } from './MobileMenu';
 import { SidebarNav } from './SidebarNav';
@@ -21,6 +21,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
   const menuItems = getMenuItems(language);
 
   return (
+    <AppProviders>
     <div className='min-h-screen w-full min-w-0 overflow-x-clip text-(--color-text-primary)'>
       <header className='sticky top-0 z-40 flex h-14 items-center justify-between border-b border-(--color-border) bg-(--color-background-header) px-4 backdrop-blur-xl sm:hidden'>
         <div className='flex min-w-0 items-center gap-2'>
@@ -168,7 +169,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
         <SidebarNav items={menuItems} mobile />
       </div>
 
-      <ToastViewport />
     </div>
+    </AppProviders>
   );
 };
