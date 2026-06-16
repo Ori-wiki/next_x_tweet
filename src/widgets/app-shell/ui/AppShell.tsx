@@ -8,6 +8,7 @@ import { DemoRolePicker } from '@/features/auth';
 import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
+import { ToastViewport } from '@/shared/ui/ToastViewport';
 import { getMenuItems } from '../model/menu.data';
 import { MobileMenu } from './MobileMenu';
 import { SidebarNav } from './SidebarNav';
@@ -16,7 +17,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
   const currentUser = await getSessionUser();
   const database = await readDemoDatabase();
   const language = resolveLanguage(currentUser?.settings);
-  const { tweetForm } = getDictionary(language);
+  const { common, tweetForm } = getDictionary(language);
   const menuItems = getMenuItems(language);
 
   return (
@@ -85,6 +86,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
               compact
               canCompose={Boolean(currentUser)}
               texts={{
+                closeLabel: common.close,
                 title: tweetForm.newTweet,
                 submitLabel: tweetForm.postTweet,
                 pendingLabel: tweetForm.posting,
@@ -99,6 +101,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
             <ComposeModal
               canCompose={Boolean(currentUser)}
               texts={{
+                closeLabel: common.close,
                 title: tweetForm.newTweet,
                 submitLabel: tweetForm.postTweet,
                 pendingLabel: tweetForm.posting,
@@ -150,6 +153,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
           compact
           canCompose={Boolean(currentUser)}
           texts={{
+            closeLabel: common.close,
             title: tweetForm.newTweet,
             submitLabel: tweetForm.postTweet,
             pendingLabel: tweetForm.posting,
@@ -163,6 +167,8 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
       <div className='fixed inset-x-0 bottom-0 z-40 w-full overflow-hidden border-t border-(--color-border) bg-(--color-background-header) pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden'>
         <SidebarNav items={menuItems} mobile />
       </div>
+
+      <ToastViewport />
     </div>
   );
 };

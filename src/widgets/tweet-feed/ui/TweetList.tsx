@@ -7,7 +7,11 @@ import { EmptyState } from '@/shared/ui/EmptyState';
 interface TweetListProps {
   tweets: TweetView[];
   canInteract: boolean;
+  emptyActionHref?: string;
+  emptyActionLabel?: string;
+  emptyIcon?: 'bookmark' | 'bell' | 'home' | 'search';
   emptyMessage: string;
+  emptyTitle?: string;
   title?: string;
   language?: UserLanguage;
 }
@@ -15,7 +19,11 @@ interface TweetListProps {
 export const TweetList = ({
   tweets,
   canInteract,
+  emptyActionHref = PAGES.EXPLORE,
+  emptyActionLabel,
+  emptyIcon = 'search',
   emptyMessage,
+  emptyTitle,
   title,
   language,
 }: TweetListProps) => {
@@ -33,9 +41,11 @@ export const TweetList = ({
         ))
       ) : (
         <EmptyState
+          title={emptyTitle}
           message={emptyMessage}
-          actionHref={PAGES.EXPLORE}
-          actionLabel='Explore tweets'
+          actionHref={emptyActionHref}
+          actionLabel={emptyActionLabel}
+          icon={emptyIcon}
         />
       )}
     </section>

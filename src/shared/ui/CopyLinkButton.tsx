@@ -2,6 +2,7 @@
 
 import { Check, Link2 } from 'lucide-react';
 import { useState } from 'react';
+import { showToast } from './ToastViewport';
 
 interface CopyLinkButtonProps {
   url: string;
@@ -20,6 +21,7 @@ export const CopyLinkButton = ({
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
+      showToast(copiedLabel);
       window.setTimeout(() => setCopied(false), 1500);
     } catch {
       setCopied(false);
@@ -32,7 +34,7 @@ export const CopyLinkButton = ({
         type='button'
         onClick={handleCopy}
         aria-label={copied ? copiedLabel : label}
-        className='inline-flex min-h-11 w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:border-(--color-border) sm:px-4 sm:text-sm'
+        className='mx-1 inline-flex min-h-11 w-[calc(100%-0.5rem)] min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:mx-0 sm:min-h-0 sm:w-auto sm:min-w-27 sm:border-(--color-border) sm:px-4 sm:text-sm'
       >
         {copied ? <Check aria-hidden='true' size={16} /> : <Link2 aria-hidden='true' size={16} />}
         <span className='hidden min-w-0 truncate sm:inline'>

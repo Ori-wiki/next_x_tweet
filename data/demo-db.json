@@ -64,6 +64,19 @@
   ],
   "tweets": [
     {
+      "id": "e7da4578-5244-49b3-8502-c5d738b4efdb",
+      "authorId": "user-jane",
+      "content": "Incremental Static Regeneration (ISR) is a caching strategy that combines the speed of static content with the flexibility of server-side rendering. It follows the stale-while-revalidate pattern: visitors get a fast cached response, and Vercel regenerates the page in the backgrou",
+      "createdAt": "2026-06-16T18:02:58.896Z",
+      "hashtags": [],
+      "likedBy": [],
+      "bookmarkedBy": [],
+      "repostedBy": [],
+      "views": 262,
+      "replyToId": "968f4615-efd5-48c3-9818-d66a1c5b86dc",
+      "media": null
+    },
+    {
       "id": "35836cd2-8338-47ae-9789-98ca97454169",
       "authorId": "user-olga",
       "content": "nice words",

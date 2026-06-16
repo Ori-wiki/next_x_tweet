@@ -3,12 +3,14 @@
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useIsHydrated } from '@/shared/lib/useIsHydrated';
 import { TweetForm } from './TweetForm';
 
 interface ComposeModalProps {
   canCompose: boolean;
   compact?: boolean;
   texts: {
+    closeLabel: string;
     title: string;
     submitLabel: string;
     pendingLabel: string;
@@ -24,6 +26,7 @@ export const ComposeModal = ({
   texts,
 }: ComposeModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isHydrated = useIsHydrated();
 
   if (!canCompose) {
     return null;
@@ -41,7 +44,7 @@ export const ComposeModal = ({
         <div className='absolute right-3 top-3 z-10 flex justify-end sm:static sm:mb-3'>
           <button
             type='button'
-            aria-label='Close'
+            aria-label={texts.closeLabel}
             onClick={() => setIsOpen(false)}
             className='inline-flex size-10 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface) text-(--color-text-primary) shadow-(--shadow-card) transition hover:cursor-pointer hover:bg-(--color-surface-hover)'
           >
@@ -66,8 +69,8 @@ export const ComposeModal = ({
     <>
       <button
         type='button'
-        aria-label='New tweet'
-        title='New tweet'
+        aria-label={texts.title}
+        title={texts.title}
         onClick={() => setIsOpen(true)}
         className={
           compact
@@ -76,10 +79,10 @@ export const ComposeModal = ({
         }
       >
         <Plus aria-hidden='true' size={compact ? 20 : 16} />
-        {!compact ? <span>New tweet</span> : null}
+        {!compact ? <span>{texts.title}</span> : null}
       </button>
 
-      {typeof document !== 'undefined'
+      {isHydrated
         ? createPortal(modal, document.body)
         : null}
     </>

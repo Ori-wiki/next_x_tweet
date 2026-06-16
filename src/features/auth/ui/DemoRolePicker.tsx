@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { UserRound } from 'lucide-react';
 import { loginAction } from '../model/actions';
 import { getDictionary } from '@/shared/lib/i18n';
+import { useIsHydrated } from '@/shared/lib/useIsHydrated';
 import {
   type UserLanguage,
   type UserRecord,
@@ -24,6 +25,7 @@ export const DemoRolePicker = ({
   compact = false,
 }: DemoRolePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isHydrated = useIsHydrated();
   const { auth, common, demoRolePicker } = getDictionary(language);
 
   const modal = isOpen ? (
@@ -101,7 +103,7 @@ export const DemoRolePicker = ({
       >
         {compact ? <UserRound aria-hidden='true' size={18} /> : auth.chooseDemoRole}
       </button>
-      {typeof document !== 'undefined' ? createPortal(modal, document.body) : null}
+      {isHydrated ? createPortal(modal, document.body) : null}
     </>
   );
 };

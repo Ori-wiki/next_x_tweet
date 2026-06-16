@@ -36,9 +36,11 @@ export default async function HomePage() {
           ) : (
             <div className='my-6'>
               <EmptyState
+                title={home.signedOutTitle}
                 message={home.signInEmpty}
                 actionHref='/explore'
-                actionLabel='Explore tweets'
+                actionLabel={home.emptyAction}
+                icon='home'
               />
             </div>
           )}
@@ -47,6 +49,9 @@ export default async function HomePage() {
             tweets={tweets}
             canInteract={Boolean(currentUser)}
             emptyMessage={home.noTweets}
+            emptyTitle={home.emptyTitle}
+            emptyActionLabel={home.emptyAction}
+            emptyIcon='home'
             language={language}
           />
         </div>

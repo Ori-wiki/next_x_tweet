@@ -21,9 +21,11 @@ export default async function BookmarksPage() {
           description={bookmarks.signedOut}
         />
         <EmptyState
+          title={bookmarks.signedOutTitle}
           message={bookmarks.signedOut}
           actionHref={PAGES.HOME}
-          actionLabel='Go to home'
+          actionLabel={bookmarks.signedOutAction}
+          icon='bookmark'
         />
       </div>
     );
@@ -39,7 +41,7 @@ export default async function BookmarksPage() {
         description={bookmarks.description}
       >
         <LinkButton href={PAGES.EXPLORE}>
-          Open explore
+          {bookmarks.emptyAction}
         </LinkButton>
       </PageHero>
 
@@ -47,6 +49,9 @@ export default async function BookmarksPage() {
         tweets={dashboardData.bookmarkedTweets}
         canInteract
         emptyMessage={bookmarks.empty}
+        emptyTitle={bookmarks.emptyTitle}
+        emptyActionLabel={bookmarks.emptyAction}
+        emptyIcon='bookmark'
         language={language}
       />
     </div>

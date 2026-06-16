@@ -3,6 +3,7 @@ import { TrendingUp, UserRound } from 'lucide-react';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
+import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import { formatNumber } from '@/shared/lib/utils';
 import type { SessionUser } from '@/entities/user';
 import { UserAvatar } from '@/entities/user/ui';
@@ -29,6 +30,8 @@ function getTrends(
 
 export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
   const database = await readDemoDatabase();
+  const language = resolveLanguage(currentUser?.settings);
+  const { home, explore } = getDictionary(language);
   const suggestedUsers = database.users
     .filter((user) => user.id !== currentUser?.id)
     .slice(0, 3);
@@ -52,10 +55,10 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
           )}
           <div className='min-w-0'>
             <p className='truncate font-semibold text-(--color-text-primary)'>
-              {currentUser?.name ?? 'Demo visitor'}
+              {currentUser?.name ?? home.demoVisitor}
             </p>
             <p className='truncate text-sm text-(--color-text-secondary)'>
-              {currentUser ? `@${currentUser.username}` : 'Choose a demo role'}
+              {currentUser ? `@${currentUser.username}` : home.chooseDemoRole}
             </p>
           </div>
         </div>
@@ -67,7 +70,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
                 currentUser?.settings.language,
               )}
             </p>
-            <p className='text-(--color-text-secondary)'>Followers</p>
+            <p className='text-(--color-text-secondary)'>{home.followers}</p>
           </div>
           <div>
             <p className='font-semibold text-(--color-text-primary)'>
@@ -76,7 +79,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
                 currentUser?.settings.language,
               )}
             </p>
-            <p className='text-(--color-text-secondary)'>Following</p>
+            <p className='text-(--color-text-secondary)'>{home.following}</p>
           </div>
         </div>
       </SurfaceCard>
@@ -84,7 +87,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
       <SurfaceCard className='p-5'>
         <div className='mb-4 flex items-center gap-2 text-(--color-text-primary)'>
           <TrendingUp aria-hidden='true' size={18} />
-          <h2 className='font-semibold'>Trending</h2>
+          <h2 className='font-semibold'>{home.trending}</h2>
         </div>
         <div className='space-y-3'>
           {trends.map(([hashtag, count]) => (
@@ -97,7 +100,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
                 #{hashtag}
               </p>
               <p className='text-sm text-(--color-text-secondary)'>
-                {count} tweets
+                {count} {explore.tweetsCount}
               </p>
             </Link>
           ))}
@@ -106,7 +109,7 @@ export const HomeSidebar = async ({ currentUser }: HomeSidebarProps) => {
 
       <SurfaceCard className='p-5'>
         <h2 className='font-semibold text-(--color-text-primary)'>
-          Suggested profiles
+          {home.suggestedProfiles}
         </h2>
         <div className='mt-4 space-y-3'>
           {suggestedUsers.map((user) => (

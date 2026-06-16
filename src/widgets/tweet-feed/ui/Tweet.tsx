@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { MessageCircle, Trash2 } from 'lucide-react';
 import { CopyLinkButton } from '@/shared/ui/CopyLinkButton';
-import { SubmitButton } from '@/shared/ui/SubmitButton';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { TweetMediaCard, type TweetView } from '@/entities/tweet';
+import { DeleteTweetButton } from './DeleteTweetButton';
+import { ReplyModal } from './ReplyModal';
 import { TweetActionButton } from './TweetActionButton';
 import { PAGES } from '@/shared/config/pages';
 import { deleteTweetAction } from '@/features/delete-tweet';
@@ -25,7 +25,7 @@ interface TweetProps {
 }
 
 const tweetActionClassName =
-  'inline-flex min-h-11 w-full min-w-0 cursor-pointer items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm';
+  'mx-1 inline-flex min-h-11 w-[calc(100%-0.5rem)] min-w-0 cursor-pointer items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:mx-0 sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm';
 
 const likedActionClassName =
   '!border-(--color-neutral-border) !bg-(--color-neutral-surface) !text-(--color-neutral-text) hover:!border-(--color-neutral-border-hover) hover:!bg-(--color-neutral-surface-hover)';
@@ -40,7 +40,7 @@ const deleteActionClassName =
   'border-(--color-border) bg-transparent text-(--color-text-muted) hover:border-(--color-danger-border-hover) hover:bg-(--color-danger-surface-hover) hover:text-(--color-danger-text)';
 
 export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
-  const { tweet: tweetText } = getDictionary(language);
+  const { common, thread, tweet: tweetText, tweetForm } = getDictionary(language);
   const actions = [
     {
       action: toggleLikeAction,
@@ -50,6 +50,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
       count: tweet.likes,
       inactiveLabel: tweetText.like,
       kind: 'like' as const,
+      toastLabel: tweet.isLiked ? tweetText.likeRemovedToast : tweetText.likedToast,
     },
     {
       action: toggleBookmarkAction,
@@ -59,6 +60,9 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
       count: tweet.bookmarks,
       inactiveLabel: tweetText.bookmark,
       kind: 'bookmark' as const,
+      toastLabel: tweet.isBookmarked
+        ? tweetText.bookmarkRemovedToast
+        : tweetText.bookmarkedToast,
     },
     {
       action: toggleRepostAction,
@@ -68,6 +72,9 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
       count: tweet.reposts,
       inactiveLabel: tweetText.repost,
       kind: 'repost' as const,
+      toastLabel: tweet.isReposted
+        ? tweetText.repostRemovedToast
+        : tweetText.repostedToast,
     },
   ];
   const metrics = [
@@ -169,20 +176,30 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
             count={item.count}
             inactiveLabel={item.inactiveLabel}
             kind={item.kind}
+            toastLabel={item.toastLabel}
             tweetId={tweet.id}
           />
         ))}
-        <Link
-          href={PAGES.TWEET(tweet.id)}
-          aria-label={tweetText.thread}
-          className='inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-center text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm'
-        >
-          <MessageCircle aria-hidden='true' size={16} />
-          <span className='text-xs sm:hidden' aria-hidden='true'>
-            {tweet.repliesCount}
-          </span>
-          <span className='hidden min-w-0 truncate sm:inline'>{tweetText.thread}</span>
-        </Link>
+        <ReplyModal
+          buttonClassName='mx-1 inline-flex min-h-11 w-[calc(100%-0.5rem)] min-w-0 items-center justify-center gap-1 rounded-full border border-transparent bg-transparent px-1 py-2 text-center text-xs font-medium text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary) sm:mx-0 sm:min-h-0 sm:w-auto sm:min-w-27 sm:gap-2 sm:border-(--color-border) sm:px-4 sm:text-sm'
+          canInteract={canInteract}
+          language={language}
+          texts={{
+            attachmentLabelPlaceholder: tweetForm.attachmentLabel,
+            close: common.close,
+            mediaUrlPlaceholder: tweetForm.mediaUrl,
+            openThread: thread.openThread,
+            pendingLabel: tweetForm.posting,
+            placeholder: tweetForm.placeholder,
+            replies: tweetText.replies,
+            replyTitle: tweetForm.replyToThread,
+            signInToReply: thread.signInToReply,
+            submitLabel: tweetForm.postReply,
+            thread: tweetText.thread,
+            views: tweetText.views,
+          }}
+          tweet={tweet}
+        />
 
         <CopyLinkButton
           url={PAGES.TWEET(tweet.id)}
@@ -191,21 +208,15 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
         />
 
         {tweet.isOwn ? (
-          <form action={deleteTweetAction} className='min-w-0'>
-            <input type='hidden' name='tweetId' value={tweet.id} />
-            <SubmitButton
-              idleLabel={
-                <>
-                  <Trash2 aria-hidden='true' size={16} />
-                  <span className='hidden sm:inline'>{tweetText.delete}</span>
-                </>
-              }
-              pendingLabel={
-                <span className='hidden sm:inline'>{tweetText.deleting}</span>
-              }
-              className={`${tweetActionClassName} ${deleteActionClassName}`}
-            />
-          </form>
+          <DeleteTweetButton
+            action={deleteTweetAction}
+            baseClassName={tweetActionClassName}
+            className={deleteActionClassName}
+            deletedLabel={tweetText.deletedToast}
+            idleLabel={tweetText.delete}
+            pendingLabel={tweetText.deleting}
+            tweetId={tweet.id}
+          />
         ) : null}
 
         {!canInteract ? (

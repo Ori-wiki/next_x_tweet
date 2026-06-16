@@ -4,6 +4,7 @@ import { Link2, Send, Tag } from 'lucide-react';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { SubmitButton } from '@/shared/ui/SubmitButton';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
+import { showToast } from '@/shared/ui/ToastViewport';
 import { createTweetAction } from '../model/actions';
 import {
   initialTweetActionState,
@@ -19,6 +20,7 @@ interface TweetFormProps {
   mediaUrlPlaceholder?: string;
   attachmentLabelPlaceholder?: string;
   pendingLabel?: string;
+  onSuccess?: () => void;
   action?: (
     previousState: TweetActionState,
     formData: FormData,
@@ -36,6 +38,7 @@ export const TweetForm = ({
   mediaUrlPlaceholder = 'Image or link URL',
   attachmentLabelPlaceholder = 'Attachment label, for example figma.com',
   pendingLabel = 'Posting...',
+  onSuccess,
   action = createTweetAction,
 }: TweetFormProps) => {
   const [state, formAction] = useActionState(action, initialTweetActionState);
@@ -45,8 +48,10 @@ export const TweetForm = ({
   useEffect(() => {
     if (state.status === 'success') {
       formRef.current?.reset();
+      showToast(state.message);
+      onSuccess?.();
     }
-  }, [state.status]);
+  }, [onSuccess, state.message, state.status]);
 
   return (
     <form

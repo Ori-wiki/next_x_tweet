@@ -3,6 +3,7 @@
 import { Bookmark, Heart, Repeat2 } from 'lucide-react';
 import { useOptimistic, useState } from 'react';
 import { cn } from '@/shared/lib/cn';
+import { showToast } from '@/shared/ui/ToastViewport';
 
 type TweetActionKind = 'like' | 'bookmark' | 'repost';
 
@@ -15,6 +16,7 @@ interface TweetActionButtonProps {
   count: number;
   inactiveLabel: string;
   kind: TweetActionKind;
+  toastLabel: string;
   tweetId: string;
 }
 
@@ -33,6 +35,7 @@ export const TweetActionButton = ({
   count,
   inactiveLabel,
   kind,
+  toastLabel,
   tweetId,
 }: TweetActionButtonProps) => {
   const [isPending, setIsPending] = useState(false);
@@ -51,6 +54,7 @@ export const TweetActionButton = ({
 
     try {
       await action(formData);
+      showToast(toastLabel);
     } finally {
       setIsPending(false);
     }
@@ -66,6 +70,7 @@ export const TweetActionButton = ({
         className={cn(
           baseClassName,
           optimisticState.active && activeClassName,
+          optimisticState.active && 'reaction-pop ring-1 ring-current/15',
           isPending && 'cursor-wait opacity-80',
         )}
       >

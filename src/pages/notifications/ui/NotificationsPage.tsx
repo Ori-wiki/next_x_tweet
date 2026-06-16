@@ -51,9 +51,11 @@ export default async function NotificationsPage({
         />
 
         <EmptyState
+          title={notifications.emptyTitle}
           message={notifications.signedOut}
           actionHref={PAGES.HOME}
-          actionLabel='Go to home'
+          actionLabel={notifications.emptyAction}
+          icon='bell'
         />
       </div>
     );
@@ -161,9 +163,11 @@ export default async function NotificationsPage({
         </div>
       ) : (
         <EmptyState
+          title={notifications.emptyTitle}
           message={notifications.noNotifications}
           actionHref={PAGES.HOME}
-          actionLabel='Go to home'
+          actionLabel={notifications.emptyAction}
+          icon='bell'
         />
       )}
     </div>
