@@ -15,6 +15,7 @@ const icons = {
 };
 
 interface SidebarNavProps {
+  badges?: Record<string, number>;
   items: Array<{
     href: string;
     name: string;
@@ -22,7 +23,11 @@ interface SidebarNavProps {
   mobile?: boolean;
 }
 
-export const SidebarNav = ({ items, mobile = false }: SidebarNavProps) => {
+export const SidebarNav = ({
+  badges = {},
+  items,
+  mobile = false,
+}: SidebarNavProps) => {
   const pathname = usePathname() ?? '';
 
   return (
@@ -32,6 +37,7 @@ export const SidebarNav = ({ items, mobile = false }: SidebarNavProps) => {
     >
       {items.map((item) => {
         const Icon = icons[item.href] ?? CircleUserRound;
+        const badge = badges[item.href] ?? 0;
         const isActive = pathname === item.href || (
           item.href !== PAGES.HOME && pathname.startsWith(item.href)
         );
@@ -63,6 +69,17 @@ export const SidebarNav = ({ items, mobile = false }: SidebarNavProps) => {
                   aria-hidden='true'
                   className='absolute -bottom-1 h-0.5 w-4 rounded-full bg-(--color-accent)'
                 />
+              ) : null}
+              {badge > 0 ? (
+                <span
+                  aria-label={`${badge} notifications`}
+                  className={cn(
+                    'absolute -right-1 -top-1 flex min-w-4 items-center justify-center rounded-full bg-(--color-danger) px-1 text-[10px] font-bold leading-4 text-(--color-background)',
+                    !mobile && 'xl:-right-2 xl:-top-1',
+                  )}
+                >
+                  {badge > 9 ? '9+' : badge}
+                </span>
               ) : null}
             </span>
             <span className={mobile ? 'block w-full truncate text-center' : 'hidden xl:inline'}>

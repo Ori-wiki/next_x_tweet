@@ -2,7 +2,6 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 import {
   SESSION_COOKIE,
   SESSION_COOKIE_OPTIONS,
@@ -10,10 +9,7 @@ import {
 import { findUserById } from '@/entities/user';
 import { readDemoDatabase } from '@/shared/db';
 import { formDataToObject } from '@/shared/lib/formData';
-
-const loginSchema = z.object({
-  userId: z.string().trim().min(1),
-});
+import { loginSchema } from './schema';
 
 export async function loginAction(formData: FormData) {
   const parsed = loginSchema.safeParse(formDataToObject(formData));

@@ -19,13 +19,25 @@ import { useIsHydrated } from '@/shared/lib/useIsHydrated';
 type ToastTone = 'success' | 'info';
 
 interface Toast {
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
   id: number;
   message: string;
   tone: ToastTone;
 }
 
 interface ToastContextValue {
-  showToast: (message: string, tone?: ToastTone) => void;
+  showToast: (
+    message: string,
+    tone?: ToastTone,
+    action?: Toast['action'],
+  ) => void;
+}
+
+interface AppProvidersTexts {
+  dismissNotification: string;
 }
 
 interface ModalProps {
@@ -42,6 +54,21 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 const ModalContext = createContext<HTMLElement | null>(null);
 let openModalCount = 0;
 let previousBodyOverflow = '';
+
+function getFocusableElements(container: HTMLElement) {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(', '),
+    ),
+  ).filter((element) => !element.hasAttribute('disabled') && element.tabIndex !== -1);
+}
 
 export function useToast() {
   const context = useContext(ToastContext);
@@ -95,6 +122,35 @@ export const Modal = ({
       if (event.key === 'Escape') {
         onOpenChange(false);
       }
+
+      if (event.key !== 'Tab' || !panelRef.current) {
+        return;
+      }
+
+      const focusableElements = getFocusableElements(panelRef.current);
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        panelRef.current.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements.at(-1);
+
+      if (!lastElement) {
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+
+      if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -145,7 +201,14 @@ export const Modal = ({
   );
 };
 
-export const AppProviders = ({ children }: PropsWithChildren) => {
+const defaultTexts: AppProvidersTexts = {
+  dismissNotification: 'Dismiss notification',
+};
+
+export const AppProviders = ({
+  children,
+  texts = defaultTexts,
+}: PropsWithChildren<{ texts?: AppProvidersTexts }>) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const isHydrated = useIsHydrated();
   const modalRoot = isHydrated ? document.body : null;
@@ -154,10 +217,14 @@ export const AppProviders = ({ children }: PropsWithChildren) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
 
-  const showToast = useCallback((message: string, tone: ToastTone = 'success') => {
+  const showToast = useCallback((
+    message: string,
+    tone: ToastTone = 'success',
+    action?: Toast['action'],
+  ) => {
     const id = Date.now() + Math.random();
 
-    setToasts((current) => [...current, { id, message, tone }]);
+    setToasts((current) => [...current, { action, id, message, tone }]);
     window.setTimeout(() => removeToast(id), 2600);
   }, [removeToast]);
 
@@ -192,9 +259,21 @@ export const AppProviders = ({ children }: PropsWithChildren) => {
                   }
                 />
                 <span className='min-w-0 flex-1'>{toast.message}</span>
+                {toast.action ? (
+                  <button
+                    type='button'
+                    onClick={() => {
+                      toast.action?.onClick();
+                      removeToast(toast.id);
+                    }}
+                    className='shrink-0 rounded-full border border-(--color-accent-border) px-3 py-1 text-xs font-semibold text-(--color-accent-text-strong) transition hover:bg-(--color-accent-surface-hover)'
+                  >
+                    {toast.action.label}
+                  </button>
+                ) : null}
                 <button
                   type='button'
-                  aria-label='Dismiss notification'
+                  aria-label={texts.dismissNotification}
                   onClick={() => removeToast(toast.id)}
                   className='inline-flex size-7 shrink-0 items-center justify-center rounded-full text-(--color-text-secondary) transition hover:bg-(--color-surface-hover) hover:text-(--color-text-primary)'
                 >

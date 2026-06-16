@@ -24,6 +24,13 @@ import type { MenuItemData } from '../model/menu.data';
 
 interface MobileMenuProps {
   items: MenuItemData[];
+  texts: {
+    closeNavigationMenu: string;
+    mobileMenu: string;
+    navigationMenu: string;
+    openNavigationMenu: string;
+    swipeLeftToClose: string;
+  };
 }
 
 const icons = {
@@ -36,7 +43,7 @@ const icons = {
 
 const swipeThreshold = 56;
 
-export const MobileMenu = ({ items }: MobileMenuProps) => {
+export const MobileMenu = ({ items, texts }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname() ?? '';
   const touchStartX = useRef<number | null>(null);
@@ -104,7 +111,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
 
   const menu = (
     <Modal
-      ariaLabel='Navigation menu'
+      ariaLabel={texts.navigationMenu}
       open={isOpen}
       onOpenChange={setIsOpen}
       overlayClassName='z-[200] bg-transparent backdrop-blur-none sm:hidden'
@@ -112,7 +119,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
     >
       <button
         type='button'
-        aria-label='Close navigation menu'
+        aria-label={texts.closeNavigationMenu}
         onClick={() => setIsOpen(false)}
         className={cn(
           'absolute inset-0 bg-(--color-overlay) backdrop-blur-sm transition-opacity duration-300',
@@ -131,7 +138,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
         <div className='flex h-16 items-center gap-2 border-b border-(--color-border) px-4'>
           <button
             type='button'
-            aria-label='Close navigation menu'
+            aria-label={texts.closeNavigationMenu}
             onClick={() => setIsOpen(false)}
             className='relative inline-flex size-10 shrink-0 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover)'
           >
@@ -166,7 +173,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
         </div>
 
         <nav
-          aria-label='Mobile menu'
+          aria-label={texts.mobileMenu}
           className='flex-1 overflow-y-auto px-3 py-3'
         >
           {items.map((item) => {
@@ -203,7 +210,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
 
         <div className='border-t border-(--color-border) p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]'>
           <p className='text-xs uppercase tracking-[0.18em] text-(--color-text-subtle)'>
-            Swipe left to close
+            {texts.swipeLeftToClose}
           </p>
         </div>
       </aside>
@@ -214,7 +221,9 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
     <>
       <button
         type='button'
-        aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-label={
+          isOpen ? texts.closeNavigationMenu : texts.openNavigationMenu
+        }
         aria-expanded={isOpen}
         onClick={() => setIsOpen((current) => !current)}
         className='relative inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-(--color-border) bg-(--color-surface) text-(--color-text-primary) transition hover:bg-(--color-surface-hover)'

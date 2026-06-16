@@ -7,7 +7,7 @@ import { DeleteTweetButton } from './DeleteTweetButton';
 import { ReplyModal } from './ReplyModal';
 import { TweetActionButton } from './TweetActionButton';
 import { PAGES } from '@/shared/config/pages';
-import { deleteTweetAction } from '@/features/delete-tweet';
+import { deleteTweetAction, restoreTweetAction } from '@/features/delete-tweet';
 import {
   toggleBookmarkAction,
   toggleLikeAction,
@@ -63,6 +63,12 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
       toastLabel: tweet.isBookmarked
         ? tweetText.bookmarkRemovedToast
         : tweetText.bookmarkedToast,
+      toastAction: tweet.isBookmarked
+        ? undefined
+        : {
+            href: PAGES.BOOKMARKS,
+            label: tweetText.openBookmarks,
+          },
     },
     {
       action: toggleRepostAction,
@@ -176,6 +182,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
             count={item.count}
             inactiveLabel={item.inactiveLabel}
             kind={item.kind}
+            toastAction={item.toastAction}
             toastLabel={item.toastLabel}
             tweetId={tweet.id}
           />
@@ -191,6 +198,7 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
             openThread: thread.openThread,
             pendingLabel: tweetForm.posting,
             placeholder: tweetForm.placeholder,
+            replyPreviewTitle: tweetForm.replyPreviewTitle,
             replies: tweetText.replies,
             replyTitle: tweetForm.replyToThread,
             signInToReply: thread.signInToReply,
@@ -213,9 +221,12 @@ export const Tweet = ({ tweet, canInteract, language }: TweetProps) => {
             baseClassName={tweetActionClassName}
             className={deleteActionClassName}
             deletedLabel={tweetText.deletedToast}
+            restoredLabel={tweetText.deleteRestoredToast}
             idleLabel={tweetText.delete}
             pendingLabel={tweetText.deleting}
+            restoreAction={restoreTweetAction}
             tweetId={tweet.id}
+            undoLabel={tweetText.undoDelete}
           />
         ) : null}
 

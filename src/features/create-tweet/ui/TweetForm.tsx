@@ -20,7 +20,7 @@ interface TweetFormProps {
   mediaUrlPlaceholder?: string;
   attachmentLabelPlaceholder?: string;
   pendingLabel?: string;
-  onSuccess?: () => void;
+  onSuccess?: (submission: { content: string }) => void;
   action?: (
     previousState: TweetActionState,
     formData: FormData,
@@ -45,12 +45,13 @@ export const TweetForm = ({
   const [contentLength, setContentLength] = useState(0);
   const { showToast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const lastSubmissionRef = useRef({ content: '' });
 
   useEffect(() => {
     if (state.status === 'success') {
       formRef.current?.reset();
       showToast(state.message);
-      onSuccess?.();
+      onSuccess?.(lastSubmissionRef.current);
     }
   }, [onSuccess, showToast, state.message, state.status]);
 
@@ -58,6 +59,12 @@ export const TweetForm = ({
     <form
       ref={formRef}
       action={formAction}
+      onSubmit={(event) => {
+        const formData = new FormData(event.currentTarget);
+        lastSubmissionRef.current = {
+          content: String(formData.get('content') ?? '').trim(),
+        };
+      }}
       onReset={() => setContentLength(0)}
       className={compact ? '' : 'mb-6'}
     >

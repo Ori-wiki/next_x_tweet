@@ -20,6 +20,11 @@ export const SettingsPanel = ({
     en: settingsText.english,
     ru: settingsText.russian,
   } as const;
+  async function updateSettingsFormAction(formData: FormData) {
+    'use server';
+
+    await updateSettingsAction(formData);
+  }
 
   return (
     <SurfaceCard className='space-y-4 p-5'>
@@ -35,7 +40,7 @@ export const SettingsPanel = ({
         <p className='mt-2 text-sm text-(--color-text-soft)'>{settingsText.description}</p>
       </div>
 
-      <form action={updateSettingsAction} className='grid gap-4'>
+      <form action={updateSettingsFormAction} className='grid gap-4'>
         <label className='space-y-2 text-sm text-(--color-text-secondary)'>
           <span>{settingsText.language}</span>
           <SelectField

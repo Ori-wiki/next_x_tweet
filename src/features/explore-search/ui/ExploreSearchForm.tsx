@@ -11,6 +11,9 @@ type ExploreSearchFormTexts = {
   latestFirst: string;
   topTweets: string;
   search: string;
+  loading: string;
+  clearFilters: string;
+  clearHistory: string;
 };
 
 interface ExploreSearchFormProps {
@@ -62,6 +65,15 @@ function buildNextHistory(query: string, history: string[]) {
 
 function persistSearchHistory(nextHistory: string[]) {
   window.localStorage.setItem(searchHistoryKey, JSON.stringify(nextHistory));
+  cachedRawHistory = JSON.stringify(nextHistory);
+  cachedParsedHistory = nextHistory;
+  window.dispatchEvent(new Event(searchHistoryEvent));
+}
+
+function clearSearchHistory() {
+  window.localStorage.removeItem(searchHistoryKey);
+  cachedRawHistory = null;
+  cachedParsedHistory = EMPTY_HISTORY;
   window.dispatchEvent(new Event(searchHistoryEvent));
 }
 
@@ -75,7 +87,7 @@ export const ExploreSearchForm = ({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [query, setQuery] = useState(q ?? '');
-  const [history] = useState(() => readSearchHistory());
+  const [history, setHistory] = useState(() => readSearchHistory());
   const quickFilters = [...new Set([...history, ...suggestions])].slice(0, 6);
   const fieldClassName =
     'h-12 w-full rounded-2xl border border-(--color-border) bg-(--color-surface-dark-medium) px-4 text-sm outline-none transition placeholder:text-(--color-text-faint) focus:border-(--color-accent)';
@@ -88,7 +100,9 @@ export const ExploreSearchForm = ({
     const normalizedTag = String(formData.get('tag') ?? '').trim().replace(/^#/, '');
     const selectedSort = String(formData.get('sort') ?? 'latest');
     if (normalized) {
-      persistSearchHistory(buildNextHistory(normalized, readSearchHistory()));
+      const nextHistory = buildNextHistory(normalized, readSearchHistory());
+      persistSearchHistory(nextHistory);
+      setHistory(nextHistory);
     }
 
     startTransition(() => {
@@ -137,7 +151,7 @@ export const ExploreSearchForm = ({
           disabled={isPending}
           className='h-12 rounded-2xl bg-(--color-accent) px-5 text-sm font-semibold text-(--color-text-inverse) transition hover:cursor-pointer hover:bg-(--color-accent-hover) disabled:cursor-not-allowed disabled:opacity-70'
         >
-          {isPending ? 'Loading...' : texts.search}
+          {isPending ? texts.loading : texts.search}
         </button>
       </form>
 
@@ -161,7 +175,19 @@ export const ExploreSearchForm = ({
             }}
             className='rounded-full border border-(--color-border) px-3 py-1 text-xs text-(--color-accent-text) transition hover:cursor-pointer hover:border-(--color-accent-border-hover) hover:bg-(--color-accent-surface)'
           >
-            Clear filters
+            {texts.clearFilters}
+          </button>
+        ) : null}
+        {history.length > 0 ? (
+          <button
+            type='button'
+            onClick={() => {
+              clearSearchHistory();
+              setHistory(EMPTY_HISTORY);
+            }}
+            className='rounded-full border border-(--color-border) px-3 py-1 text-xs text-(--color-text-secondary) transition hover:cursor-pointer hover:border-(--color-danger-border-hover) hover:bg-(--color-danger-surface-hover) hover:text-(--color-danger-text)'
+          >
+            {texts.clearHistory}
           </button>
         ) : null}
       </div>

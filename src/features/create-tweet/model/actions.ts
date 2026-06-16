@@ -1,15 +1,15 @@
 'use server';
 
-import { z } from 'zod';
 import {
   buildTweet,
   findTweetById,
   updateTweets,
 } from '@/entities/tweet';
-import { createTweetSchema, extractHashtags } from '@/entities/tweet';
+import { extractHashtags } from '@/entities/tweet';
 import { getDatabaseContext } from '@/entities/user';
 import { formDataToObject } from '@/shared/lib/formData';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
+import { createTweetActionSchema } from './schema';
 import type { TweetActionState } from './state';
 
 export async function createTweetAction(
@@ -27,15 +27,9 @@ export async function createTweetAction(
     };
   }
 
-  const parsed = createTweetSchema(language)
-    .extend({
-      replyToId: z
-        .string()
-        .trim()
-        .optional()
-        .transform((value) => value || null),
-    })
-    .safeParse(formDataToObject(formData));
+  const parsed = createTweetActionSchema(language).safeParse(
+    formDataToObject(formData),
+  );
 
   if (!parsed.success) {
     return {

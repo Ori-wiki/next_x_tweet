@@ -1,19 +1,18 @@
 'use server';
 
-import { z } from 'zod';
 import { updateUsers, withCurrentUser } from '@/entities/user';
+import { actionError, actionSuccess, type ActionResult } from '@/shared/lib/actionResult';
 import { formDataToObject } from '@/shared/lib/formData';
+import { followSchema } from './schema';
 
-const followSchema = z.object({
-  targetUserId: z.string().trim().min(1),
-});
-
-export async function toggleFollowAction(formData: FormData) {
+export async function toggleFollowAction(formData: FormData): Promise<ActionResult> {
   const parsed = followSchema.safeParse(formDataToObject(formData));
 
   if (!parsed.success) {
-    return;
+    return actionError();
   }
+
+  let updated = false;
 
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
     const { targetUserId } = parsed.data;
@@ -28,6 +27,7 @@ export async function toggleFollowAction(formData: FormData) {
       return;
     }
 
+    updated = true;
     const isFollowing = currentUser.followingIds.includes(targetUserId);
 
     await updateUsers(
@@ -58,4 +58,6 @@ export async function toggleFollowAction(formData: FormData) {
       },
     );
   });
+
+  return updated ? actionSuccess() : actionError();
 }

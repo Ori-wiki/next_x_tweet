@@ -53,6 +53,9 @@ export default async function ExplorePageView({
               latestFirst: explore.latestFirst,
               topTweets: explore.topTweets,
               search: common.search,
+              loading: common.loading,
+              clearFilters: explore.clearFilters,
+              clearHistory: explore.clearHistory,
             }}
           />
           {(q || tag) && (

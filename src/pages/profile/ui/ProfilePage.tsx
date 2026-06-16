@@ -5,6 +5,7 @@ import {
   type ProfileTabKey,
 } from '@/entities/user';
 import { UserAvatar } from '@/entities/user/ui';
+import { ProfileEditForm } from '@/features/update-profile';
 import { SettingsPanel } from '@/features/update-settings';
 import { SurfaceCard } from '@/shared/ui/SurfaceCard';
 import { StatCard } from '@/shared/ui/StatCard';
@@ -52,6 +53,11 @@ export default async function ProfilePageView({
     media: profileText.media,
   };
   const canManageSettings = currentUser?.id === profile.id;
+  async function toggleFollowFormAction(formData: FormData) {
+    'use server';
+
+    await toggleFollowAction(formData);
+  }
 
   return (
     <div className='min-w-0 space-y-4 sm:space-y-6'>
@@ -99,7 +105,7 @@ export default async function ProfilePageView({
               ))}
             </div>
             {currentUser && currentUser.id !== profile.id ? (
-              <form action={toggleFollowAction}>
+              <form action={toggleFollowFormAction}>
                 <input type='hidden' name='targetUserId' value={profile.id} />
                 <button
                   type='submit'
@@ -159,7 +165,10 @@ export default async function ProfilePageView({
 
         <aside className='space-y-4'>
           {canManageSettings ? (
-            <SettingsPanel settings={currentUser.settings} />
+            <>
+              <ProfileEditForm language={language} profile={currentUser} />
+              <SettingsPanel settings={currentUser.settings} />
+            </>
           ) : null}
 
           <SurfaceCard className='p-5'>

@@ -8,34 +8,111 @@ datasource db {
 }
 
 model User {
-  id           String @id
-  username     String @unique
-  name         String
-  bio          String
-  avatar       String
-  followers    Int
-  following    Int
-  followingIds String
-  topics       String
-  settings     String
-  tweets       Tweet[]
+  id         String        @id
+  username   String        @unique
+  name       String
+  bio        String
+  avatar     String
+  followersCount Int    @default(0) @map("followers")
+  followingCount Int    @default(0) @map("following")
+  legacyFollowingIds String @default("[]") @map("followingIds")
+  topics     String
+  legacySettings String @default("{\"language\":\"en\"}") @map("settings")
+  settings   UserSettings?
+  tweets     Tweet[]
+  likes      Like[]
+  bookmarks  Bookmark[]
+  reposts    Repost[]
+  following  Follow[]      @relation("UserFollowing")
+  followers  Follow[]      @relation("UserFollowers")
 }
 
 model Tweet {
-  id           String  @id
-  authorId     String
-  author       User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  content      String
-  createdAt    DateTime
-  hashtags     String
-  likedBy      String
-  bookmarkedBy String
-  repostedBy   String
-  views        Int
-  replyToId    String?
-  media        String?
+  id          String      @id
+  authorId    String
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content     String
+  createdAt   DateTime
+  hashtags    String
+  legacyLikedBy String @default("[]") @map("likedBy")
+  legacyBookmarkedBy String @default("[]") @map("bookmarkedBy")
+  legacyRepostedBy String @default("[]") @map("repostedBy")
+  views       Int
+  replyToId   String?
+  legacyMedia String? @map("media")
+  replyTo     Tweet?      @relation("TweetReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies     Tweet[]     @relation("TweetReplies")
+  media       TweetMedia?
+  likes       Like[]
+  bookmarks   Bookmark[]
+  reposts     Repost[]
 
   @@index([authorId])
   @@index([replyToId])
   @@index([createdAt])
+}
+
+model UserSettings {
+  userId   String @id
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  language String @default("en")
+}
+
+model TweetMedia {
+  id              String @id @default(cuid())
+  tweetId         String @unique
+  tweet           Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  url             String
+  type            String
+  title           String?
+  description     String?
+  attachmentLabel String?
+}
+
+model Like {
+  userId    String
+  tweetId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet     Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tweetId])
+  @@index([tweetId])
+  @@index([userId])
+}
+
+model Bookmark {
+  userId    String
+  tweetId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet     Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tweetId])
+  @@index([tweetId])
+  @@index([userId])
+}
+
+model Repost {
+  userId    String
+  tweetId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet     Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tweetId])
+  @@index([tweetId])
+  @@index([userId])
+}
+
+model Follow {
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
 }

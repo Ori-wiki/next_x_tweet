@@ -1,21 +1,22 @@
 'use server';
 
-import { z } from 'zod';
 import { updateUsers, withCurrentUser } from '@/entities/user';
+import { actionError, actionSuccess, type ActionResult } from '@/shared/lib/actionResult';
 import { formDataToObject } from '@/shared/lib/formData';
+import { settingsSchema } from './schema';
 
-const settingsSchema = z.object({
-  language: z.enum(['en', 'ru']),
-});
-
-export async function updateSettingsAction(formData: FormData) {
+export async function updateSettingsAction(formData: FormData): Promise<ActionResult> {
   const parsed = settingsSchema.safeParse(formDataToObject(formData));
 
   if (!parsed.success) {
-    return;
+    return actionError();
   }
 
+  let updated = false;
+
   await withCurrentUser(async ({ currentUser, currentUserId }) => {
+    updated = true;
+
     await updateUsers(
       (users) =>
         users.map((user) =>
@@ -32,4 +33,6 @@ export async function updateSettingsAction(formData: FormData) {
       },
     );
   });
+
+  return updated ? actionSuccess() : actionError();
 }

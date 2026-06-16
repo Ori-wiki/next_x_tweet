@@ -1,14 +1,15 @@
 'use client';
 
 import { Bookmark, Heart, Repeat2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useOptimistic, useState } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { ActionButton } from '@/shared/ui/ActionButton';
 import { useToast } from '@/shared/ui/AppProviders';
 
 type TweetActionKind = 'like' | 'bookmark' | 'repost';
 
 interface TweetActionButtonProps {
-  action: (formData: FormData) => Promise<void>;
+  action: (formData: FormData) => Promise<unknown>;
   active: boolean;
   activeClassName: string;
   activeLabel: string;
@@ -16,6 +17,10 @@ interface TweetActionButtonProps {
   count: number;
   inactiveLabel: string;
   kind: TweetActionKind;
+  toastAction?: {
+    href: string;
+    label: string;
+  };
   toastLabel: string;
   tweetId: string;
 }
@@ -35,9 +40,11 @@ export const TweetActionButton = ({
   count,
   inactiveLabel,
   kind,
+  toastAction,
   toastLabel,
   tweetId,
 }: TweetActionButtonProps) => {
+  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const { showToast } = useToast();
   const [optimisticState, toggleOptimisticState] = useOptimistic(
@@ -55,7 +62,16 @@ export const TweetActionButton = ({
 
     try {
       await action(formData);
-      showToast(toastLabel);
+      showToast(
+        toastLabel,
+        'success',
+        toastAction
+          ? {
+              label: toastAction.label,
+              onClick: () => router.push(toastAction.href),
+            }
+          : undefined,
+      );
     } finally {
       setIsPending(false);
     }
@@ -64,25 +80,23 @@ export const TweetActionButton = ({
   return (
     <form action={formAction} className='min-w-0'>
       <input type='hidden' name='tweetId' value={tweetId} />
-      <button
+      <ActionButton
         type='submit'
+        active={optimisticState.active}
+        activeClassName={activeClassName}
+        ariaLabel={`${label}: ${optimisticState.count}`}
+        baseClassName={baseClassName}
         disabled={isPending}
-        aria-label={`${label}: ${optimisticState.count}`}
-        className={cn(
-          baseClassName,
-          optimisticState.active && activeClassName,
-          optimisticState.active && 'reaction-pop ring-1 ring-current/15',
-          isPending && 'cursor-wait opacity-80',
-        )}
+        icon={Icon}
+        isPending={isPending}
       >
-        <Icon aria-hidden='true' size={16} />
         <span className='hidden min-w-0 truncate sm:inline'>
-          {label} · {optimisticState.count}
+          {label} {'\u00b7'} {optimisticState.count}
         </span>
         <span className='text-xs sm:hidden' aria-hidden='true'>
           {optimisticState.count}
         </span>
-      </button>
+      </ActionButton>
     </form>
   );
 };

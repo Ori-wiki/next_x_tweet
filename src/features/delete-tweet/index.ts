@@ -1,1 +1,2 @@
-export { deleteTweetAction } from './model/actions';
+export { deleteTweetAction, restoreTweetAction } from './model/actions';
+export type { DeleteTweetResult } from './model/actions';

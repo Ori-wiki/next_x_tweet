@@ -23,6 +23,7 @@ interface ReplyModalProps {
     openThread: string;
     pendingLabel: string;
     placeholder: string;
+    replyPreviewTitle: string;
     replies: string;
     replyTitle: string;
     signInToReply: string;
@@ -41,6 +42,7 @@ export const ReplyModal = ({
   tweet,
 }: ReplyModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [replyPreview, setReplyPreview] = useState('');
 
   const modal = (
     <Modal
@@ -110,7 +112,10 @@ export const ReplyModal = ({
               mediaUrlPlaceholder={texts.mediaUrlPlaceholder}
               attachmentLabelPlaceholder={texts.attachmentLabelPlaceholder}
               replyToId={tweet.id}
-              onSuccess={() => setIsOpen(false)}
+              onSuccess={({ content }) => {
+                setReplyPreview(content);
+                setIsOpen(false);
+              }}
               compact
             />
           ) : (
@@ -142,6 +147,17 @@ export const ReplyModal = ({
           {texts.thread}
         </span>
       </button>
+
+      {replyPreview ? (
+        <div className='order-last col-span-5 mt-1 rounded-2xl border border-(--color-accent-border) bg-(--color-accent-surface) px-3 py-2 text-left text-xs text-(--color-accent-text) sm:basis-full sm:text-sm'>
+          <p className='font-semibold text-(--color-accent-text-strong)'>
+            {texts.replyPreviewTitle}
+          </p>
+          <p className='mt-1 line-clamp-2 text-(--color-text-secondary)'>
+            {replyPreview}
+          </p>
+        </div>
+      ) : null}
 
       {modal}
     </>

@@ -7,6 +7,7 @@ import { ComposeModal } from '@/features/create-tweet';
 import { DemoRolePicker } from '@/features/auth';
 import { PAGES } from '@/shared/config/pages';
 import { readDemoDatabase } from '@/shared/db';
+import { countNotificationRecords } from '@/shared/db/repositories';
 import { getDictionary, resolveLanguage } from '@/shared/lib/i18n';
 import { AppProviders } from '@/shared/ui/AppProviders';
 import { getMenuItems } from '../model/menu.data';
@@ -19,13 +20,28 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
   const language = resolveLanguage(currentUser?.settings);
   const { common, tweetForm } = getDictionary(language);
   const menuItems = getMenuItems(language);
+  const notificationCount = currentUser
+    ? await countNotificationRecords(currentUser.id)
+    : 0;
+  const navBadges = {
+    [PAGES.NOTIFICATIONS]: notificationCount,
+  };
 
   return (
-    <AppProviders>
+    <AppProviders texts={{ dismissNotification: common.dismissNotification }}>
     <div className='min-h-screen w-full min-w-0 overflow-x-clip text-(--color-text-primary)'>
       <header className='sticky top-0 z-40 flex h-14 items-center justify-between border-b border-(--color-border) bg-(--color-background-header) px-4 backdrop-blur-xl sm:hidden'>
         <div className='flex min-w-0 items-center gap-2'>
-          <MobileMenu items={menuItems} />
+          <MobileMenu
+            items={menuItems}
+            texts={{
+              closeNavigationMenu: common.closeNavigationMenu,
+              mobileMenu: common.mobileMenu,
+              navigationMenu: common.navigationMenu,
+              openNavigationMenu: common.openNavigationMenu,
+              swipeLeftToClose: common.swipeLeftToClose,
+            }}
+          />
           <Link
             href={PAGES.HOME}
             className='inline-flex size-10 shrink-0 items-center justify-center rounded-full transition hover:bg-(--color-surface-hover)'
@@ -80,7 +96,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
             />
           </Link>
 
-          <SidebarNav items={menuItems} />
+          <SidebarNav items={menuItems} badges={navBadges} />
 
           <div className='mt-4 xl:hidden'>
             <ComposeModal
@@ -166,7 +182,7 @@ export const AppShell = async ({ children }: PropsWithChildren) => {
       </div>
 
       <div className='fixed inset-x-0 bottom-0 z-40 w-full overflow-hidden border-t border-(--color-border) bg-(--color-background-header) pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden'>
-        <SidebarNav items={menuItems} mobile />
+        <SidebarNav items={menuItems} badges={navBadges} mobile />
       </div>
 
     </div>

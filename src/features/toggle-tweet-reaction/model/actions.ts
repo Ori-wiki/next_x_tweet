@@ -1,6 +1,5 @@
 'use server';
 
-import { z } from 'zod';
 import {
   findTweetById,
   updateTweetRelation,
@@ -8,21 +7,21 @@ import {
 } from '@/entities/tweet';
 import type { TweetRelationKey } from '@/entities/tweet';
 import { withCurrentUser } from '@/entities/user';
+import { actionError, actionSuccess, type ActionResult } from '@/shared/lib/actionResult';
 import { formDataToObject } from '@/shared/lib/formData';
-
-const tweetRelationSchema = z.object({
-  tweetId: z.string().trim().min(1),
-});
+import { tweetRelationSchema } from './schema';
 
 async function toggleTweetRelation(
   formData: FormData,
   relationKey: TweetRelationKey,
-) {
+): Promise<ActionResult> {
   const parsed = tweetRelationSchema.safeParse(formDataToObject(formData));
 
   if (!parsed.success) {
-    return;
+    return actionError();
   }
+
+  let updated = false;
 
   await withCurrentUser(async ({ currentUser, currentUserId, database }) => {
     const { tweetId } = parsed.data;
@@ -31,6 +30,8 @@ async function toggleTweetRelation(
     if (!targetTweet) {
       return;
     }
+
+    updated = true;
 
     await updateTweets(
       (tweets) =>
@@ -42,16 +43,18 @@ async function toggleTweetRelation(
       },
     );
   });
+
+  return updated ? actionSuccess() : actionError();
 }
 
-export async function toggleLikeAction(formData: FormData) {
-  await toggleTweetRelation(formData, 'likedBy');
+export async function toggleLikeAction(formData: FormData): Promise<ActionResult> {
+  return toggleTweetRelation(formData, 'likedBy');
 }
 
-export async function toggleBookmarkAction(formData: FormData) {
-  await toggleTweetRelation(formData, 'bookmarkedBy');
+export async function toggleBookmarkAction(formData: FormData): Promise<ActionResult> {
+  return toggleTweetRelation(formData, 'bookmarkedBy');
 }
 
-export async function toggleRepostAction(formData: FormData) {
-  await toggleTweetRelation(formData, 'repostedBy');
+export async function toggleRepostAction(formData: FormData): Promise<ActionResult> {
+  return toggleTweetRelation(formData, 'repostedBy');
 }
