@@ -4,7 +4,9 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
   type PropsWithChildren,
   type ReactNode,
@@ -26,8 +28,20 @@ interface ToastContextValue {
   showToast: (message: string, tone?: ToastTone) => void;
 }
 
+interface ModalProps {
+  ariaLabel: string;
+  children: ReactNode;
+  className?: string;
+  closeOnOverlayClick?: boolean;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
+  overlayClassName?: string;
+}
+
 const ToastContext = createContext<ToastContextValue | null>(null);
 const ModalContext = createContext<HTMLElement | null>(null);
+let openModalCount = 0;
+let previousBodyOverflow = '';
 
 export function useToast() {
   const context = useContext(ToastContext);
@@ -43,6 +57,92 @@ export const ModalPortal = ({ children }: { children: ReactNode }) => {
   const root = useContext(ModalContext);
 
   return root ? createPortal(children, root) : null;
+};
+
+export const Modal = ({
+  ariaLabel,
+  children,
+  className,
+  closeOnOverlayClick = true,
+  onOpenChange,
+  open,
+  overlayClassName,
+}: ModalProps) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const previousActiveElement = document.activeElement;
+
+    if (openModalCount === 0) {
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    }
+
+    openModalCount += 1;
+
+    const focusTarget = panelRef.current?.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    window.requestAnimationFrame(() => {
+      (focusTarget ?? panelRef.current)?.focus();
+    });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onOpenChange(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      openModalCount = Math.max(0, openModalCount - 1);
+
+      if (openModalCount === 0) {
+        document.body.style.overflow = previousBodyOverflow;
+      }
+
+      if (previousActiveElement instanceof HTMLElement) {
+        previousActiveElement.focus();
+      }
+    };
+  }, [onOpenChange, open]);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <ModalPortal>
+      <div
+        className={cn(
+          'fixed inset-0 z-[220] overflow-y-auto bg-(--color-overlay) backdrop-blur-md',
+          overlayClassName,
+        )}
+        onMouseDown={(event) => {
+          if (closeOnOverlayClick && event.target === event.currentTarget) {
+            onOpenChange(false);
+          }
+        }}
+      >
+        <div
+          ref={panelRef}
+          role='dialog'
+          aria-modal='true'
+          aria-label={ariaLabel}
+          tabIndex={-1}
+          className={className}
+        >
+          {children}
+        </div>
+      </div>
+    </ModalPortal>
+  );
 };
 
 export const AppProviders = ({ children }: PropsWithChildren) => {

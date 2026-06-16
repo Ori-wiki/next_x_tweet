@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { MessageCircle, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TweetForm } from '@/features/create-tweet';
 import type { TweetView } from '@/entities/tweet';
 import type { UserLanguage } from '@/entities/user';
 import { PAGES } from '@/shared/config/pages';
 import { cn } from '@/shared/lib/cn';
 import { formatDateTime, formatNumber } from '@/shared/lib/utils';
-import { ModalPortal } from '@/shared/ui/AppProviders';
+import { Modal } from '@/shared/ui/AppProviders';
 import { EmptyState } from '@/shared/ui/EmptyState';
 
 interface ReplyModalProps {
@@ -42,42 +42,14 @@ export const ReplyModal = ({
 }: ReplyModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
-
-  const modal = isOpen ? (
-    <div className='fixed inset-0 z-[220] flex items-end justify-center overflow-y-auto bg-(--color-overlay) px-0 pt-10 backdrop-blur-md sm:items-start sm:px-4 sm:py-14'>
-      <button
-        type='button'
-        aria-label={texts.close}
-        onClick={() => setIsOpen(false)}
-        className='absolute inset-0 cursor-default'
-      />
-      <section
-        role='dialog'
-        aria-modal='true'
-        aria-label={texts.replyTitle}
-        className='relative z-10 w-full max-w-2xl rounded-t-3xl border border-(--color-border) bg-(--color-background) p-4 shadow-(--shadow-card) sm:rounded-3xl sm:p-5'
-      >
+  const modal = (
+    <Modal
+      ariaLabel={texts.replyTitle}
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      overlayClassName='flex items-end justify-center px-0 pt-10 sm:items-start sm:px-4 sm:py-14'
+      className='relative z-10 w-full max-w-2xl rounded-t-3xl border border-(--color-border) bg-(--color-background) p-4 shadow-(--shadow-card) outline-none sm:rounded-3xl sm:p-5'
+    >
         <div className='mb-4 flex items-center justify-between gap-3'>
           <div className='min-w-0'>
             <p className='text-xs uppercase tracking-[0.18em] text-(--color-text-subtle)'>
@@ -151,9 +123,8 @@ export const ReplyModal = ({
             />
           )}
         </div>
-      </section>
-    </div>
-  ) : null;
+    </Modal>
+  );
 
   return (
     <>
@@ -172,7 +143,7 @@ export const ReplyModal = ({
         </span>
       </button>
 
-      <ModalPortal>{modal}</ModalPortal>
+      {modal}
     </>
   );
 };

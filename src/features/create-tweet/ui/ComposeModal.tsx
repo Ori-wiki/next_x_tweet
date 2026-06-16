@@ -2,7 +2,7 @@
 
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
-import { ModalPortal } from '@/shared/ui/AppProviders';
+import { Modal } from '@/shared/ui/AppProviders';
 import { TweetForm } from './TweetForm';
 
 interface ComposeModalProps {
@@ -30,15 +30,14 @@ export const ComposeModal = ({
     return null;
   }
 
-  const modal = isOpen ? (
-    <div
-      className='fixed inset-0 z-100 flex items-end justify-center overflow-y-auto bg-black/60 px-0 pt-12 backdrop-blur-sm sm:items-start sm:px-4 sm:py-16'
-      onClick={() => setIsOpen(false)}
+  const modal = (
+    <Modal
+      ariaLabel={texts.title}
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      overlayClassName='z-100 flex items-end justify-center bg-black/60 px-0 pt-12 backdrop-blur-sm sm:items-start sm:px-4 sm:py-16'
+      className='relative z-10 w-full max-w-xl outline-none'
     >
-      <div
-        className='relative z-10 w-full max-w-xl'
-        onClick={(event) => event.stopPropagation()}
-      >
         <div className='absolute right-3 top-3 z-10 flex justify-end sm:static sm:mb-3'>
           <button
             type='button'
@@ -59,9 +58,8 @@ export const ComposeModal = ({
             attachmentLabelPlaceholder={texts.attachmentLabelPlaceholder}
           />
         </div>
-      </div>
-    </div>
-  ) : null;
+    </Modal>
+  );
 
   return (
     <>
@@ -80,7 +78,7 @@ export const ComposeModal = ({
         {!compact ? <span>{texts.title}</span> : null}
       </button>
 
-      <ModalPortal>{modal}</ModalPortal>
+      {modal}
     </>
   );
 };

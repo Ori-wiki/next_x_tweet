@@ -11,6 +11,8 @@
     "db:push": "tsx prisma/setup.ts",
     "db:seed": "tsx prisma/seed.ts",
     "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "e2e:web": "next start -H 127.0.0.1 -p 3100",
     "test:watch": "vitest",
     "dev:turbo": "next dev",
     "build:turbo": "next build"
@@ -30,6 +32,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

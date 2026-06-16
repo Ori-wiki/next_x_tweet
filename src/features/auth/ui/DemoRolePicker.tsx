@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { UserRound } from 'lucide-react';
 import { loginAction } from '../model/actions';
 import { getDictionary } from '@/shared/lib/i18n';
-import { ModalPortal } from '@/shared/ui/AppProviders';
+import { Modal } from '@/shared/ui/AppProviders';
 import {
   type UserLanguage,
   type UserRecord,
@@ -26,9 +26,14 @@ export const DemoRolePicker = ({
   const [isOpen, setIsOpen] = useState(false);
   const { auth, common, demoRolePicker } = getDictionary(language);
 
-  const modal = isOpen ? (
-    <div className='fixed inset-0 z-[100] overflow-y-auto bg-(--color-overlay) p-4 backdrop-blur-md'>
-      <div className='flex min-h-full items-start justify-center py-4 sm:items-center'>
+  const modal = (
+    <Modal
+      ariaLabel={demoRolePicker.title}
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      overlayClassName='z-[100] p-4'
+      className='flex min-h-full items-start justify-center py-4 outline-none sm:items-center'
+    >
         <SurfaceCard className='relative my-auto w-full max-w-3xl space-y-8 px-6 py-7 shadow-2xl shadow-(--shadow-accent) sm:px-8 sm:py-8'>
           <button
             type='button'
@@ -82,9 +87,8 @@ export const DemoRolePicker = ({
             {demoRolePicker.tour}
           </div>
         </SurfaceCard>
-      </div>
-    </div>
-  ) : null;
+    </Modal>
+  );
 
   return (
     <>
@@ -101,7 +105,7 @@ export const DemoRolePicker = ({
       >
         {compact ? <UserRound aria-hidden='true' size={18} /> : auth.chooseDemoRole}
       </button>
-      <ModalPortal>{modal}</ModalPortal>
+      {modal}
     </>
   );
 };

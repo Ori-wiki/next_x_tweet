@@ -19,7 +19,7 @@ import {
 } from 'react';
 import { PAGES } from '@/shared/config/pages';
 import { cn } from '@/shared/lib/cn';
-import { ModalPortal } from '@/shared/ui/AppProviders';
+import { Modal } from '@/shared/ui/AppProviders';
 import type { MenuItemData } from '../model/menu.data';
 
 interface MobileMenuProps {
@@ -40,28 +40,6 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname() ?? '';
   const touchStartX = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
 
   useEffect(() => {
     let edgeStartX: number | null = null;
@@ -125,17 +103,16 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
   }
 
   const menu = (
-    <div
-      className={cn(
-        'fixed inset-0 z-[200] transition-[visibility] duration-300 sm:hidden',
-        isOpen ? 'visible' : 'invisible',
-      )}
-      aria-hidden={!isOpen}
+    <Modal
+      ariaLabel='Navigation menu'
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      overlayClassName='z-[200] bg-transparent backdrop-blur-none sm:hidden'
+      className='contents outline-none'
     >
       <button
         type='button'
         aria-label='Close navigation menu'
-        tabIndex={isOpen ? 0 : -1}
         onClick={() => setIsOpen(false)}
         className={cn(
           'absolute inset-0 bg-(--color-overlay) backdrop-blur-sm transition-opacity duration-300',
@@ -144,9 +121,6 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
       />
 
       <aside
-        role='dialog'
-        aria-modal='true'
-        aria-label='Navigation menu'
         onTouchStart={rememberTouch}
         onTouchEnd={(event) => finishSwipe(event, 'close')}
         className={cn(
@@ -233,7 +207,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
           </p>
         </div>
       </aside>
-    </div>
+    </Modal>
   );
 
   return (
@@ -267,7 +241,7 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
         />
       </button>
 
-      <ModalPortal>{menu}</ModalPortal>
+      {menu}
     </>
   );
 };
