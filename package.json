@@ -7,12 +7,16 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:push": "tsx prisma/setup.ts",
+    "db:seed": "tsx prisma/seed.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "dev:turbo": "next dev",
     "build:turbo": "next build"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@vitest/coverage-v8": "^4.1.1",
@@ -32,7 +36,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prisma": "^6.19.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   },
   "ignoreScripts": [
